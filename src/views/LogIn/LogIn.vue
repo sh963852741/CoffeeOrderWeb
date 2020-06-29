@@ -33,7 +33,7 @@ export default {
     mounted() {},
     methods: {
         logIn() {
-            axios.post("/CoffeeTest/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
+            axios.post("/CoffeeTest/api/usermanage/login?userName=James&password=123456", {userName: this.logInModel.userName, password: this.logInModel.password})
             .then(response => {
                 console.log(response);
             })
