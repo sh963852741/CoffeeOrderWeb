@@ -5,7 +5,7 @@ module.exports = {
     publicPath: '/',
     devServer: {
         proxy: {
-            '/api': {
+            '/CoffeeTest': {
                 target: 'http://106.13.201.225:8080', //API服务器的地址
                 changeOrigin: true
             }
