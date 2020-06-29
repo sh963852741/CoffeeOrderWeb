@@ -6,7 +6,7 @@
             </Row>
             <Row>
                 <Form :model="logInModel">
-                    <FormItem prop="userName" label="用户名">
+                    <FormItem prop="userName" label="用户名" placeholder="请输入您的用户名">
                         <i-input v-model="logInModel.userName"></i-input>
                     </FormItem>
                     <FormItem prop="password" label="密码">
@@ -16,6 +16,14 @@
                         <Button type="primary" @click="logIn">登录</Button>
                     </FormItem>
                 </Form>
+                
+            </Row>
+            <Row>
+                <a href="#">注册账号</a>
+                <Divider type="vertical" />
+                <a href="#">后台登录</a>
+                <Divider type="vertical" />
+                <a href="#">找回密码</a>
             </Row>
         </i-col>
     </Row>
@@ -33,7 +41,7 @@ export default {
     mounted() {},
     methods: {
         logIn() {
-            axios.post("/CoffeeTest/api/usermanage/login?userName=James&password=123456", {userName: this.logInModel.userName, password: this.logInModel.password})
+            axios.post("/CoffeeTest/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
             .then(response => {
                 console.log(response);
             })
