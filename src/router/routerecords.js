@@ -14,6 +14,15 @@ const routes = [
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "Users" */ '@/views/LogIn/LogIn.vue')
     },
+    //注册页
+    {
+      path: '/usermanager/regist',
+      name: 'Regist',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "Users" */ '@/views/LogIn/Regist.vue')
+    },
     //菜品详细信息页
     {
       path: '/dishmanager/dishdetail',
