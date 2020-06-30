@@ -38,7 +38,13 @@ const axios = require("axios");
 export default {
     data() {
         return{
-            registModel: {}
+            registModel: {},
+            //表单验证规则
+            rules:{
+                userName: [
+
+                ]
+            }
         }
     },
     methods: {

@@ -13,11 +13,7 @@
                         <i-input v-model="logInModel.password" placeholder="请输入您的密码" type="password" password></i-input>
                     </FormItem>
                     <FormItem>
-                        <Row type="flex" justify="center" :gutter="16">
-                            <i-col>
-                                <Button type="primary" @click="logIn">登录</Button>
-                            </i-col>
-                        </Row>
+                        <Button type="primary" @click="logIn">登录</Button>
                     </FormItem>
                 </Form>
             </Row>
@@ -45,7 +41,11 @@ export default {
         logIn() {
             axios.post("/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
             .then(response => {
-                console.log(response);
+                if(response.data.success){
+                    this.$Message.success("登录成功");
+                } else {
+                    this.$Message.error(response.data.msg);
+                }
             })
             .catch(error => {
                 console.log(error);
