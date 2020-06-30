@@ -5,12 +5,11 @@ module.exports = {
     publicPath: '/',
     devServer: {
         proxy: {
-            '/CoffeeTest/api': {
-                target: 'http://106.13.201.225:8080', //API服务器的地址
+            '/api': {
+                target: 'http://106.13.201.225:8080/CoffeeTest/', //API服务器的地址
                 /* http://localhost:8088 */
                 changeOrigin: true
             }
         }
-
     }
 }
