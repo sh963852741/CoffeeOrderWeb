@@ -3,7 +3,7 @@
         <Layout>
             <Header>
                 <Menu mode="horizontal" theme="dark" active-name="1">
-                    <div class="layout-logo"></div>
+                    <div class="layout-logo">咖啡厅点餐系统</div>
                     <div class="layout-nav">
                         <MenuItem name="1">
                             <Icon type="ios-navigate"></Icon>
@@ -63,6 +63,7 @@
                     <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
                         <slot></slot>
                     </Content>
+                    <Footer class="layout-footer-center">2020 &copy; 精神小伙点餐吧</Footer>
                 </Layout>
             </Layout>
         </Layout>
@@ -86,12 +87,15 @@
 .layout-logo{
     width: 100px;
     height: 30px;
+    color: #fff;
     background: #5b6270;
     border-radius: 3px;
     float: left;
     position: relative;
     top: 15px;
     left: 20px;
+    line-height: 30px;
+    text-align: center;
 }
 .layout-nav{
     width: 420px;
@@ -121,5 +125,8 @@
     width: 420px;
     margin: 0 auto;
     margin-right: 20px;
+}
+.layout-footer-center{
+    text-align: center;
 }
 </style>
