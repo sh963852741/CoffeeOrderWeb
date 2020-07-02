@@ -13,11 +13,13 @@
                         <i-input v-model="logInModel.password" placeholder="请输入您的密码" type="password" password></i-input>
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" @click="logIn">登录</Button>
+                        <Row type="flex" justify="center"> 
+                            <Button type="primary" @click="logIn">登录</Button>
+                        </Row> 
                     </FormItem>
                 </Form>
             </Row>
-            <Row>
+            <Row type="flex" justify="center" align="middle">
                 <Button size="small" type="text" :to="{name: 'Regist'}">注册账号</Button>
                 <Divider type="vertical" />
                 <Button size="small" type="text">后台登录</Button>
@@ -43,6 +45,9 @@ export default {
             .then(response => {
                 if(response.data.success){
                     this.$Message.success("登录成功");
+                    setTimeout(()=>{
+                        this.$router.push({name: "UserList"});
+                    }, 1500);
                 } else {
                     this.$Message.error(response.data.msg);
                 }
