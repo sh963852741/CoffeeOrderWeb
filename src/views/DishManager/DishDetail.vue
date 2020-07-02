@@ -14,9 +14,9 @@
             </Button>
         </div>
         <div :style="{padding:'0px 300px'}">
-            <Form :model="formItem" label-position="left" :label-width="80">
+            <Form :model="mealInfo" label-position="left" :label-width="80">
                 <FormItem label="餐点名称">
-                    <Input v-model="formItem.mealName" placeholder="餐点名称"/>
+                    <Input v-model="mealInfo.mealName" placeholder="餐点名称"/>
                 </FormItem>
                 <!--Row type="flex" justify="center">
                     <i-col span="12"> 餐点数
@@ -32,22 +32,22 @@
                     </i-col>
                 </Row-->
                 <FormItem label="餐点数量">
-                    <Input v-model="formItem.mealNumber" placeholder="餐点数量"/>
+                    <Input v-model="mealInfo.mealNumber" placeholder="餐点数量"/>
                 </FormItem>    
                 <FormItem label="餐点类别">
-                    <Select v-model="formItem.category">
+                    <Select v-model="mealInfo.category">
                         <Option>主食</Option>
                         <Option>小食</Option>
                         <Option>饮品</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="餐点详情">
-                    <Input type="textarea" v-model="formItem.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
+                    <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
                 </FormItem>
             </Form>
         </div>
         <div :style="{padding:'0px 300px',margin:'0px 0px 30px 0px'}">
-            <Button type="primary" style="float:right;" @click="save">
+            <Button type="primary" style="float:right;" @click="saveMealInfo">
                 <Icon type="md-copy" />
                 保存
             </Button>
@@ -64,15 +64,43 @@
                     mealNumber:'',
                     category: '',
                     mealDetail:'',
-                }
+                },
+                mealInfo:[]
             }
         },
+        mounted(){
+        this.getMealDetail();
+         },
         methods:{
+            getMealDetail(){
+                axios.post(".....getMealDetail", {mealId: this.mealInfo.mealId})
+                .then(response=>{
+                    this.mealInfo = response.data;
+                })
+                .catch(error=>{
+                    console.log(error);
+                });
+            },
             backward(){
                 this.$router.push({name:'MenuDetail'});
             },
-            save(){
-
+            saveMealInfo(){
+                axios.post("........setMealInfo", {mealId: this.mealInfo.mealId, updates: {...this.mealInfo}})
+                .then(response => {
+                    console.log(response);
+                 })
+                .catch(error => {
+                    if (error.response) {
+                        // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+                        if (error.response.status >= 400 && error.response.status < 600)
+                            this.$Message.error(error.message);
+                        else 
+                            this.$Message.warning(error.message);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        this.$Message.error("构建请求时出错")
+                    }
+                });
             }
         }
     }

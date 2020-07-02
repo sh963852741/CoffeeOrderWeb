@@ -51,20 +51,26 @@
             菜单列表管理
         </div>
         <div :style="{margin:'20px 0px'}">
-            <Row>
+            <Row type="flex">
                 <i-col span="3">
                      <Button type="primary" @click="backward"> 新建菜单</Button>
                 </i-col>
                 <i-col span="8">
-                     <Input search enter-button placeholder="请输入菜单名" style="float:left;"/>
+                     <Input search enter-button placeholder="请输入菜单名"  @on-search="searchMenu"/>
                 </i-col>
             </Row> 
         </div>
-        <Table border :style="{margin: '10px 0px 20px 0px'}" :columns="menuListHeader" :data="menuListContent"></Table>
+        <i-table  border :style="{margin: '10px 0px 20px 0px'}" :columns="menuListHeader" :data="menuList">
+            <template v-slot:action="props">
+                <i-button style="margin-right:15px" type="primary" @click="toDetail(props.row)">详情</i-button>
+                <i-button type="error">删除</i-button>
+            </template>
+        </i-table>
     </div>
 </template>
 
 <script>
+const axios = require("axios");
     export default {
         data () {
             return {
@@ -107,35 +113,6 @@
                         key: 'action',
                         width: 200,
                         align: 'center',
-                        render: (h, params) => {
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'primary',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '15px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.show(params.index)
-                                        }
-                                    }
-                                }, '详情'),
-                                h('Button', {
-                                    props: {
-                                        type: 'error',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.remove(params.index)
-                                        }
-                                    }
-                                }, '删除')
-                            ]);
-                        }
                     }
                 ],
                  menuListContent: [
@@ -159,15 +136,30 @@
                         category: "主食",
                         mealNumber: '15',
                     },
-                ]
+                ],
+                menuList:[],
+                data:[]
             };
         },
+        mounted(){
+            this.menuModify();
+        },
         methods: {
-            show () {
-                this.$router.push({name:''});
+           menuModify(){
+                axios.post("/api/menu/menuModify", {})
+           .then(response=>{
+               this.data = response.data;
+               this.menuList = this.data;
+            })
+           .catch(error=>{
+               console.error(error);
+            });
             },
-            remove (index) {
-                this.menuListContent.splice(index, 1);
+            toDetail(row) {
+                this.$router.push({name:"MenuDetail", query:{menuId: row.menuId}});
+            },
+            searchMenu(condition) {
+            this.menuList = this.data.filter(e => e.menuName.indexOf(condition) !== -1 );
             }
         }
     }

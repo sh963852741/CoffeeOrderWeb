@@ -4,7 +4,7 @@
             <Header :style="{background:'#fff',height:'100px'}">
                  <div class="demo-avatar">
                     <Avatar icon="ios-person" size="70" />
-                    <span class="large-label">菜 单 名 称</span>
+                    <span class="large-label">{{this.menuDetail.menuName}}</span>
                  </div>
             </Header>
             <Content :style="{padding: '0 50px',background:'#fff'}">
@@ -17,10 +17,15 @@
                             </i-col>
                             <i-col span="8"></i-col>
                             <i-col span="8" style="padding:10px 0;">
-                                <Input search enter-button placeholder="Enter something..." />
+                                <Input search enter-button placeholder="请输入餐点名" @on-search="searchMeal"/>
                             </i-col>
                         </Row>
-                <Table border :columns="mealListHeader" :data="mealListContent"></Table>
+                        <i-table border :columns="mealListHeader" :data="this.menuDetail.mealList">
+                            <template v-slot:action="props">
+                                <i-button type="primary" @click="toMealDetail(props.row)">详情</i-button>
+                                <i-button type="error">删除</i-button>
+                            </template>
+                        </i-table>
                      </TabPane>
                     <TabPane label="满意度分析" name="name3">标签三的内容</TabPane>
                  </Tabs>
@@ -55,35 +60,6 @@
                         key: 'action',
                         width: 150,
                         align: 'center',
-                        render: (h, params) => {
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'primary',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '15px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.show()
-                                        }
-                                    }
-                                }, '详情'),
-                                h('Button', {
-                                    props: {
-                                        type: 'error',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.remove(params.index)
-                                        }
-                                    }
-                                }, '删除')
-                            ]);
-                        }
                     }
                 ],
                 mealListContent: [
@@ -99,15 +75,30 @@
                         unitPrice: '7.5',
                         inventory: '2000',
                     }
-                ]
+                ],
+                menuDetail:[],
+                data:[]
             }
         },
+        mounted(){
+            this.getMenuDetail();
+        },
         methods: {
-            show () {
-                this.$router.push({name:'DishManager'});
+            getMenuDetail(){
+                axios.post("/api/menu/getMenuDetail", {})
+                .then(response=>{
+                    this.data = response.data;
+                    this.menuDetail = this.data;
+                })
+                .catch(error=>{
+                    console.error(error);
+                });
             },
-            remove (index) {
-                this.mealListContent.splice(index, 1);
+            toMealDetail (row) {
+                this.$router.push({name:"DishDetail", query:{mealId: row.mealId}});
+            },
+            searchMeal(condition) {
+                this.menuDetail.mealList = this.data.mealList.filter(e => e.mealName.indexOf(condition) !== -1 );
             }
         }
     }
