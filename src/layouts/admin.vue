@@ -64,33 +64,8 @@
 .layout-logo{
     width: 100px;
     height: 30px;
-    color: #fff;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
     line-height: 30px;
-    text-align: center;
-}
-.layout-nav{
-    width: 420px;
-    margin: 0 auto;
-    margin-right: 20px;
-}
-</style>
-<style scoped>
-.layout{
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-}
-.layout-logo{
-    width: 100px;
-    height: 30px;
+    color: #FFFFFF;
     background: #5b6270;
     border-radius: 3px;
     float: left;

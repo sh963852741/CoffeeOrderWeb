@@ -1,38 +1,38 @@
 <template>
-    <div>
-        <Row type="flex" justify="start">
-            <Icon type="ios-arrow-back"  @click="back"></Icon>
-            <Button size="small" type="text"  @click="back" id="backbutton">返回</Button>
-        </Row>
-        <br>
-        <Row >
-            <i-col span="6" offset="9">
-                <i-form :model="userInfo" :lable-width="80">
-                    <Form-item label="用户名">
-                    <i-input readonly :value.sync="userInfo.用户名"></i-input>
-                    </Form-item>
-                    <Form-item label="用户Id">
-                    <i-input readonly :value.sync="userInfo.用户Id"></i-input>
-                    </Form-item>
-                    <Form-item label="密码">
-                    <i-input :value.sync="userInfo.密码"></i-input>
-                    </Form-item>
-                    <Form-item label="电子邮箱">
-                    <i-input :value.sync="userInfo.电话"></i-input>
-                    </Form-item>
-                    <Form-item label="电话">
-                    <i-input :value.sync="userInfo.邮箱"></i-input>
-                    </Form-item>
-                </i-form>
-            </i-col>
-        </Row>
-        <br>
+    <Card title="用户详情">
         <Row>
-            <i-col span="5" offset="21">
-                <Button size="large" type="success" @click="changeUserInfo">保存</Button>
+            <Button  @click="back">
+                <Icon type="ios-arrow-back" />返回
+            </Button>
+            <Divider type="vertical" />
+            <Button type="primary" @click="saveUserInfo">保存</Button>
+        </Row>
+        <Divider />
+        <Row>
+            <i-col span="6" offset="9">
+                <Form :model="userInfo" label-position="left" :label-width="80">
+                    <FormItem label="用户名">
+                        <i-input v-model="userInfo.用户名"></i-input>
+                    </FormItem >
+                    <FormItem label="用户Id">
+                        <i-input v-model="userInfo.用户Id"></i-input>
+                    </FormItem >
+                    <FormItem label="密码">
+                        <i-input v-model="userInfo.密码"></i-input>
+                    </FormItem >
+                    <FormItem label="电子邮箱">
+                        <i-input v-model="userInfo.电话"></i-input>
+                    </FormItem >
+                    <FormItem label="电话">
+                        <i-input v-model="userInfo.邮箱"></i-input>
+                    </FormItem >
+                    <FormItem >
+                        <Button type="primary" @click="saveUserInfo">保存</Button>
+                    </FormItem >
+                </Form>
             </i-col>
         </Row>
-    </div>
+    </Card>
 </template>
 
 <script>
@@ -40,17 +40,18 @@ const axios=require("axios");
 export default {
     data(){
         return {
-            userInfo:{},
-            name:this.$route.query.name
+            userInfo: {}
         }
     },
+    created() {
+        this.userInfo.userId = this.$route.query.userId;
+    },
     mounted(){
-
-
+        this.getUserDetails();
     },
     methods:{
-        getUserDetails(userName){
-            axios.post("/api/getUserDetails",{userName})
+        getUserDetails() {
+            axios.post("/api/getUserDetails",{userId: this.userInfo.userId})
             .then(Response=>{
                 console.log(Response);
                 this.userInfo=Response.data;
@@ -59,14 +60,12 @@ export default {
                 console.log(error);
             })
         },
-        changeUserInfo()
-        {
+        saveUserInfo() {
             
         },
-        back(){
+        back() {
             this.$router.go(-1);
         }
-
     }
 }
 </script>

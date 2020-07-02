@@ -1,15 +1,24 @@
 <template>
-    <div>
-        <Row align="middle">
-            <i-col span="5"  ><h3>用户列表</h3></i-col>
-            <i-col span="6" offset="13"><i-input placeholder="请输入用户名进行搜索"> <i-button slot="append" icon="ios-search"></i-button></i-input></i-col>
+    <Card title="用户列表信息">
+        <Row type="flex" :gutter="16">
+            <i-col>
+                <Button type="primary">新建用户</Button>
+            </i-col>
+            <i-col>
+                <i-input placeholder="请输入用户名进行搜索" search enter-button @on-search="searchUser"></i-input>
+            </i-col>
         </Row>
-        <br>
+        <Divider />
         <Row>
-            <i-table stripe :columns="columns" :data="data">
+            <i-table stripe :columns="columns" :data="userlist">
+                <template v-slot:action="props">
+                    <i-button type="primary" @click="toDetail(props.row)">详情</i-button>
+                    &nbsp;
+                    <i-button type="error">删除</i-button>
+                </template>
             </i-table>    
         </Row>
-    </div>
+    </Card>
 </template>
 
 <script>
@@ -17,98 +26,47 @@ const axios = require("axios");
 export default {
     data(){
         return{
-            columns:[
+            columns: [
                 {
                     title:"用户名",
-                    key:"用户名",
-                    render :(h,params)=> {
-                            return h('div',[
-                                h('strong',params.row.用户名)
-                            ]);
-                        },
-      
-                },
-                {
-                    title:"用户ID",
-                    key:"用户Id"
+                    key:"用户名"
                 },
                 {
                     title:"电话",
-                    key:"电话",
-                    render :(h,params)=>{
-                        if(params.row.电话=="")
-                        return h('div',{},"暂无该数据");
-                        else
-                        return h('div',{},params.row.电话);
-                    }
+                    key:"电话"
                 },
                 {
                     title:"邮箱",
-                    key:"邮箱",
-                     render :(h,params)=>{
-                        if(params.row.邮箱=="")
-                        return h('div',{},"暂无该数据");
-                        else
-                        return h('div',{},params.row.邮箱);
-                    }
+                    key:"邮箱"
                 },
                 {
                     title: '操作',
-                    key: 'action',
-                    align: 'center',
-                    render :(h,params)=> {
-                        return h('div',[
-                            h('i-button',{
-                                props:{
-                                    type:'primary',
-                                    size:'small'
-                                },
-                                style: {
-                                    marginRight: '5px'
-                                },
-                                on:{
-                                    click:()=>{
-                                        this.show(params.row);
-                                    }
-                                }
-                            },'详情'),
-                            h('i-button',{
-                                props:{
-                                    type:'error',
-                                    size:'small',
-                                },
-                                on:{
-                                    click:()=>{
-                                        this.show(params.row)
-                                    }
-                                }
-                            },'删除')
-                        ]);
-                    }
+                    slot: 'action'
                 }
             ],
-            data:[]
+            userlist: [],
+            data: []
         }
     },
     mounted(){
        this.getUserlist();
     },
     methods:{
-        getUserlist(){
+        getUserlist() {
            axios.post("/api/usermanage/getUserList", {})
-           .then(Response=>{
-               console.log(Response.data);
-               this.data=Response.data;
-               console.log(this.data)
+           .then(response=>{
+               this.data = response.data;
+               this.userlist = this.data;
            })
            .catch(error=>{
                console.error(error);
            });
         },
-        show(row){
-            
-            this.$router.push({name:"UserDetail",query:{name:this.data[row]}
-            })
+        toDetail(row) {
+            this.$router.push({name:"UserDetail", query:{userId:row.用户Id}});
+        },
+        searchUser(condition) {
+            this.userlist = this.data.filter(e => e.用户名.indexOf(condition) !== -1 );
         }
     }
 }
