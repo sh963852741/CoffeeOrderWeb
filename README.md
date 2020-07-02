@@ -1,4 +1,4 @@
-# coffeeorderweb
+# CoffeeOrderWeb
 
 ## Project setup
 ```
