@@ -43,6 +43,9 @@ export default {
             .then(response => {
                 if(response.data.success){
                     this.$Message.success("登录成功");
+                    setTimeout(()=>{
+                        this.$router.push({name: "UserList"});
+                    }, 1500);
                 } else {
                     this.$Message.error(response.data.msg);
                 }
