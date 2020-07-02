@@ -29,15 +29,15 @@ export default {
             columns: [
                 {
                     title:"用户名",
-                    key:"用户名"
+                    key:"userName"
                 },
                 {
                     title:"电话",
-                    key:"电话"
+                    key:"telephone"
                 },
                 {
                     title:"邮箱",
-                    key:"邮箱"
+                    key:"email"
                 },
                 {
                     title: '操作',
@@ -63,10 +63,10 @@ export default {
            });
         },
         toDetail(row) {
-            this.$router.push({name:"UserDetail", query:{userId:row.用户Id}});
+            this.$router.push({name:"UserDetail", query:{userId: row.userId}});
         },
         searchUser(condition) {
-            this.userlist = this.data.filter(e => e.用户名.indexOf(condition) !== -1 );
+            this.userlist = this.data.filter(e => e.userName.indexOf(condition) !== -1 );
         }
     }
 }
