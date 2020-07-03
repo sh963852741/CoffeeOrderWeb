@@ -18,7 +18,7 @@
                 </template>
             </i-table>    
         </Row>
-        <Modal v-model="modal" title="Title" loading @on-ok="asyncSubmit" ok-text="新建用户">
+        <Modal v-model="modal" title="新建用户" loading @on-ok="asyncSubmit" ok-text="新建">
             <Form :model="userInfo" label-position="left" :label-width="80">
                 <FormItem label="用户名">
                     <i-input v-model="userInfo.userName"></i-input>
@@ -77,7 +77,7 @@ export default {
                this.userlist = this.data;
             })
             .catch(error=>{
-               if (error.response) {
+                if (error.response) {
                     if (error.response.status >= 400 && error.response.status < 600)
                         this.$Message.error(error.message);
                     else 
@@ -109,7 +109,7 @@ export default {
                 }
             });
         },
-        async asyncSubmit() {
+        asyncSubmit() {
             axios.post("/api/usermanage/regist", {...this.userInfo})
             .then(response => {
                 if(response.data.success) this.$Message.success("新建成功");
