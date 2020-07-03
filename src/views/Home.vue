@@ -35,7 +35,7 @@ export default {
             <Header :style="{background:'#fff'}">
                 <Menu mode="horizontal" theme="light" active-name="1">
                     <div class="layout-logo">
-                        <img src="../assets/color-logo.png" width="60px" height="40px" alt="coffee-logo" style="float:left;"/> 
+                        <img src="../assets/coffee-logo.png" width="60px" height="40px" alt="coffee-logo" style="float:left;"/> 
                         <p style="float:left;line-height:40px;margin-top:6px;">全能咖啡厅</p>
                     </div>
                     <div class="layout-nav">
@@ -73,22 +73,19 @@ export default {
                 </Menu>
             </Header>
             <Content :style="{padding: '0px 50px',background:'#fff',position:'relative'}">
-                <Card dis-hover :bordered="false">
-                    <Carousel v-model="value3" loop autoplay :autoplay-speed="3500" :radius-dot="true" arrow="never">
-                        <CarouselItem>
-                            <div class="demo-carousel">1</div>
+                <div style="margin:16px 0px;">
+                    <Carousel loop autoplay :autoplay-speed="3500" :radius-dot="true" arrow="never" style="border-radius: 3px;">
+                        <CarouselItem >
+                            <img src="../assets/carouselPic1.png" alt="carouselPic1" class="carousel-img"/>
+                        </CarouselItem>
+                        <CarouselItem >
+                            <img src="../assets/carouselPic2.png" alt="carouselPic2" class="carousel-img"/>
                         </CarouselItem>
                         <CarouselItem>
-                            <div class="demo-carousel">2</div>
-                        </CarouselItem>
-                        <CarouselItem>
-                            <div class="demo-carousel">3</div>
-                        </CarouselItem>
-                        <CarouselItem>
-                            <div class="demo-carousel">4</div>
+                            <img src="../assets/carouselPic3.png" alt="carouselPic3" class="carousel-img"/>
                         </CarouselItem>
                     </Carousel>
-                    <Card style="width: 285px;position:absolute;top:50px;right:50px;z-index:50;">
+                    <Card style="width: 285px;position:absolute;top:80px;right:90px;z-index:50;background-color: rgba(255, 255, 255, 0.8);" :bordered="false">
                         <List :split="false">
                             <Row type="flex" justify="center">
                                 <i-col span="7"></i-col>
@@ -110,7 +107,7 @@ export default {
                             <ListItem>
                                 <Button type="primary" long size="large">登录</Button>
                             </ListItem>
-                            <Row type="flex" justify="center">
+                            <Row type="flex" justify="center" >
                                 <i-col span="6" >
                                     <BreadcrumbItem to="/">注册用户</BreadcrumbItem>
                                 </i-col>
@@ -121,10 +118,72 @@ export default {
                             </Row>
                          </List>
                     </Card>
-                </Card>
-                
+                    <Row type="flex" justify="space-between" :style="{margin:'20px 0px'}">
+                        <i-col>
+                            <Card>
+                                <div>
+                                    <img src="../assets/coffee-logo.png" alt="coffee-logo2" class="pop-ups-img"/>
+                                    <h2>新品推送</h2>
+                                </div>
+                            </Card>
+                        </i-col>
+                        <i-col>
+                            <Card>
+                                <div>
+                                    <img src="../assets/coffee-logo.png" alt="coffee-logo2" class="pop-ups-img"/>
+                                    <h2>新品推送</h2>
+                                </div>
+                            </Card>
+                        </i-col>
+                        <i-col>
+                            <Card>
+                                <div>
+                                    <img src="../assets/coffee-logo.png" alt="coffee-logo2" class="pop-ups-img"/>
+                                    <h2>新品推送</h2>
+                                </div>
+                            </Card>
+                        </i-col>
+                        <i-col>
+                            <Card>
+                                <div>
+                                    <img src="../assets/coffee-logo.png" alt="coffee-logo2" class="pop-ups-img"/>
+                                    <h2>新品推送</h2>
+                                </div>
+                            </Card>
+                        </i-col>
+                    </Row>
+                </div>
             </Content>
-            <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
+            <Footer class="layout-footer-center">
+                <Row type="flex" justify="space-between" style="background: rgb(160,115,50);color:white;">
+                    <i-col span="6">
+                        <List  :split="false" :size="small">
+                            <ListItem>
+                                <h3>浏览菜单</h3>
+                            </ListItem>
+                            <ListItem>主食</ListItem>
+                            <ListItem>小食</ListItem>
+                            <ListItem>饮品</ListItem>
+                        </List>
+                    </i-col>
+                    <i-col span="6">
+                        <List :split="false" :size="small">
+                            <ListItem>
+                                <h3>帮助</h3>
+                            </ListItem>
+                            <ListItem>网站条款</ListItem>
+                            <ListItem>常见问题</ListItem>
+                            <ListItem>订餐须知</ListItem>
+                            <ListItem>餐饮公示</ListItem>
+                        </List>
+                    </i-col>
+                    <i-col span="6"></i-col>
+                    <i-col span="6"></i-col>
+                </Row>
+                <div style="height:50px;text-align:center;padding:16px 0px;color:white;border-top:1px solid #450f0f;">
+                    2020 &copy; 精神小伙点餐吧
+                </div>
+            </Footer>
         </Layout>
     </div>
 </template>
@@ -134,21 +193,9 @@ export default {
     export default {
         data () {
             return {
-                value3: 0,
-                setting: {
-                    autoplay: false,
-                    autoplaySpeed: 2000,
-                    dots: 'inside',
-                    radiusDot: false,
-                    trigger: 'click',
-                    arrow: 'hover'
-                }
             }
         },
         methods:{
-            c(){
-
-            }
         }
     }
 </script>
@@ -179,10 +226,23 @@ export default {
 }
 .layout-footer-center{
     text-align: center;
+    background: rgb(160,115,50);
 }
 .demo-carousel{
-    height:450px;
-    width:100%;
+    height:430px;
     background: cornflowerblue;
+    font-size: 30px;
+}
+.ivu-card-body{
+    padding:auto 0px;
+}
+.carousel-img{
+    height:430px;
+    width:100%;
+    border-radius: 5px;
+}
+.pop-ups-img{
+    width:230px;
+    height:150px;
 }
 </style-->
