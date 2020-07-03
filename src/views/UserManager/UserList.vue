@@ -26,10 +26,10 @@
                 <FormItem label="密码">
                     <i-input v-model="userInfo.password"></i-input>
                 </FormItem >
-                <FormItem label="电子邮箱">
+                <FormItem label="电话">
                     <i-input v-model="userInfo.telephone"></i-input>
                 </FormItem >
-                <FormItem label="电话">
+                <FormItem label="电子邮箱">
                     <i-input v-model="userInfo.email"></i-input>
                 </FormItem >
             </Form>
