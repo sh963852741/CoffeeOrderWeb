@@ -96,7 +96,11 @@ export default {
         delUser(row) {
             axios.post("/api/usermanage/deleteUser", {userId: row.userId})
             .then(response => {
-               if(response.data.success) this.$Message.success("删除成功");
+               if(response.data.success) 
+               {
+                   this.$Message.success("删除成功");
+                   this.getUserlist;
+               }
             })
             .catch(error => {
                 if (error.response) {
@@ -112,7 +116,10 @@ export default {
         async asyncSubmit() {
             axios.post("/api/usermanage/regist", {...this.userInfo})
             .then(response => {
-                if(response.data.success) this.$Message.success("新建成功");
+                if(response.data.success) {
+                    this.$Message.success("新建成功");
+                    this.getUserlist;
+                }
             })
             .catch(error => {
                 if (error.response) {
@@ -128,6 +135,7 @@ export default {
                 this.modal = false;
             });
         }
+       
     }
 }
 </script>
