@@ -22,10 +22,10 @@
         </i-table>
         <Modal v-model="modal" title="新建菜单" loading @on-ok="asyncSubmit" ok-text="新建">
             <Form :model="menuModel" label-position="left" :label-width="80">
-                <FormItem label="餐单名">
+                <FormItem label="菜单名">
                     <i-input v-model="menuModel.menuName"></i-input>
                 </FormItem>
-                <FormItem label="餐单类型">
+                <FormItem label="菜单类型">
                     <i-input v-model="menuModel.type"></i-input>
                 </FormItem>
             </Form>
@@ -63,7 +63,7 @@ const axios = require("axios");
                             }
                         ],
                         filterMethod (value, row) {
-                            return row.category.indexOf(value) > -1;
+                            return row.type.indexOf(value) > -1;
                         }
                     },
                     {
