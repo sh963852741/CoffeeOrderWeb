@@ -17,11 +17,16 @@
                     <FormItem label="密码">
                         <i-input v-model="userInfo.password"></i-input>
                     </FormItem >
-                    <FormItem label="电子邮箱">
+                    <FormItem label="电话">
                         <i-input v-model="userInfo.telephone"></i-input>
                     </FormItem >
-                    <FormItem label="电话">
+                    <FormItem label="电子邮箱">
                         <i-input v-model="userInfo.email"></i-input>
+                    </FormItem >
+                    <FormItem label="角色">
+                         <i-select v-model="userInfo.role" multiple>
+                            <i-option v-for="(item,index) in role" v-bind:key="index" :value="item">{{item}}</i-option>
+                         </i-select>
                     </FormItem >
                     <FormItem >
                         <Button type="primary" @click="saveUserInfo">保存</Button>
@@ -37,7 +42,8 @@ const axios=require("axios");
 export default {
     data(){
         return {
-            userInfo: {}
+            userInfo: {},
+            role:[]
         }
     },
     created() {
@@ -45,6 +51,7 @@ export default {
     },
     mounted(){
         this.getUserDetails();
+        this.getRolelist();
     },
     methods:{
         getUserDetails() {
@@ -57,8 +64,20 @@ export default {
             });
         },
         saveUserInfo() {
-            axios.post("/api/usermanage/setUserInfo", {userId: this.userInfo.userId, updates: {...this.userInfo}})
+            axios.post("/api/usermanage/setUserInfo", {userId: this.userInfo.userId,
+                 userName:this.userInfo.userName,
+                 telephone:this.userInfo.telephone,
+                 email:this.userInfo.email,
+                 password:this.userInfo.password,
+                 roles:this.userInfo.role
+             })
             .then(response => {
+                if(response.data.success){
+                    this.$Message.success("保存成功");
+                }
+                else{
+                    this.$Message.error("保存失败");
+                }
                 console.log(response);
             })
             .catch(error => {
@@ -76,6 +95,24 @@ export default {
         },
         back() {
             this.$router.go(-1);
+        },
+        getRolelist(){
+            axios.post("/api/usermanage/getRoleList",{})
+            .then(response=>{
+                this.role=response.data.roles;
+                console.log(response.data);
+                console.log(this.role)
+            })
+            .catch(error=>{
+                if (error.response) {
+                    if (error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else 
+                        this.$Message.warning(error.message);
+                } else {
+                    this.$Message.error("无法发送请求");
+                }
+            });
         }
     }
 }
