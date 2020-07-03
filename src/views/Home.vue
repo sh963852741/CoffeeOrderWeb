@@ -48,7 +48,7 @@ export default {
                             浏览菜单
                         </MenuItem>
                         <MenuItem name="3">
-                            <Icon type="ios-basket" />
+                            <Icon type="md-cart" />
                             购物车
                         </MenuItem>
                         <MenuItem name="4">
@@ -72,29 +72,57 @@ export default {
                     </div>
                 </Menu>
             </Header>
-            <Content :style="{padding: '10px 79px',background:'#fff'}">
-                 <Carousel
-                 v-model="value3"
-                 :loop="true"
-        :autoplay="true"
-        :autoplay-speed="3500"
-        :dots="inside"
-        :radius-dot="true"
-        :trigger="click"
-        :arrow="never">
-        <CarouselItem>
-            <div class="demo-carousel">1</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">2</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">3</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">4</div>
-        </CarouselItem>
-    </Carousel>
+            <Content :style="{padding: '0px 50px',background:'#fff',position:'relative'}">
+                <Card dis-hover :bordered="false">
+                    <Carousel v-model="value3" loop autoplay :autoplay-speed="3500" :radius-dot="true" arrow="never">
+                        <CarouselItem>
+                            <div class="demo-carousel">1</div>
+                        </CarouselItem>
+                        <CarouselItem>
+                            <div class="demo-carousel">2</div>
+                        </CarouselItem>
+                        <CarouselItem>
+                            <div class="demo-carousel">3</div>
+                        </CarouselItem>
+                        <CarouselItem>
+                            <div class="demo-carousel">4</div>
+                        </CarouselItem>
+                    </Carousel>
+                    <Card style="width: 285px;position:absolute;top:50px;right:50px;z-index:50;">
+                        <List :split="false">
+                            <Row type="flex" justify="center">
+                                <i-col span="7"></i-col>
+                                <i-col span="10" >
+                                     <Icon type="ios-information-circle" size="24"/>
+                                    <span> 开始订餐</span>
+                                </i-col>
+                                <i-col span="7"></i-col>
+                            </Row>
+                            <ListItem>
+                                <Input prefix="md-person" placeholder="手机号/账号" clearable size="large"/>
+                            </ListItem>
+                            <ListItem :style="{padding:'8px 0px'}">
+                                <Input  prefix="ios-lock" placeholder="密码" type="password" size="large"/>
+                            </ListItem>
+                            <ListItem :style="{padding:'0px'}">
+                                <Checkbox :value="false" size="small">下次自动登录</Checkbox>
+                            </ListItem>
+                            <ListItem>
+                                <Button type="primary" long size="large">登录</Button>
+                            </ListItem>
+                            <Row type="flex" justify="center">
+                                <i-col span="6" >
+                                    <BreadcrumbItem to="/">注册用户</BreadcrumbItem>
+                                </i-col>
+                                <i-col span="12" ></i-col>
+                                <i-col span="6">
+                                    <BreadcrumbItem to="/">忘记密码</BreadcrumbItem>
+                                </i-col>
+                            </Row>
+                         </List>
+                    </Card>
+                </Card>
+                
             </Content>
             <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
         </Layout>
@@ -117,6 +145,11 @@ export default {
                 }
             }
         },
+        methods:{
+            c(){
+
+            }
+        }
     }
 </script>
 
@@ -149,7 +182,7 @@ export default {
 }
 .demo-carousel{
     height:450px;
-    width:1080px;
+    width:100%;
     background: cornflowerblue;
 }
 </style-->

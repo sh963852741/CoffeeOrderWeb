@@ -7,7 +7,7 @@ module.exports = {
         proxy: {
             '/api': {
                 target: 'http://106.13.201.225:8080/CoffeeOrderService/', //API服务器的地址
-                /* http://localhost:8088 */
+                /* http://localhost:8088/CoffeeOrderService/ */
                 changeOrigin: true
             }
         }

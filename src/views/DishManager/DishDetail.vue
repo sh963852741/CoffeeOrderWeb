@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 <template>
     <div>
         <div class="header">
@@ -56,54 +58,55 @@
 </template>
 
 <script>
-    export default {
-        data () {
-            return {
-                formItem: {
-                    mealName: '',
-                    mealNumber:'',
-                    category: '',
-                    mealDetail:'',
-                },
-                mealInfo:[]
-            }
+const axios = require("axios");
+export default {
+    data () {
+        return {
+            formItem: {
+                mealName: '',
+                mealNumber:'',
+                category: '',
+                mealDetail:'',
+            },
+            mealInfo:[]
+        }
+    },
+    mounted(){
+    this.getMealDetail();
         },
-        mounted(){
-        this.getMealDetail();
-         },
-        methods:{
-            getMealDetail(){
-                axios.post(".....getMealDetail", {mealId: this.mealInfo.mealId})
-                .then(response=>{
-                    this.mealInfo = response.data;
+    methods:{
+        getMealDetail(){
+            axios.post(".....getMealDetail", {mealId: this.mealInfo.mealId})
+            .then(response=>{
+                this.mealInfo = response.data;
+            })
+            .catch(error=>{
+                console.log(error);
+            });
+        },
+        backward(){
+            this.$router.push({name:'MenuDetail'});
+        },
+        saveMealInfo(){
+            axios.post("........setMealInfo", {mealId: this.mealInfo.mealId, updates: {...this.mealInfo}})
+            .then(response => {
+                console.log(response);
                 })
-                .catch(error=>{
-                    console.log(error);
-                });
-            },
-            backward(){
-                this.$router.push({name:'MenuDetail'});
-            },
-            saveMealInfo(){
-                axios.post("........setMealInfo", {mealId: this.mealInfo.mealId, updates: {...this.mealInfo}})
-                .then(response => {
-                    console.log(response);
-                 })
-                .catch(error => {
-                    if (error.response) {
-                        // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-                        if (error.response.status >= 400 && error.response.status < 600)
-                            this.$Message.error(error.message);
-                        else 
-                            this.$Message.warning(error.message);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        this.$Message.error("构建请求时出错")
-                    }
-                });
-            }
+            .catch(error => {
+                if (error.response) {
+                    // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+                    if (error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else 
+                        this.$Message.warning(error.message);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    this.$Message.error("构建请求时出错")
+                }
+            });
         }
     }
+}
 </script>
 
 <style scoped>
@@ -120,3 +123,4 @@
     margin:0px 20px 0px 0px;
 }
 </style>
+>>>>>>> 8a4b3c6790662d64b896f24c56e1730e307eacf2

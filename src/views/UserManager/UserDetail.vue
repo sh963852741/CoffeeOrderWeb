@@ -70,7 +70,7 @@ export default {
                         this.$Message.warning(error.message);
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    this.$Message.error("构建请求时出错")
+                    this.$Message.error("无法发送请求")
                 }
             });
         },
