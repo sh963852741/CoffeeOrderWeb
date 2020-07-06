@@ -71,7 +71,7 @@ export default {
     },
     methods:{
         getUserlist() {
-            axios.post("/api/usermanage/getUserList", {})
+            axios.post("/CoffeeOrderService/api/usermanage/getUserList", {})
             .then(response=>{
                this.data = response.data;
                this.userlist = this.data;
@@ -94,7 +94,7 @@ export default {
             this.userlist = this.data.filter(e => e.userName.indexOf(condition) !== -1 );
         },
         delUser(row) {
-            axios.post("/api/usermanage/deleteUser", {userId: row.userId})
+            axios.post("/CoffeeOrderService/api/usermanage/deleteUser", {userId: row.userId})
             .then(response => {
                if(response.data.success) 
                {
@@ -114,7 +114,7 @@ export default {
             });
         },
         asyncSubmit() {
-            axios.post("/api/usermanage/regist", {...this.userInfo})
+            axios.post("/CoffeeOrderService/api/usermanage/regist", {...this.userInfo})
             .then(response => {
                 if(response.data.success) {
                     this.$Message.success("新建成功");
