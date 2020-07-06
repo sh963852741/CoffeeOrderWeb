@@ -84,7 +84,7 @@ const axios = require("axios");
         },
         methods: {
             getMenuList(){
-                axios.post("/api/menu/getMenuList", {})
+                axios.post("/CoffeeOrderService/api/menu/getMenuList", {})
                 .then(response=>{
                     this.menuList = response.data.data;
                     this.menuListContent = this.menuList;
@@ -107,7 +107,7 @@ const axios = require("axios");
                 this.menuListContent = this.menuList.filter(e => e.menuName.indexOf(condition) !== -1 );
             },
             delMenu(row) {
-                axios.post("/api/menu/delMenu", {menuId: row.menuId})
+                axios.post("/CoffeeOrderService/api/menu/delMenu", {menuId: row.menuId})
                 .then(response=>{
                     if(response.data.success){
                         this.$Message.success("删除成功");
@@ -126,7 +126,7 @@ const axios = require("axios");
                 });
             },
             asyncSubmit() {
-                axios.post("/api/menu/addMenu", {...this.menuModel})
+                axios.post("/CoffeeOrderService/api/menu/addMenu", {...this.menuModel})
                 .then(response => {
                     if(response.data.success){
                         this.$Message.success("新建成功");

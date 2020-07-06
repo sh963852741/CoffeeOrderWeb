@@ -55,7 +55,7 @@ export default {
     },
     methods:{
         getUserDetails() {
-            axios.post("/api/usermanage/getUserInfo", {userId: this.userInfo.userId})
+            axios.post("/CoffeeOrderService/api/usermanage/getUserInfo", {userId: this.userInfo.userId})
             .then(response=>{
                 this.userInfo = response.data;
             })
@@ -64,7 +64,7 @@ export default {
             });
         },
         saveUserInfo() {
-            axios.post("/api/usermanage/setUserInfo", {userId: this.userInfo.userId,
+            axios.post("/CoffeeOrderService/api/usermanage/setUserInfo", {userId: this.userInfo.userId,
                  userName:this.userInfo.userName,
                  telephone:this.userInfo.telephone,
                  email:this.userInfo.email,
@@ -97,7 +97,7 @@ export default {
             this.$router.go(-1);
         },
         getRolelist(){
-            axios.post("/api/usermanage/getRoleList",{})
+            axios.post("/CoffeeOrderService/api/usermanage/getRoleList",{})
             .then(response=>{
                 this.role=response.data.roles;
                 console.log(response.data);

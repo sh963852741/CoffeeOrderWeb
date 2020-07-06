@@ -118,7 +118,7 @@ export default {
     },
     methods: {
         getMenuDetail(){
-            axios.post("/api/menu/getMenuDetail", {})
+            axios.post("/CoffeeOrderService/api/menu/getMenuDetail", {})
             .then(response=>{
                 this.data = response.data;
                 this.menuDetail = this.data;
@@ -134,23 +134,23 @@ export default {
             this.menuDetail.mealList = this.data.mealList.filter(e => e.mealName.indexOf(condition) !== -1 );
         },
         deleteMeal(row){
-            axios.post("/api/menu/delMeal", {mealId: row.mealId})
-                .then(response=>{
-                    if(response.data.success){
-                        this.$Message.success("删除成功");
-                        this.getMenuDetail();
-                    }
-                })
-                .catch(error=>{
-                    if (error.response) {
-                        if (error.response.status >= 400 && error.response.status < 600)
-                            this.$Message.error(error.message);
-                        else
-                            this.$Message.warning(error.message);
-                    } else {
-                        this.$Message.error("无法发送请求");
-                    }
-                });
+            axios.post("/CoffeeOrderService/api/menu/delMeal", {mealId: row.mealId})
+            .then(response=>{
+                if(response.data.success){
+                    this.$Message.success("删除成功");
+                    this.getMenuDetail();
+                }
+            })
+            .catch(error=>{
+                if (error.response) {
+                    if (error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else
+                        this.$Message.warning(error.message);
+                } else {
+                    this.$Message.error("无法发送请求");
+                }
+            });
         }
     }
 }
