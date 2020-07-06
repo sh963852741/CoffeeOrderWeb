@@ -1,34 +1,34 @@
 <template>
     <Row type="flex" justify="center">
-        <i-col span="6">
+        <i-col span="4">
             <Row>
                 用户登录
             </Row>
             <Row>
                 <Form :model="logInModel">
-                    <FormItem prop="userName" label="用户名" placeholder="请输入您的用户名">
-                        <i-input v-model="logInModel.userName"></i-input>
+                    <FormItem prop="userName" label="用户名">
+                        <i-input v-model="logInModel.userName" placeholder="请输入您的用户名"></i-input>
                     </FormItem>
                     <FormItem prop="password" label="密码">
-                        <i-input v-model="logInModel.password" placeholder="请输入您的密码" type="password"></i-input>
+                        <i-input v-model="logInModel.password" placeholder="请输入您的密码" type="password" password></i-input>
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" @click="logIn">登录</Button>
+                        <Row type="flex" justify="center"> 
+                            <Button type="primary" @click="logIn">登录</Button>
+                        </Row> 
                     </FormItem>
                 </Form>
-                
             </Row>
-            <Row>
-                <a href="#">注册账号</a>
+            <Row type="flex" justify="center" align="middle">
+                <Button size="small" type="text" :to="{name: 'Regist'}">注册账号</Button>
                 <Divider type="vertical" />
-                <a href="#">后台登录</a>
+                <Button size="small" type="text">后台登录</Button>
                 <Divider type="vertical" />
-                <a href="#">找回密码</a>
+                <Button size="small" type="text">找回密码</Button>
             </Row>
         </i-col>
     </Row>
 </template>
-
 
 <script>
 const axios = require("axios");
@@ -41,9 +41,16 @@ export default {
     mounted() {},
     methods: {
         logIn() {
-            axios.post("/CoffeeTest/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
+            axios.post("/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
             .then(response => {
-                console.log(response);
+                if(response.data.success){
+                    this.$Message.success("登录成功");
+                    setTimeout(()=>{
+                        this.$router.push({name: "UserList"});
+                    }, 1500);
+                } else {
+                    this.$Message.error(response.data.msg);
+                }
             })
             .catch(error => {
                 console.log(error);
