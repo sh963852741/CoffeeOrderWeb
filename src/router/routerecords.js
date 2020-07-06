@@ -21,9 +21,6 @@ const routes = [
       path: '/usermanager/regist',
       name: 'Regist',
       meta: {layout: "empty"},
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "users" */ '@/views/LogIn/Regist.vue')
     },
     //菜品详细信息页
@@ -60,6 +57,13 @@ const routes = [
       name: 'UserDetail',
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "users" */ '@/views/UserManager/UserDetail.vue')
-    }
+    },
+    //前台用户订餐页面
+    {
+      path: '/usermenu/ordermenu',
+      name: 'OrderMenu',
+      meta: {layout: "empty"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderMenu.vue')
+    },
 ]
 export default routes;
