@@ -51,7 +51,7 @@ export default {
         regist() {
             this.$refs["rgeForm"].validate((valid) => {
                 if (valid) {
-                    axios.post("/api/usermanage/regist", {...this.registModel})
+                    axios.post("/CoffeeOrderService/api/usermanage/regist", {...this.registModel})
                     .then(response => {
                         console.log(response);
                     })
