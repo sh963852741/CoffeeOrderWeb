@@ -7,7 +7,6 @@
                 </CellGroup>
             </Card>
         </i-col>
-        <!--HelloWorld msg="Welcome to Your Vue.js App" /-->
     </Row>
 </template>
 
@@ -30,48 +29,6 @@ export default {
 
 
 <!--template>
-    <div class="layout">
-        <Layout>
-            <Header :style="{background:'#fff'}">
-                <Menu mode="horizontal" theme="light" active-name="1">
-                    <div class="layout-logo">
-                        <img src="../assets/coffee-logo.png" width="60px" height="40px" alt="coffee-logo" style="float:left;"/> 
-                        <p style="float:left;line-height:40px;margin-top:6px;">全能咖啡厅</p>
-                    </div>
-                    <div class="layout-nav">
-                        <MenuItem name="1">
-                            <Icon type="md-home" />
-                            首&nbsp;页
-                        </MenuItem>
-                        <MenuItem name="2">
-                            <Icon type="ios-paper" />
-                            浏览菜单
-                        </MenuItem>
-                        <MenuItem name="3">
-                            <Icon type="md-cart" />
-                            购物车
-                        </MenuItem>
-                        <MenuItem name="4">
-                            <Icon type="md-person" />
-                            我的账户
-                        </MenuItem>
-                        <MenuItem name="5">
-                            <Icon type="md-help-circle" />
-                            <Dropdown>
-                                <a href="javascript:void(0)"> 帮&nbsp;助&nbsp;
-                                    <Icon type="md-arrow-dropdown" />
-                                 </a>
-                                <DropdownMenu slot="list">
-                                    <DropdownItem>网站条款</DropdownItem>
-                                    <DropdownItem>常见问题</DropdownItem>
-                                    <DropdownItem>订餐须知</DropdownItem>
-                                    <DropdownItem>餐饮公示</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </MenuItem>
-                    </div>
-                </Menu>
-            </Header>
             <Content :style="{padding: '0px 50px',background:'#fff',position:'relative'}">
                 <div style="margin:16px 0px;">
                     <Carousel loop autoplay :autoplay-speed="3500" :radius-dot="true" arrow="never" style="border-radius: 3px;">
@@ -154,38 +111,6 @@ export default {
                     </Row>
                 </div>
             </Content>
-            <Footer class="layout-footer-center">
-                <Row type="flex" justify="space-between" style="background: rgb(160,115,50);color:white;">
-                    <i-col span="6">
-                        <List  :split="false" :size="small">
-                            <ListItem>
-                                <h3>浏览菜单</h3>
-                            </ListItem>
-                            <ListItem>主食</ListItem>
-                            <ListItem>小食</ListItem>
-                            <ListItem>饮品</ListItem>
-                        </List>
-                    </i-col>
-                    <i-col span="6">
-                        <List :split="false" :size="small">
-                            <ListItem>
-                                <h3>帮助</h3>
-                            </ListItem>
-                            <ListItem>网站条款</ListItem>
-                            <ListItem>常见问题</ListItem>
-                            <ListItem>订餐须知</ListItem>
-                            <ListItem>餐饮公示</ListItem>
-                        </List>
-                    </i-col>
-                    <i-col span="6"></i-col>
-                    <i-col span="6"></i-col>
-                </Row>
-                <div style="height:50px;text-align:center;padding:16px 0px;color:white;border-top:1px solid #450f0f;">
-                    2020 &copy; 精神小伙点餐吧
-                </div>
-            </Footer>
-        </Layout>
-    </div>
 </template>
 
 

@@ -62,7 +62,7 @@ const routes = [
     {
       path: '/usermenu/ordermenu',
       name: 'OrderMenu',
-      meta: {layout: "empty"},
+      meta: {layout: "user"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderMenu.vue')
     },
 ]
