@@ -41,7 +41,7 @@ export default {
     mounted() {},
     methods: {
         logIn() {
-            axios.post("/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
+            axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
             .then(response => {
                 if(response.data.success){
                     this.$Message.success("登录成功");
