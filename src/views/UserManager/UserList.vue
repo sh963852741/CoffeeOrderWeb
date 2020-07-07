@@ -74,7 +74,7 @@ export default {
             axios.post("/CoffeeOrderService/api/usermanage/getUserList", {})
             .then(response => {
                 if(response.data.success) {
-                    this.data = response.data;
+                    this.data = response.data.data;
                     this.userlist = this.data;
                 } else {
                     this.$Message.warning(response.data.msg || "未知错误");
