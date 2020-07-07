@@ -3,15 +3,12 @@
         <Row :style="{background:'#fff',height:'100px',padding:'0 0 0 50px'}">
             <div class="demo-avatar">
             <Avatar icon="ios-person" size="70" />
-            <span class="large-label">{{menuDetail[0].mealId}}</span>
+            <span class="large-label">{{this.menuName}}</span>
             </div>
         </Row>
         <Row :style="{padding: '0 50px',background:'#fff'}">
             <Tabs value="name1">
-                <TabPane label="基本信息" name="name1">
-                    标签一的内容
-                </TabPane>
-                <TabPane label="餐点列表" name="name2">
+                <TabPane label="餐点列表" name="name1">
                     <Row type="flex" justify="center">
                         <i-col span="8" >
                             <span class="large-label" style="font-size:20px;">现有餐点</span>
@@ -26,13 +23,14 @@
                     </Row>
                 <Row>
                 <i-table border :columns="mealListHeader" :data="menuDetail">
-                    <template v-slot:action="props">
-                        <i-button type="primary" @click="toMealDetail(props.row)">详情</i-button>
-                        <i-button type="error" @click="deleteMeal(props.row)">删除</i-button>
+                    <template slot-scope="{ row }" slot="action">
+                        <Button type="primary" style="margin-right:15px;"  @click="toMealDetail(row)">详情</Button>
+                        <Button type="error" @click="deleteMeal(row)">删除</Button>
                     </template>
-                </i-table></Row>
+                </i-table>
+                </Row>
                 </TabPane>
-                <TabPane label="满意度分析" name="name3">
+                <TabPane label="满意度分析" name="name2">
                     标签三的内容
                 </TabPane>
             </Tabs>
@@ -43,14 +41,17 @@
                     <i-input v-model="mealInfo.mealName"></i-input>
                 </FormItem >
                 <FormItem label="餐点类别">
-                    <i-input v-model="mealInfo.menuId" readonly></i-input>
+                    <i-input v-model="mealInfo.type" ></i-input>
                 </FormItem >
                 <FormItem label="餐点单价">
-                    <i-input v-model="mealInfo.price"></i-input>
+                    <i-input v-model="mealInfo.price" :number="true"></i-input>
                 </FormItem >
                 <FormItem label="餐点库存">
-                    <i-input v-model="mealInfo.amount"></i-input>
+                    <i-input v-model="mealInfo.amount" :number="true"></i-input>
                 </FormItem >
+                <FormItem label="餐点详情">
+                    <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
+                </FormItem>
             </Form>
         </Modal>
     </Row>
@@ -64,7 +65,7 @@ export default {
             mealListHeader: [
                 {
                     title: '餐点名',
-                    key: 'mealId'
+                    key: 'mealName'
                 },
                 {
                     title: '单价',
@@ -76,11 +77,29 @@ export default {
                 },
                 {
                     title: '类别',
-                    key: 'type'
+                    key: 'type',
+                    filters: [
+                            {
+                                label: '主食类',
+                                value: '主食'
+                            },
+                            {
+                                label: '小食类',
+                                value: '小食'
+                            },
+                            {
+                                label: '饮品类',
+                                value: '饮品'
+                            }
+                        ],
+                    filterMethod (value, row) {
+                        return row.type.indexOf(value) > -1;
+                    }
                 },
                 {
                     title: '操作',
                     key: 'action',
+                    slot:'action',
                     width: 180,
                     align: 'center',
                 }
@@ -114,6 +133,7 @@ export default {
                 }
             ],
             menuDetail:[],
+            menuName:"",
             data:[],
             mealInfo:{},
             modal: false
@@ -123,13 +143,14 @@ export default {
         this.getMenuDetail();
     },
     created(){
-        this.mealInfo.menuId=this.$router.query.menuId;
+        this.mealInfo.menuId=this.$route.query.menuId;
     },
     methods: {
         getMenuDetail(){
-            axios.post("/CoffeeOrderService/api/menu/getMenuDetail", {})
+            axios.post("/CoffeeOrderService/api/menu/getMealByMenuId", {menuId:this.mealInfo.menuId})
             .then(response=>{
-                this.data = response.data;
+                this.menuName=response.data.menuName;
+                this.data = response.data.data;
                 this.menuDetail = this.data;
             })
             .catch(error=>{
@@ -137,10 +158,10 @@ export default {
             });
         },
         toMealDetail (row) {
-            this.$router.push({name:"DishDetail", query:{mealId: row.mealId}});
+            this.$router.push({name:"DishManager", query:{mealId: row.mealId}});
         },
         searchMeal(condition) {
-            this.menuDetail.mealList = this.data.mealList.filter(e => e.mealName.indexOf(condition) !== -1 );
+            this.menuDetail = this.data.filter(e => e.mealName.indexOf(condition) !== -1 );
         },
         deleteMeal(row){
             axios.post("/CoffeeOrderService/api/menu/delMeal", {mealId: row.mealId})
@@ -159,6 +180,28 @@ export default {
                 } else {
                     this.$Message.error("无法发送请求");
                 }
+            });
+        },
+        asyncSubmit(){
+             axios.post("/CoffeeOrderService/api/menu/addMeal",{...this.mealInfo})
+            .then(response=>{
+                if(response.data.success){
+                    this.$Message.success("新建成功");
+                    this.getMenuDetail();
+                }
+            })
+            .catch(error=>{
+                if(error.response){
+                    if(error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else
+                        this.$Message.warning(error.message);
+                }else {
+                    this.$Message.error("无法发送请求");
+                }
+            })
+            .finally(() => {
+                this.modal = false;
             });
         }
     }
