@@ -4,12 +4,23 @@
             <Header>
                 <Menu mode="horizontal" theme="dark" active-name="1">
                     <div class="layout-logo">咖啡厅点餐系统</div>
-                    <div class="layout-nav"></div>
+                    <div class="layout-nav">
+                        <Dropdown>
+                            <Button type="primary">
+                                本用户
+                                <Icon type="ios-arrow-down"></Icon>
+                            </Button>
+                            <DropdownMenu slot="list">
+                                <DropdownItem name="profile" @click.native="$router.push({'name': 'UserDetail'})">个人中心</DropdownItem>
+                                <DropdownItem name="logout" @click.native="logout">注销</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
                 </Menu>
             </Header>
             <Layout>
                 <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
+                    <Menu active-name="2-1" theme="light" width="auto" :open-names="['2']">
                         <Submenu name="1">
                             <template slot="title">
                                 <Icon type="ios-navigate"></Icon>
@@ -48,8 +59,36 @@
 </template>
 
 <script>
+    const axios = require("axios");
     export default {
-        
+        data() {
+            return {}
+        },
+        methods: {
+            logout() {
+                axios.post("/CoffeeOrderService/api/usermanage/logout", {})
+                .then(response => {
+                    if(response.data.success) {
+                        this.$Message.success("注销成功");
+                    } else {
+                        this.$Message.warning(response.data.msg || "未知错误");
+                    }
+                    setTimeout(() => {
+                        this.$router.push({name: "LogIn"});
+                    }, 2000);
+                })
+                .catch(error => {
+                    if (error.response) {
+                        if (error.response.status >= 400 && error.response.status < 600)
+                            this.$Message.error(error.message);
+                        else 
+                            this.$Message.warning(error.message);
+                    } else {
+                        this.$Message.error("无法发送请求");
+                    }
+                });
+            }
+        }
     }
 </script>
 
@@ -74,7 +113,7 @@
     left: 20px;
 }
 .layout-nav{
-    width: 420px;
+    width: 250px;
     margin: 0 auto;
     margin-right: 20px;
 }

@@ -1,137 +1,103 @@
 <template>
-    <div class="layout">
-        <Layout>
-            <Header :style="{background:'#fff'}">
-                <Menu mode="horizontal" theme="light" active-name="1">
-                    <div class="layout-logo">
-                        <img src="@/assets/coffee-logo.png" width="60px" height="40px" alt="coffee-logo" style="float:left;"/> 
-                        <p style="float:left;line-height:40px;margin-top:6px;">全能咖啡厅</p>
-                    </div>
-                    <div class="layout-nav">
-                        <MenuItem name="1">
-                            <Icon type="md-home" />
-                            首&nbsp;页
-                        </MenuItem>
-                        <MenuItem name="2">
-                            <Icon type="ios-paper" />
-                            浏览菜单
-                        </MenuItem>
-                        <MenuItem name="3">
-                            <Icon type="md-cart" />
-                            购物车
-                        </MenuItem>
-                        <MenuItem name="4">
-                            <Icon type="md-person" />
-                            我的账户
-                        </MenuItem>
-                        <MenuItem name="5">
-                            <Icon type="md-help-circle" />
-                            <Dropdown>
-                                <a href="javascript:void(0)"> 帮&nbsp;助&nbsp;
-                                    <Icon type="md-arrow-dropdown" />
-                                 </a>
-                                <DropdownMenu slot="list">
-                                    <DropdownItem>网站条款</DropdownItem>
-                                    <DropdownItem>常见问题</DropdownItem>
-                                    <DropdownItem>订餐须知</DropdownItem>
-                                    <DropdownItem>餐饮公示</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </MenuItem>
-                    </div>
-                </Menu>
-            </Header>
-            <Layout :style="{minHeight: '100vh'}">
-                <Sider  hide-trigger collapsible width="auto" :collapsed-width="78" :style="{background: 'white'}">
-                    <Menu :theme="light">
-                        <Submenu name="1" >
-                            <template slot="title">
-                                <Icon type="ios-beer" />
-                                饮品
-                            </template>
-                        </Submenu>
-                        <Submenu name="2" >
-                            <template slot="title">
-                                <Icon type="ios-pizza-outline" />
-                                小吃
-                            </template>
-                            <Menuitem v-for="(item,index) in menu" v-bind:key="index" ></Menuitem>
-                        </Submenu>
-                        <Submenu name="3" >
-                            <template slot="title">
-                                <Icon type="ios-pizza" />
-                                主食
-                            </template>
-                        </Submenu>
-                    </Menu>
-                </Sider>
-                <Content :style="{minwideth}">
-                    <Card>
-                        <Row type="flex" :style="{margin:'20px 0px '}">
-                            <i-col span="6" v-for="(num,index) in 5" v-bind:key="index">
-                                <Card style="width:320px">
-                                    <div style="text-align:center">
-                                        <img src="@/assets/coffee-logo.png">
-                                        <h3>coffee</h3>
-                                    </div>
-                                     <Divider></Divider>
-                                     <Row type="flex" :gutter="16">
-                                         <i-col span="5" :style="{margin:'0 0 0 20'}">
-                                            <b ><font color="green" size="3">xxx元</font></b>
-                                         </i-col>
-                                         <i-col span="4" offset="11">
-                                            <Button icon="ios-cart-outline" type="error">添加</Button>
-                                         </i-col>
-                                     </Row>
-                                </Card>
-                            </i-col>
-                        </Row>   
-                    </Card>
-                      
-                </Content>
-            </Layout>
-            <Footer class="layout-footer-center">
-                <Row type="flex" justify="space-between" style="background: rgb(160,115,50);color:white;">
-                    <i-col span="6">
-                        <List  :split="false" :size="small">
-                            <ListItem>
-                                <h3>浏览菜单</h3>
-                            </ListItem>
-                            <ListItem>主食</ListItem>
-                            <ListItem>小食</ListItem>
-                            <ListItem>饮品</ListItem>
-                        </List>
+    <Layout :style="{minHeight: '50vh'}">
+        <Sider  hide-trigger collapsible width="auto" :collapsed-width="78" :style="{background: 'white'}">
+            <Menu theme="light" active-name="0" :style="{minwidth:300}">
+                 <MenuItem name="0" @click.native="toAllmeal">
+                    <Icon type="ios-pizza" />
+                           全部
+                </MenuItem>
+                <MenuItem v-for="(value,key) in sortMeal" :key="key" :name="key" @click.native="toSpecialMeal(key)">
+                    <Icon type="ios-pizza"  />
+                           {{key}}
+                </MenuItem>
+                <!--MenuItem name="2">
+                    <Icon type="ios-pizza-outline" />
+                           小吃
+                </MenuItem>
+                <MenuItem name="3">
+                    <Icon type="ios-beer" />
+                           饮品
+                </MenuItem-->
+            </Menu>
+        </Sider>
+        <Content >
+            <Card>
+                <Row type="flex" :style="{margin:'20px 0px '}">
+                    <i-col span="6" v-for="(item,index) in meal" v-bind:key="index">
+                        <Card style="width:320px">
+                            <div style="text-align:center">
+                                <img src="@/assets/coffee-logo.png">
+                                <h3>{{item.mealName}}</h3>
+                            </div>
+                            <Divider></Divider>
+                            <Row type="flex" :gutter="16">
+                                <i-col span="6" :style="{margin:'0 0 0 20'}">
+                                    <b ><font color="green" size="3">{{item.price}}元</font></b>
+                                </i-col>
+                                <i-col span="4" offset="11">
+                                    <Button icon="ios-cart-outline" type="error">添加</Button>
+                                </i-col>
+                            </Row>
+                        </Card>
                     </i-col>
-                    <i-col span="6">
-                        <List :split="false" :size="small">
-                            <ListItem>
-                                <h3>帮助</h3>
-                            </ListItem>
-                            <ListItem>网站条款</ListItem>
-                            <ListItem>常见问题</ListItem>
-                            <ListItem>订餐须知</ListItem>
-                            <ListItem>餐饮公示</ListItem>
-                        </List>
-                    </i-col>
-                    <i-col span="6"></i-col>
-                    <i-col span="6"></i-col>
-                </Row>
-                <div style="height:50px;text-align:center;padding:16px 0px;color:white;border-top:1px solid #450f0f;">
-                    2020 &copy; 精神小伙点餐吧
-                </div>
-            </Footer>
-        </Layout>
-
-
-
-
-    </div>
-    
+                </Row>   
+            </Card>       
+        </Content>
+    </Layout>
 </template>
 
 
 <script>
+const axios = require("axios");
 export default {
+    data(){
+        return{
+            meal:[],
+            allMeal:[],
+            sortMeal:{}
+        }
+    },
+    mounted(){
+       this.getAllmeal();
+       this.getmealbysort();
+    },
+    methods:{
+        toAllmeal(){
+            this.meal=this.allMeal;
+        },
+        toSpecialMeal(key){
+            this.meal=this.sortMeal[key];
+        },
+        getAllmeal()
+        {
+            axios.post("/CoffeeOrderService/api/menu/getAllMeal",{})
+            .then(response=>{
+                if(response.data.success){
+                    this.meal=response.data.data;
+                    this.allMeal=this.meal;
+                }
+                else{
+                    this.$Message.error(response.data.msg);
+                }
+            })
+            .catch(error=>{
+                console.error(error.data)
+            })
+        },
+        getmealbysort()
+        {
+            axios.post("/CoffeeOrderService/api/menu/getMealBySort",{})
+            .then(response=>{
+                if(response.data.success){
+                    this.sortMeal=response.data.data
+                }
+            })
+            .catch(error=>{
+                console.error(error.data)
+            })
+        },
+        
+    }
     
 }
 </script>

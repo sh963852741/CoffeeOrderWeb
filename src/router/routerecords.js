@@ -62,8 +62,15 @@ const routes = [
     {
       path: '/usermenu/ordermenu',
       name: 'OrderMenu',
-      meta: {layout: "empty"},
+      meta: {layout: "user"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderMenu.vue')
+    },
+    //个人中心页面
+    {
+      path: '/profile/profile',
+      name: 'Profile',
+      meta: {layout: "empty"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/Profile/Profile.vue')
     },
 ]
 export default routes;

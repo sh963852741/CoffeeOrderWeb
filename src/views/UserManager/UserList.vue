@@ -72,11 +72,15 @@ export default {
     methods:{
         getUserlist() {
             axios.post("/CoffeeOrderService/api/usermanage/getUserList", {})
-            .then(response=>{
-               this.data = response.data;
-               this.userlist = this.data;
+            .then(response => {
+                if(response.data.success) {
+                    this.data = response.data.data;
+                    this.userlist = this.data;
+                } else {
+                    this.$Message.warning(response.data.msg || "未知错误");
+                }
             })
-            .catch(error=>{
+            .catch(error => {
                 if (error.response) {
                     if (error.response.status >= 400 && error.response.status < 600)
                         this.$Message.error(error.message);
@@ -96,11 +100,13 @@ export default {
         delUser(row) {
             axios.post("/CoffeeOrderService/api/usermanage/deleteUser", {userId: row.userId})
             .then(response => {
-               if(response.data.success) 
-               {
-                   this.$Message.success("删除成功");
-                   this.getUserlist;
-               }
+                if(response.data.success) 
+                {
+                    this.$Message.success("删除成功");
+                    this.getUserlist();
+                } else {
+                    this.$Message.warning(response.data.msg);
+                }
             })
             .catch(error => {
                 if (error.response) {
@@ -118,7 +124,9 @@ export default {
             .then(response => {
                 if(response.data.success) {
                     this.$Message.success("新建成功");
-                    this.getUserlist;
+                    this.getUserlist();
+                } else {
+                    this.$Message.warning(response.data.msg);
                 }
             })
             .catch(error => {
