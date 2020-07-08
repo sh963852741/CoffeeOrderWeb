@@ -97,7 +97,7 @@ export default {
             this.$router.go(-1);
         },
         getRolelist(){
-            axios.post("/CoffeeOrderService/api/usermanage/getRoleList",{})
+            axios.post("/CoffeeOrderService/api/usermanage/getRoleList", {})
             .then(response=>{
                 this.role=response.data.roles;
                 console.log(response.data);

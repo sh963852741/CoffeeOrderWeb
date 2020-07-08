@@ -103,7 +103,7 @@ export default {
                 if(response.data.success) 
                 {
                     this.$Message.success("删除成功");
-                    this.getUserlist;
+                    this.getUserlist();
                 } else {
                     this.$Message.warning(response.data.msg);
                 }

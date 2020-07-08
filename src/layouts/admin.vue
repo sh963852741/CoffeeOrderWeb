@@ -20,7 +20,7 @@
             </Header>
             <Layout>
                 <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
+                    <Menu active-name="2-1" theme="light" width="auto" :open-names="['2']">
                         <Submenu name="1">
                             <template slot="title">
                                 <Icon type="ios-navigate"></Icon>
