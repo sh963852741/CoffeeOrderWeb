@@ -98,7 +98,7 @@ export default {
         },
         getRolelist(){
             axios.post("/CoffeeOrderService/api/usermanage/getRoleList", {})
-            .then(response=>{
+            .then(response => {
                 this.role=response.data.roles;
                 console.log(response.data);
                 console.log(this.role)
