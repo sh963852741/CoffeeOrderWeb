@@ -1,6 +1,6 @@
 <template>
     <Layout :style="{minHeight: '50vh'}">
-        <Sider  hide-trigger collapsible width="auto" :collapsed-width="78" :style="{background: 'white'}">
+        <Sider  hide-trigger collapsible width="240" :collapsed-width="78" :style="{background: 'white'}">
             <Menu theme="light" active-name="0" :style="{minwidth:300}">
                  <MenuItem name="0" @click.native="toAllmeal">
                     <Icon type="ios-pizza" />
@@ -10,21 +10,19 @@
                     <Icon type="ios-pizza"  />
                            {{key}}
                 </MenuItem>
-                <!--MenuItem name="2">
-                    <Icon type="ios-pizza-outline" />
-                           小吃
-                </MenuItem>
-                <MenuItem name="3">
-                    <Icon type="ios-beer" />
-                           饮品
-                </MenuItem-->
             </Menu>
         </Sider>
         <Content >
+            <Row>
+                    <Breadcrumb :style="{margin: '24px 0px 24px 24px'}">
+                        <BreadcrumbItem>浏览菜单</BreadcrumbItem>
+                        <BreadcrumbItem>{{nowtitle.title}}</BreadcrumbItem>
+                    </Breadcrumb>
+            </Row>
             <Card>
                 <Row type="flex" :style="{margin:'20px 0px '}">
                     <i-col span="6" v-for="(item,index) in meal" v-bind:key="index">
-                        <Card style="width:320px">
+                        <Card style="width:300px">
                             <div style="text-align:center">
                                 <img src="@/assets/coffee-logo.png">
                                 <h3>{{item.mealName}}</h3>
@@ -34,8 +32,8 @@
                                 <i-col span="6" :style="{margin:'0 0 0 20'}">
                                     <b ><font color="green" size="3">{{item.price}}元</font></b>
                                 </i-col>
-                                <i-col span="4" offset="11">
-                                    <Button icon="ios-cart-outline" type="error">添加</Button>
+                                <i-col span="4" offset="10">
+                                    <Button icon="ios-cart-outline" type="error" @click="addShopCard(item.mealId,item.price)">添加</Button>
                                 </i-col>
                             </Row>
                         </Card>
@@ -54,19 +52,24 @@ export default {
         return{
             meal:[],
             allMeal:[],
-            sortMeal:{}
+            sortMeal:{},
+            nowtitle:{title:""},
+            userInfo:{}
         }
     },
     mounted(){
        this.getAllmeal();
+       this.nowtitle.title="全部";
        this.getmealbysort();
     },
     methods:{
         toAllmeal(){
             this.meal=this.allMeal;
+            this.nowtitle.title="全部";
         },
         toSpecialMeal(key){
             this.meal=this.sortMeal[key];
+            this.nowtitle.title=key;
         },
         getAllmeal()
         {
@@ -96,7 +99,21 @@ export default {
                 console.error(error.data)
             })
         },
-        
+        addShopCard(id,mprice)
+        {
+             axios.post("/CoffeeOrderService/api/shoppingcart/addShoppingCart",{mealId:id,price:mprice})
+             .then(response=>{
+                 if(response.data.success){
+                     this.$Message.success("添加成功");
+                     this.getAllShop();
+                 }else{
+                     this.$Message.error(response.data.msg)
+                 }
+             })
+             .catch(error=>{
+                 this.$Message.error(error.data.msg)
+             })
+        },
     }
     
 }
