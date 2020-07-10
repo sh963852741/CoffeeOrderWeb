@@ -8,7 +8,7 @@
                     </Row>
                 </template>
                 <Row>
-                    <Form :model="logInModel">
+                    <Form :model="logInModel" :rules="rules" ref="login">
                         <FormItem prop="userName" label="用户名">
                             <i-input v-model="logInModel.userName" placeholder="请输入您的用户名"></i-input>
                         </FormItem>
@@ -35,29 +35,39 @@
 </template>
 
 <script>
+import rules from "@/common/formRule.js"
 const axios = require("axios");
 export default {
     data() {
         return {
-            logInModel: {}
+            logInModel: {},
+            rules: rules.login
         };
     },
-    mounted() {},
+    mounted() {
+        
+    },
     methods: {
         logIn() {
-            axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
-            .then(response => {
-                if(response.data.success){
-                    this.$Message.success("登录成功");
-                    setTimeout(()=>{
-                        this.$router.push({name: "UserList"});
-                    }, 1500);
+            this.$refs["login"].validate((valid) => {
+                if (valid) {
+                    axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
+                    .then(response => {
+                        if(response.data.success){
+                            this.$Message.success("登录成功");
+                            setTimeout(()=>{
+                                this.$router.push({name: "UserList"});
+                            }, 1500);
+                        } else {
+                            this.$Message.error(response.data.msg);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
                 } else {
-                    this.$Message.error(response.data.msg);
+                    console.log(valid)
                 }
-            })
-            .catch(error => {
-                console.log(error);
             });
         }
     }
