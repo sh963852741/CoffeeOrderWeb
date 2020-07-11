@@ -9,7 +9,7 @@ let rules = {
     },
     regist: {
         userName: [
-            {required: true,type: 'string', min: 4, message: "用户名不得少于4字符", trigger: "blur"}
+            {required: true,type: 'string', min: 2, message: "用户名不得少于2字符", trigger: "blur"}
         ],
         password: [
             {required: true, type: 'string', min: 6, message: "密码长度不得少于6字符", trigger: "blur"}
