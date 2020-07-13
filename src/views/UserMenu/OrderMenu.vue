@@ -4,20 +4,20 @@
             <Menu theme="light" active-name="0" :style="{minwidth:300}">
                  <MenuItem name="0" @click.native="toAllmeal">
                     <Icon type="ios-pizza" />
-                           全部
+                        全部
                 </MenuItem>
                 <MenuItem v-for="(value,key) in sortMeal" :key="key" :name="key" @click.native="toSpecialMeal(key)">
                     <Icon type="ios-pizza"  />
-                           {{key}}
+                        {{key}}
                 </MenuItem>
             </Menu>
         </Sider>
-        <Content >
+        <Content>
             <Row>
-                    <Breadcrumb :style="{margin: '24px 0px 24px 24px'}">
-                        <BreadcrumbItem>浏览菜单</BreadcrumbItem>
-                        <BreadcrumbItem>{{nowtitle.title}}</BreadcrumbItem>
-                    </Breadcrumb>
+                <Breadcrumb :style="{margin: '24px 0px 24px 24px'}">
+                    <BreadcrumbItem>浏览菜单</BreadcrumbItem>
+                    <BreadcrumbItem>{{nowtitle.title}}</BreadcrumbItem>
+                </Breadcrumb>
             </Row>
             <Card>
                 <Row type="flex" :style="{margin:'20px 0px '}">

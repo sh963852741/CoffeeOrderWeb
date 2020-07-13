@@ -39,19 +39,27 @@
             <Form :model="mealInfo" label-position="left" :label-width="80">
                 <FormItem label="餐点名">
                     <i-input v-model="mealInfo.mealName"></i-input>
-                </FormItem >
+                </FormItem>
                 <FormItem label="餐点类别">
                     <i-input v-model="mealInfo.type" ></i-input>
-                </FormItem >
+                </FormItem>
                 <FormItem label="餐点单价">
                     <i-input v-model="mealInfo.price" :number="true"></i-input>
-                </FormItem >
+                </FormItem>
                 <FormItem label="餐点库存">
                     <i-input v-model="mealInfo.amount" :number="true"></i-input>
-                </FormItem >
+                </FormItem>
                 <FormItem label="餐点详情">
                     <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
                 </FormItem>
+                <Upload action="/CoffeeOrderService/api/menu/uploadImg" :format="['jpg','jpeg','png']" :before-upload="beforeUpload">
+                    <Button icon="ios-cloud-upload-outline">上传图片</Button>
+                </Upload>
+                <div v-if="file.name">
+                    <Tooltip content="单击下方新建按钮，图片将自动上传">
+                        <Row>Upload file: {{ file.name }}</Row>
+                    </Tooltip>
+                </div>
             </Form>
         </Modal>
     </Row>
@@ -136,7 +144,8 @@ export default {
             menuName:"",
             data:[],
             mealInfo:{},
-            modal: false
+            modal: false,
+            file: {}
         }
     },
     mounted(){
@@ -183,11 +192,12 @@ export default {
             });
         },
         asyncSubmit(){
-             axios.post("/CoffeeOrderService/api/menu/addMeal",{...this.mealInfo})
+            axios.post("/CoffeeOrderService/api/menu/addMeal", {...this.mealInfo})
             .then(response=>{
                 if(response.data.success){
-                    this.$Message.success("新建成功");
+                    let loadingCloser = this.$Message.loading("菜品新建成功，正在上传图片");
                     this.getMenuDetail();
+                    this.upload(response.data.mealId, loadingCloser);
                 }
             })
             .catch(error=>{
@@ -203,6 +213,36 @@ export default {
             .finally(() => {
                 this.modal = false;
             });
+        },
+        beforeUpload(file) {
+            this.file = file;
+            return false;
+        },
+        upload(mealId, loadingCloser) {
+            // eslint-disable-next-line
+            debugger
+            let formData = new FormData();
+            formData.append('file', this.file);
+            formData.append('mealId', mealId);
+            axios.post("/CoffeeOrderService/api/menu/uploadImg", formData, {headers: {"Content-Type": "multipart/form-data"}})
+            .then(response=>{
+                if(response.data.success){
+                    this.$Message.success("保存成功");
+                }
+            })
+            .catch(error=>{
+                if(error.response){
+                    if(error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else
+                        this.$Message.warning(error.message);
+                } else {
+                    this.$Message.error("无法发送请求");
+                }
+            })
+            .finally(() => {
+                loadingCloser();
+            })
         }
     }
 }
