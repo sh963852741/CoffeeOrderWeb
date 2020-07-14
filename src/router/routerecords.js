@@ -72,6 +72,12 @@ const routes = [
       meta: {layout: "empty"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/Profile/Profile.vue')
     },
+    //前台用户购物车页面
+    {
+      path: '/usermenu/shoppingcart',
+      name: 'ShoppingCart',
+      meta: {layout: "user"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/ShoppingCart.vue')
     //历史订单列表页
     {
         path: '/usermenu/orderlist',
