@@ -33,7 +33,7 @@
                                     <b ><font color="green" size="3">{{item.price}}元</font></b>
                                 </i-col>
                                 <i-col span="4" offset="10">
-                                    <Button icon="ios-cart-outline" type="error" @click="addShopCard(item.mealId,item.price)">添加</Button>
+                                    <Button icon="ios-cart-outline" type="error" @click="addShopCard(item.mealId,item.mealName,item.price)">添加</Button>
                                 </i-col>
                             </Row>
                         </Card>
@@ -99,13 +99,12 @@ export default {
                 console.error(error.data)
             })
         },
-        addShopCard(id,mprice)
+        addShopCard(id,name,mprice)
         {
-             axios.post("/CoffeeOrderService/api/shoppingcart/addShoppingCart",{mealId:id,price:mprice})
+             axios.post("/CoffeeOrderService/api/shoppingcart/addShoppingCart",{mealId:id,mealName:name,price:mprice})
              .then(response=>{
                  if(response.data.success){
                      this.$Message.success("添加成功");
-                     this.getAllShop();
                  }else{
                      this.$Message.error(response.data.msg)
                  }
