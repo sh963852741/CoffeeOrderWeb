@@ -1,34 +1,29 @@
 <template>
-    <Row class="layout">
-        <Row :style="{background:'#fff',height:'100px',padding:'0 0 0 50px'}">
-            <div class="demo-avatar">
+    <Card>
+        <Row>
             <Avatar icon="ios-person" size="70" />
             <span class="large-label">{{this.menuName}}</span>
-            </div>
         </Row>
-        <Row :style="{padding: '0 50px',background:'#fff'}">
+        <Row style="margin-top: 16px">
             <Tabs value="name1">
                 <TabPane label="餐点列表" name="name1">
-                    <Row type="flex" justify="center">
-                        <i-col span="8" >
-                            <span class="large-label" style="font-size:20px;">现有餐点</span>
-                        </i-col>
-                        <i-col span="5"></i-col>
-                        <i-col span="3" style="padding:10px 0;">
+                    <Row type="flex" :gutter="16">
+                        <i-col>
                             <Button type="primary" @click="modal = true">新建餐点</Button>
                         </i-col>
-                        <i-col span="8" style="padding:10px 0;">
+                        <i-col>
                             <Input search enter-button placeholder="请输入餐点名" @on-search="searchMeal"/>
                         </i-col>
                     </Row>
-                <Row>
-                <i-table border :columns="mealListHeader" :data="menuDetail">
-                    <template slot-scope="{ row }" slot="action">
-                        <Button type="primary" style="margin-right:15px;"  @click="toMealDetail(row)">详情</Button>
-                        <Button type="error" @click="deleteMeal(row)">删除</Button>
-                    </template>
-                </i-table>
-                </Row>
+                    <Divider />
+                    <Row>
+                    <i-table border :columns="mealListHeader" :data="menuDetail">
+                        <template slot-scope="{ row }" slot="action">
+                            <Button type="primary" style="margin-right:15px;"  @click="toMealDetail(row)">详情</Button>
+                            <Button type="error" @click="deleteMeal(row)">删除</Button>
+                        </template>
+                    </i-table>
+                    </Row>
                 </TabPane>
                 <TabPane label="满意度分析" name="name2">
                     标签三的内容
@@ -62,7 +57,7 @@
                 </div>
             </Form>
         </Modal>
-    </Row>
+    </Card>
 </template>
 
 <script>

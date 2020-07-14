@@ -1,50 +1,45 @@
 <template>
-    <div>
-        <div class="header">
-            餐点信息
-        </div>
-        <div :style="{margin:'20px 0px'}">
-            <Button class="button" @click="backward">
-                <Icon type="ios-arrow-back" />
-                返回
+    <Card title="餐点信息">
+        <Row type="flex" align="middle">
+            <Button @click="backward">
+                <Icon type="ios-arrow-back" />返回
             </Button>
-            <Button type="primary" class="button" @click="saveMealInfo">
-                <Icon type="md-copy" />
-                保存
+            <Divider type="vertical" />
+            <Button type="primary" @click="saveMealInfo">
+                <Icon type="md-copy" />保存
             </Button>
-        </div>
-        <Row type="flex">
-            <i-col span='7'></i-col>
-            <i-col span='10'>
-            <Form :model="mealInfo" label-position="left" :label-width="80">
-                <FormItem label="餐点名称">
-                    <Input v-model="mealInfo.mealName" placeholder="餐点名称"/>
-                </FormItem>   
-                <FormItem label="餐点类别">
-                    <Input v-model="mealInfo.type" placeholder="餐点类别"/>
-                </FormItem>
-                <FormItem label="餐点库存">
-                    <Input v-model="mealInfo.amount" placeholder="餐点库存" :number="true"/>
-                </FormItem>
-                <FormItem label="餐点价格">
-                    <Input v-model="mealInfo.price" placeholder="餐点价格" :number="true"/>
-                </FormItem>
-                <FormItem label="餐点详情">
-                    <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
-                </FormItem>
-                <FormItem>
-                    <img :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片"/>
-                </FormItem>
-                <FormItem>
-                    <Button type="primary" style="float:right;margin:0px 0px 30px 0px;" @click="saveMealInfo">
-                        <Icon type="md-copy" />保存
-                    </Button>
-                </FormItem>
-            </Form>
-            </i-col>
-        <i-col span="7"></i-col>
         </Row>
-    </div>
+        <Divider/>
+        <Row type="flex" justify="center">
+            <i-col span='12'>
+                <Form :model="mealInfo" label-position="left" :label-width="80">
+                    <FormItem label="餐点名称">
+                        <Input v-model="mealInfo.mealName" placeholder="餐点名称"/>
+                    </FormItem>   
+                    <FormItem label="餐点类别">
+                        <Input v-model="mealInfo.type" placeholder="餐点类别"/>
+                    </FormItem>
+                    <FormItem label="餐点库存">
+                        <Input v-model="mealInfo.amount" placeholder="餐点库存" :number="true"/>
+                    </FormItem>
+                    <FormItem label="餐点价格">
+                        <Input v-model="mealInfo.price" placeholder="餐点价格" :number="true"/>
+                    </FormItem>
+                    <FormItem label="餐点详情">
+                        <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
+                    </FormItem>
+                    <FormItem label="图片">
+                        <img width="100%" :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片"/>
+                    </FormItem>
+                    <FormItem>
+                        <Button type="primary" style="float:right;margin:0px 0px 30px 0px;" @click="saveMealInfo">
+                            <Icon type="md-copy" />保存
+                        </Button>
+                    </FormItem>
+                </Form>
+            </i-col>
+        </Row>
+    </Card>
 </template>
 
 <script>
@@ -115,16 +110,4 @@ export default {
 </script>
 
 <style scoped>
-.header{
-    height:50px;
-    border-bottom: 1px solid #d7dde4;
-    background: white ;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    font-size: 25px;
-}
-.button{
-    margin:0px 20px 0px 0px;
-}
 </style>
