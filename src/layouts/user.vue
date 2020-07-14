@@ -73,12 +73,7 @@
                 </div>
             </Footer>
         </Layout>
-
-
-
-
     </div>
-    
 </template>
 
 
