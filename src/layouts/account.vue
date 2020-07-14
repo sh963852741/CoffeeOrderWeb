@@ -41,7 +41,29 @@
                     </div>
                 </Menu>
             </Header>
-                <slot></slot>
+                <Layout :style="{padding: '0 50px',background:'#fff'}" >
+                    <Content :style="{margin:'10px 0', minHeight: '280px', background: '#fff'}">
+                    <Layout>
+                        <Sider hide-trigger :style="{background: '#fff',margin:'0 0 0px 0px'}" >
+                            <div style="font-size:20px;margin:10px 0px;"> 
+                                <Icon type="md-person" size="24"/>
+                                我的账户
+                            </div>
+                                
+                                     <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" >
+                                    <MenuItem name="1">追踪订单</MenuItem>
+                                    <MenuItem name="2">订单记录</MenuItem>
+                                    <MenuItem name="3">地址簿</MenuItem>
+                                    <MenuItem name="4">账户信息</MenuItem>
+                                    <MenuItem name="5">修改密码</MenuItem>
+                                    </Menu>
+                           
+                           
+                        </Sider>
+                        <slot></slot>
+                    </Layout>
+                </Content>
+                </Layout>
             <Footer class="layout-footer-center">
                 <Row type="flex" justify="space-between" style="background: rgb(160,115,50);color:white;">
                     <i-col span="6">

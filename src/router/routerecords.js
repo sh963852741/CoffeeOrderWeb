@@ -3,7 +3,7 @@ const routes = [
     {
       path: '/',
       name: 'Home',
-      layout: "empty",
+      meta: {layout: "user"},
       component: () => import(/* webpackChunkName: "index" */ '@/views/Home.vue')
     },
     //登录页
@@ -71,6 +71,13 @@ const routes = [
       name: 'Profile',
       meta: {layout: "empty"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/Profile/Profile.vue')
+    },
+    //历史订单列表页
+    {
+        path: '/usermenu/orderlist',
+        name: 'OrderList',
+        meta: {layout: "account"},
+        component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderList.vue')
     },
 ]
 export default routes;
