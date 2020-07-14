@@ -1,35 +1,30 @@
 <template>
+    <Content>
     <Layout :style="{minHeight: '50vh'}">
         <Sider  hide-trigger collapsible width="240" :collapsed-width="78" :style="{background: 'white'}">
             <Menu theme="light" active-name="0" :style="{minwidth:300}">
                  <MenuItem name="0" @click.native="toAllmeal">
                     <Icon type="ios-pizza" />
-                           全部
+                        全部
                 </MenuItem>
                 <MenuItem v-for="(value,key) in sortMeal" :key="key" :name="key" @click.native="toSpecialMeal(key)">
                     <Icon type="ios-pizza"  />
-                           {{key}}
+                        {{key}}
                 </MenuItem>
             </Menu>
         </Sider>
         <Content >
-            <Row>
-                    <Breadcrumb :style="{margin: '24px 0px 24px 24px'}">
-                        <BreadcrumbItem>浏览菜单</BreadcrumbItem>
-                        <BreadcrumbItem>{{nowtitle.title}}</BreadcrumbItem>
-                    </Breadcrumb>
-            </Row>
-            <Card>
-                <Row type="flex" :style="{margin:'20px 0px '}">
-                    <i-col span="6" v-for="(item,index) in meal" v-bind:key="index">
-                        <Card style="width:300px">
+            <Card :bordered="false">
+                <Row type="flex" :style="{margin:'20px 0px '}" >
+                    <i-col span="6" v-for="(item,index) in meal" v-bind:key="index"  style="margin-bottom:20px;">
+                        <Card style="width:220px" >
                             <div style="text-align:center">
                                 <img src="@/assets/coffee-logo.png">
                                 <h3>{{item.mealName}}</h3>
                             </div>
                             <Divider></Divider>
-                            <Row type="flex" :gutter="16">
-                                <i-col span="6" :style="{margin:'0 0 0 20'}">
+                            <Row type="flex">
+                                <i-col span="8">
                                     <b ><font color="green" size="3">{{item.price}}元</font></b>
                                 </i-col>
                                 <i-col span="4" offset="10">
@@ -42,6 +37,7 @@
             </Card>       
         </Content>
     </Layout>
+    </Content>
 </template>
 
 

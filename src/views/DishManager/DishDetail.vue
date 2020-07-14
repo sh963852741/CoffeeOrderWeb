@@ -32,10 +32,14 @@
                 <FormItem label="餐点详情">
                     <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
                 </FormItem>
-                <Button type="primary" style="float:right;margin:0px 0px 30px 0px;" @click="saveMealInfo">
-                <Icon type="md-copy" />
-                保存
-            </Button>
+                <FormItem>
+                    <img :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片"/>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary" style="float:right;margin:0px 0px 30px 0px;" @click="saveMealInfo">
+                        <Icon type="md-copy" />保存
+                    </Button>
+                </FormItem>
             </Form>
             </i-col>
         <i-col span="7"></i-col>
@@ -58,7 +62,7 @@ export default {
         }
     },
     created(){
-        this.mealInfo.mealId=this.$route.query.mealId;
+        this.mealInfo.mealId = this.$route.query.mealId;
     },
     mounted(){
         this.getMealDetail();

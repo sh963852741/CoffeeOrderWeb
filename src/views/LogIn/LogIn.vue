@@ -37,6 +37,7 @@
 <script>
 import rules from "@/common/formRule.js"
 const axios = require("axios");
+const sha1 = require('sha1');
 export default {
     data() {
         return {
@@ -51,7 +52,7 @@ export default {
         logIn() {
             this.$refs["login"].validate((valid) => {
                 if (valid) {
-                    axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
+                    axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: sha1(this.logInModel.password)})
                     .then(response => {
                         if(response.data.success){
                             this.$Message.success("登录成功");

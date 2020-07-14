@@ -38,6 +38,7 @@
 <script>
 import rules from "@/common/formRule.js"
 const axios = require("axios");
+const sha1 = require('sha1');
 export default {
     data() {
         const validatePassCheck = (rule, value, callback) => {
@@ -64,7 +65,7 @@ export default {
         regist() {
             this.$refs["regist"].validate((valid) => {
                 if (valid) {
-                    axios.post("/CoffeeOrderService/api/usermanage/regist", {...this.registModel})
+                    axios.post("/CoffeeOrderService/api/usermanage/regist", {...this.registModel, password: sha1(this.registModel.password)})
                     .then(response => {
                         if(response.data.success){
                             this.$Message.success("注册成功，跳转至登录页面. . .");
