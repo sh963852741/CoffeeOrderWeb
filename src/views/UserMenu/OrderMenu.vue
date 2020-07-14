@@ -15,9 +15,9 @@
             </Affix>
         </Sider>
         <Content>
-            <Row type="flex" justify="space-around">
-                <i-col span="5" style="margin-bottom: 24px" v-for="(item,index) in meal" v-bind:key="index">
-                    <Card>
+            <Row type="flex" style="margin: 0 24px">
+                <i-col span="6" style="margin-bottom: 24px" v-for="(item,index) in meal" v-bind:key="index">
+                    <Card style="width: 80%">
                         <div style="text-align:center">
                             <img src="@/assets/coffee-logo.png">
                             <h3>{{item.mealName}}</h3>
