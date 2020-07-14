@@ -48,7 +48,7 @@
                     </Menu>
                 </Sider>
                 <Layout :style="{padding: '24px'}">
-                    <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+                    <Content :style="{padding: '0px', minHeight: '0px', background: '#fff'}">
                         <slot></slot>
                     </Content>
                     <Footer class="layout-footer-center">2020 &copy; 精神小伙点餐吧</Footer>

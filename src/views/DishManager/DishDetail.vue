@@ -1,18 +1,14 @@
 <template>
-    <div>
-        <div class="header">
-            餐点信息
-        </div>
-        <div :style="{margin:'20px 0px'}">
-            <Button class="button" @click="backward">
-                <Icon type="ios-arrow-back" />
-                返回
+    <Card title="餐点信息">
+        <Row type="flex" align="middle">
+            <Button @click="backward">
+                <Icon type="ios-arrow-back" />返回
             </Button>
-            <Button type="primary" class="button" @click="saveMealInfo">
-                <Icon type="md-copy" />
-                保存
+            <Divider type="vertical" />
+            <Button type="primary" @click="saveMealInfo">
+                <Icon type="md-copy" />保存
             </Button>
-        </div>
+        </Row>
         <Row type="flex">
             <i-col span='7'></i-col>
             <i-col span='10'>
@@ -45,9 +41,8 @@
                 </FormItem>
             </Form>
             </i-col>
-        <i-col span="7"></i-col>
         </Row>
-    </div>
+    </Card>
 </template>
 
 <script>
@@ -124,16 +119,4 @@ export default {
 </script>
 
 <style scoped>
-.header{
-    height:50px;
-    border-bottom: 1px solid #d7dde4;
-    background: white ;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    font-size: 25px;
-}
-.button{
-    margin:0px 20px 0px 0px;
-}
 </style>
