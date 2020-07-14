@@ -38,7 +38,8 @@
 </template>
 
 <script>
-const axios=require("axios");
+const axios = require("axios");
+const sha1 = require('sha1');
 export default {
     data(){
         return {
@@ -65,11 +66,11 @@ export default {
         },
         saveUserInfo() {
             axios.post("/CoffeeOrderService/api/usermanage/setUserInfo", {userId: this.userInfo.userId,
-                 userName:this.userInfo.userName,
-                 telephone:this.userInfo.telephone,
-                 email:this.userInfo.email,
-                 password:this.userInfo.password,
-                 roles:this.userInfo.role
+                 userName: this.userInfo.userName,
+                 telephone: this.userInfo.telephone,
+                 email: this.userInfo.email,
+                 password: sha1(this.userInfo.password),
+                 roles: this.userInfo.role
              })
             .then(response => {
                 if(response.data.success){
@@ -97,8 +98,8 @@ export default {
             this.$router.go(-1);
         },
         getRolelist(){
-            axios.post("/CoffeeOrderService/api/usermanage/getRoleList",{})
-            .then(response=>{
+            axios.post("/CoffeeOrderService/api/usermanage/getRoleList", {})
+            .then(response => {
                 this.role=response.data.roles;
                 console.log(response.data);
                 console.log(this.role)

@@ -45,7 +45,7 @@
             <Footer class="layout-footer-center">
                 <Row type="flex" justify="space-between" style="background: rgb(160,115,50);color:white;">
                     <i-col span="6">
-                        <List  :split="false" :size="small">
+                        <List  :split="false" size="small">
                             <ListItem>
                                 <h3>浏览菜单</h3>
                             </ListItem>
@@ -55,7 +55,7 @@
                         </List>
                     </i-col>
                     <i-col span="6">
-                        <List :split="false" :size="small">
+                        <List :split="false" size="small">
                             <ListItem>
                                 <h3>帮助</h3>
                             </ListItem>
@@ -73,12 +73,7 @@
                 </div>
             </Footer>
         </Layout>
-
-
-
-
     </div>
-    
 </template>
 
 
