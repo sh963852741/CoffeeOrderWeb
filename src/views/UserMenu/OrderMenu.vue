@@ -1,4 +1,5 @@
 <template>
+    <Content>
     <Layout :style="{minHeight: '50vh'}">
         <Sider  hide-trigger collapsible width="240" :collapsed-width="78" :style="{background: 'white'}">
             <Menu theme="light" active-name="0" :style="{minwidth:300}">
@@ -12,28 +13,23 @@
                 </MenuItem>
             </Menu>
         </Sider>
-        <Content>
-            <Row>
-                <Breadcrumb :style="{margin: '24px 0px 24px 24px'}">
-                    <BreadcrumbItem>浏览菜单</BreadcrumbItem>
-                    <BreadcrumbItem>{{nowtitle.title}}</BreadcrumbItem>
-                </Breadcrumb>
-            </Row>
-            <Card>
-                <Row type="flex" :style="{margin:'20px 0px '}">
-                    <i-col span="6" v-for="(item,index) in meal" v-bind:key="index">
-                        <Card style="width:300px">
+        <Content >
+            <Card :bordered="false">
+                <Row type="flex" :style="{margin:'20px 0px '}" >
+                    <i-col span="6" v-for="(item,index) in meal" v-bind:key="index"  style="margin-bottom:20px;">
+                        <Card style="width:220px" >
                             <div style="text-align:center">
                                 <img src="@/assets/coffee-logo.png">
                                 <h3>{{item.mealName}}</h3>
                             </div>
                             <Divider></Divider>
-                            <Row type="flex" :gutter="16">
-                                <i-col span="6" :style="{margin:'0 0 0 20'}">
+                            <Row type="flex">
+                                <i-col span="8">
                                     <b ><font color="green" size="3">{{item.price}}元</font></b>
                                 </i-col>
-                                <i-col span="4" offset="10">
-                                    <Button icon="ios-cart-outline" type="error" @click="addShopCard(item.mealId,item.price)">添加</Button>
+                                <i-col span="8"></i-col>
+                                <i-col span="8" >
+                                    <Button icon="ios-cart-outline" type="error" size="small">添加</Button>
                                 </i-col>
                             </Row>
                         </Card>
@@ -42,6 +38,7 @@
             </Card>       
         </Content>
     </Layout>
+    </Content>
 </template>
 
 

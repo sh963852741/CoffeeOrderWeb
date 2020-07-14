@@ -1,4 +1,4 @@
-<template>
+<!--template>
     <Row type="flex" justify="center">
         <i-col span="6">
             <Card title="页面跳转" icon="ios-options" :padding="0">
@@ -25,10 +25,10 @@ export default {
         }
     }
 };
-</script>
+</script-->
 
 
-<!--template>
+<template>
             <Content :style="{padding: '0px 50px',background:'#fff',position:'relative'}">
                 <div style="margin:16px 0px;">
                     <Carousel loop autoplay :autoplay-speed="3500" :radius-dot="true" arrow="never" style="border-radius: 3px;">
@@ -43,7 +43,7 @@ export default {
                         </CarouselItem>
                     </Carousel>
                     <Card style="width: 285px;position:absolute;top:80px;right:90px;z-index:50;background-color: rgba(255, 255, 255, 0.8);" :bordered="false">
-                        <List :split="false">
+                        <List :split="false" v-model="logInModel">
                             <Row type="flex" justify="center">
                                 <i-col span="7"></i-col>
                                 <i-col span="10" >
@@ -53,16 +53,16 @@ export default {
                                 <i-col span="7"></i-col>
                             </Row>
                             <ListItem>
-                                <Input prefix="md-person" placeholder="手机号/账号" clearable size="large"/>
+                                <Input prefix="md-person" placeholder="手机号/账号" clearable size="large" v-model="logInModel.userName"/>
                             </ListItem>
                             <ListItem :style="{padding:'8px 0px'}">
-                                <Input  prefix="ios-lock" placeholder="密码" type="password" size="large"/>
+                                <Input  prefix="ios-lock" placeholder="密码" type="password" size="large" v-model="logInModel.password" password/>
                             </ListItem>
                             <ListItem :style="{padding:'0px'}">
                                 <Checkbox :value="false" size="small">下次自动登录</Checkbox>
                             </ListItem>
                             <ListItem>
-                                <Button type="primary" long size="large">登录</Button>
+                                <Button type="primary" long size="large" @click="logIn">登录</Button>
                             </ListItem>
                             <Row type="flex" justify="center" >
                                 <i-col span="6" >
@@ -115,14 +115,33 @@ export default {
 
 
 <script>
+const axios = require("axios");
     export default {
         data () {
             return {
+                logInModel: {}
             }
         },
-        methods:{
+        mounted() {},
+        methods: {
+            logIn() {
+                axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: this.logInModel.password})
+                .then(response => {
+                    if(response.data.success){
+                        this.$Message.success("登录成功");
+                        setTimeout(()=>{
+                            this.$router.push({name: "OrderMenu"});
+                        }, 1500);
+                    } else {
+                        this.$Message.error(response.data.msg);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            }
         }
-    }
+}
 </script>
 
 <style scoped>
@@ -170,4 +189,4 @@ export default {
     width:230px;
     height:150px;
 }
-</style-->
+</style>
