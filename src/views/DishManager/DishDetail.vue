@@ -9,34 +9,37 @@
                 <Icon type="md-copy" />保存
             </Button>
         </Row>
-        <Divider/>
-        <Row type="flex" justify="center">
-            <i-col span='12'>
-                <Form :model="mealInfo" label-position="left" :label-width="80">
-                    <FormItem label="餐点名称">
-                        <Input v-model="mealInfo.mealName" placeholder="餐点名称"/>
-                    </FormItem>   
-                    <FormItem label="餐点类别">
-                        <Input v-model="mealInfo.type" placeholder="餐点类别"/>
-                    </FormItem>
-                    <FormItem label="餐点库存">
-                        <Input v-model="mealInfo.amount" placeholder="餐点库存" :number="true"/>
-                    </FormItem>
-                    <FormItem label="餐点价格">
-                        <Input v-model="mealInfo.price" placeholder="餐点价格" :number="true"/>
-                    </FormItem>
-                    <FormItem label="餐点详情">
-                        <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
-                    </FormItem>
-                    <FormItem label="图片">
-                        <img width="100%" :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片"/>
-                    </FormItem>
-                    <FormItem>
-                        <Button type="primary" style="float:right;margin:0px 0px 30px 0px;" @click="saveMealInfo">
-                            <Icon type="md-copy" />保存
-                        </Button>
-                    </FormItem>
-                </Form>
+        <Row type="flex">
+            <i-col span='7'></i-col>
+            <i-col span='10'>
+            <Form :model="mealInfo" label-position="left" :label-width="80">
+                <FormItem label="餐点名称">
+                    <Input v-model="mealInfo.mealName" placeholder="餐点名称"/>
+                </FormItem>   
+                <FormItem label="餐点类别">
+                    <Input v-model="mealInfo.type" placeholder="餐点类别"/>
+                </FormItem>
+                <FormItem label="餐点库存">
+                    <Input v-model="mealInfo.amount" placeholder="餐点库存" :number="true"/>
+                </FormItem>
+                <FormItem label="餐点价格">
+                    <Input v-model="mealInfo.price" placeholder="餐点价格" :number="true"/>
+                </FormItem>
+                <FormItem label="餐点详情">
+                    <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
+                </FormItem>
+                <FormItem>
+                    <img :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片" style="width:200px;height:200px"/>
+                </FormItem>
+                <FormItem>
+                    <Upload :action="`/CoffeeOrderService/api/menu/uploadImg?mealId=${mealInfo.mealId}`" :format="['jpg','jpeg','png']" :on-success="getImg">
+                        <Button icon="ios-cloud-upload-outline">上传图片</Button>
+                    </Upload>
+                    <Button type="primary" style="float:right;margin:0px 0px 30px 0px;" @click="saveMealInfo">
+                        <Icon type="md-copy" />保存
+                    </Button>
+                </FormItem>
+            </Form>
             </i-col>
         </Row>
     </Card>
@@ -52,6 +55,7 @@ export default {
                 mealNumber:'',
                 category: '',
                 mealDetail:'',
+                url: ''
             },
             mealInfo:{},
         }
@@ -63,6 +67,10 @@ export default {
         this.getMealDetail();
         },
     methods:{
+        getImg(){
+            this.$Message.success("上传成功");
+            window.location.reload();
+        },
         getMealDetail(){
             axios.post("/CoffeeOrderService/api/menu/getMeal", {mealId: this.mealInfo.mealId})
             .then(response=>{
@@ -82,7 +90,8 @@ export default {
             amount:this.mealInfo.amount,
             menuId:this.mealInfo.menuId,
             type:this.mealInfo.type,
-            mealDetail:this.mealInfo.mealDetail})
+            mealDetail:this.mealInfo.mealDetail,
+            })
             .then(response => {
                 if(response.data.success){
                     this.$Message.success("保存成功");
