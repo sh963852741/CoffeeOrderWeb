@@ -20,14 +20,14 @@
             </Header>
             <Layout>
                 <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="2-1" theme="light" width="auto" :open-names="['2']">
+                    <Menu :active-name="activeMenu" theme="light" width="auto" :open-names="['1','2','3']">
                         <Submenu name="1">
                             <template slot="title">
                                 <Icon type="ios-navigate"></Icon>
                                 菜单与菜品管理
                             </template>
-                            <MenuItem name="1-1" :to="{name: 'MenuList'}">菜单管理</MenuItem>
-                            <MenuItem name="1-2">菜品管理</MenuItem>
+                            <MenuItem name="MenuList" :to="{name: 'MenuList'}">菜单管理</MenuItem>
+                            <MenuItem name="MenuDetail" :to="{name: 'MenuDetail'}">菜品管理</MenuItem>
                             <MenuItem name="1-3">菜品分析</MenuItem>
                         </Submenu>
                         <Submenu name="2">
@@ -35,7 +35,7 @@
                                 <Icon type="ios-keypad"></Icon>
                                 用户管理
                             </template>
-                            <MenuItem name="2-1" :to="{name: 'UserList'}">用户列表</MenuItem>
+                            <MenuItem name="UserList" :to="{name: 'UserList'}">用户列表</MenuItem>
                             <MenuItem name="2-2">角色管理</MenuItem>
                         </Submenu>
                         <Submenu name="3">
@@ -69,7 +69,9 @@
     const axios = require("axios");
     export default {
         data() {
-            return {}
+            return {
+                activeMenu: this.$route.name
+            }
         },
         methods: {
             logout() {
@@ -94,6 +96,11 @@
                         this.$Message.error("无法发送请求");
                     }
                 });
+            }
+        },
+        watch: {
+            $route(to) {
+                this.activeMenu = to.name;
             }
         }
     }

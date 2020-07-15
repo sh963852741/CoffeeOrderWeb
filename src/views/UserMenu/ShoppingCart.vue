@@ -1,16 +1,11 @@
 <template>
-    <Row type="flex" justify="center">
+    <Row type="flex" justify="center" style="margin-top: 50px">
         <i-col span="20">
             <Card title="我的购物车">
-                <Row type="flex" :gutter="16" justify="end">
-                    <i-col></i-col>
-                    <i-col></i-col>
-                </Row>
-                <Divider/>
                 <Row>
-                    <Table  stripe ref="myCart" :columns="columns" :data="mealList"  @on-selection-change="selectChange">
+                    <Table stripe ref="myCart" :columns="columns" :data="mealList"  @on-selection-change="selectChange">
                         <template v-slot:mealId="props">
-                            <strong>{{props.row.mealId}}</strong>
+                            <strong>{{props.row.mealName}}</strong>
                         </template>
                         <template slot-scope="{index}" slot="quality">
                             <i-button
@@ -37,7 +32,7 @@
                     </Table>
                 </Row>
                 <Divider />
-                <Card>
+                <Card dis-hover>
                     <Row type="flex" :gutter="50" justify="end" align="middle">
                         <i-col >已选 {{getSelectCounts}} 件</i-col>
                         <i-col>共计 {{getSelectPrice}} 元</i-col>
@@ -93,7 +88,7 @@ export default {
             mealList: [],
             selectCounts:0,
             selectPrice:0,
-            selectmeal:[]
+            selectmeal:[],
         };
     },
     mounted() {
@@ -116,11 +111,7 @@ export default {
     },
     methods: {
         getAllShop() {
-            axios
-                .post(
-                    "/CoffeeOrderService/api/shoppingcart/getShoppingCart",
-                    {}
-                )
+            axios.post("/CoffeeOrderService/api/shoppingcart/getShoppingCart", {})
                 .then(response => {
                     if (response.data.success) {
                         this.mealList = response.data.data;
@@ -156,8 +147,7 @@ export default {
                 return;
             }
             this.mealList[index].quality--;
-            axios
-                .post("/CoffeeOrderService/api/shoppingcart/decShoppingCart", {
+            axios.post("/CoffeeOrderService/api/shoppingcart/decShoppingCart", {
                     mealId: this.mealList[index].mealId
                 })
                 .then(response => {
@@ -187,20 +177,15 @@ export default {
             })
             .catch(error=>{
                 this.$Message.error(error.data.msg);
-            })
-
+            });
         },
         selectChange(selection){
             this.selectmeal=selection;
             console.log(selection);
         }
-
-
     }
 };
 </script>
-
-
 
 <style>
 </style>
