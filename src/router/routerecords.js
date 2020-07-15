@@ -79,5 +79,12 @@ const routes = [
         meta: {layout: "account"},
         component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderList.vue')
     },
+    //订单明细页
+    {
+        path: '/usermenu/orderdetail',
+        name: 'OrderDetail',
+        meta: {layout: "account"},
+        component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderDetail.vue')
+    }
 ]
 export default routes;
