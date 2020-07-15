@@ -1,18 +1,14 @@
 <template>
-    <div>
-        <div class="header">
-            餐点信息
-        </div>
-        <div :style="{margin:'20px 0px'}">
-            <Button class="button" @click="backward">
-                <Icon type="ios-arrow-back" />
-                返回
+    <Card title="餐点信息">
+        <Row type="flex" align="middle">
+            <Button @click="backward">
+                <Icon type="ios-arrow-back" />返回
             </Button>
-            <Button type="primary" class="button" @click="saveMealInfo">
-                <Icon type="md-copy" />
-                保存
+            <Divider type="vertical" />
+            <Button type="primary" @click="saveMealInfo">
+                <Icon type="md-copy" />保存
             </Button>
-        </div>
+        </Row>
         <Row type="flex">
             <i-col span='7'></i-col>
             <i-col span='10'>
@@ -33,18 +29,20 @@
                     <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
                 </FormItem>
                 <FormItem>
-                    <img :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片"/>
+                    <img :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片" style="width:200px;height:200px"/>
                 </FormItem>
                 <FormItem>
+                    <Upload :action="`/CoffeeOrderService/api/menu/uploadImg?mealId=${mealInfo.mealId}`" :format="['jpg','jpeg','png']" :on-success="getImg">
+                        <Button icon="ios-cloud-upload-outline">上传图片</Button>
+                    </Upload>
                     <Button type="primary" style="float:right;margin:0px 0px 30px 0px;" @click="saveMealInfo">
                         <Icon type="md-copy" />保存
                     </Button>
                 </FormItem>
             </Form>
             </i-col>
-        <i-col span="7"></i-col>
         </Row>
-    </div>
+    </Card>
 </template>
 
 <script>
@@ -57,6 +55,7 @@ export default {
                 mealNumber:'',
                 category: '',
                 mealDetail:'',
+                url: ''
             },
             mealInfo:{},
         }
@@ -68,6 +67,10 @@ export default {
         this.getMealDetail();
         },
     methods:{
+        getImg(){
+            this.$Message.success("上传成功");
+            window.location.reload();
+        },
         getMealDetail(){
             axios.post("/CoffeeOrderService/api/menu/getMeal", {mealId: this.mealInfo.mealId})
             .then(response=>{
@@ -87,7 +90,8 @@ export default {
             amount:this.mealInfo.amount,
             menuId:this.mealInfo.menuId,
             type:this.mealInfo.type,
-            mealDetail:this.mealInfo.mealDetail})
+            mealDetail:this.mealInfo.mealDetail,
+            })
             .then(response => {
                 if(response.data.success){
                     this.$Message.success("保存成功");
@@ -115,16 +119,4 @@ export default {
 </script>
 
 <style scoped>
-.header{
-    height:50px;
-    border-bottom: 1px solid #d7dde4;
-    background: white ;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    font-size: 25px;
-}
-.button{
-    margin:0px 20px 0px 0px;
-}
 </style>
