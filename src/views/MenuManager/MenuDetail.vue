@@ -1,34 +1,29 @@
 <template>
-    <Row class="layout">
-        <Row :style="{background:'#fff',height:'100px',padding:'0 0 0 50px'}">
-            <div class="demo-avatar">
+    <Card>
+        <Row>
             <Avatar icon="ios-person" size="70" />
             <span class="large-label">{{this.menuName}}</span>
-            </div>
         </Row>
-        <Row :style="{padding: '0 50px',background:'#fff'}">
+        <Row style="margin-top: 16px">
             <Tabs value="name1">
                 <TabPane label="餐点列表" name="name1">
-                    <Row type="flex" justify="center">
-                        <i-col span="8" >
-                            <span class="large-label" style="font-size:20px;">现有餐点</span>
-                        </i-col>
-                        <i-col span="5"></i-col>
-                        <i-col span="3" style="padding:10px 0;">
+                    <Row type="flex" :gutter="16">
+                        <i-col>
                             <Button type="primary" @click="modal = true">新建餐点</Button>
                         </i-col>
-                        <i-col span="8" style="padding:10px 0;">
+                        <i-col>
                             <Input search enter-button placeholder="请输入餐点名" @on-search="searchMeal"/>
                         </i-col>
                     </Row>
-                <Row>
-                <i-table border :columns="mealListHeader" :data="menuDetail">
-                    <template slot-scope="{ row }" slot="action">
-                        <Button type="primary" style="margin-right:15px;"  @click="toMealDetail(row)">详情</Button>
-                        <Button type="error" @click="deleteMeal(row)">删除</Button>
-                    </template>
-                </i-table>
-                </Row>
+                    <Divider />
+                    <Row>
+                    <i-table border :columns="mealListHeader" :data="menuDetail">
+                        <template slot-scope="{ row }" slot="action">
+                            <Button type="primary" style="margin-right:15px;"  @click="toMealDetail(row)">详情</Button>
+                            <Button type="error" @click="deleteMeal(row)">删除</Button>
+                        </template>
+                    </i-table>
+                    </Row>
                 </TabPane>
                 <TabPane label="满意度分析" name="name2">
                     标签三的内容
@@ -39,22 +34,30 @@
             <Form :model="mealInfo" label-position="left" :label-width="80">
                 <FormItem label="餐点名">
                     <i-input v-model="mealInfo.mealName"></i-input>
-                </FormItem >
+                </FormItem>
                 <FormItem label="餐点类别">
                     <i-input v-model="mealInfo.type" ></i-input>
-                </FormItem >
+                </FormItem>
                 <FormItem label="餐点单价">
                     <i-input v-model="mealInfo.price" :number="true"></i-input>
-                </FormItem >
+                </FormItem>
                 <FormItem label="餐点库存">
                     <i-input v-model="mealInfo.amount" :number="true"></i-input>
-                </FormItem >
+                </FormItem>
                 <FormItem label="餐点详情">
                     <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
                 </FormItem>
+                <Upload action="/CoffeeOrderService/api/menu/uploadImg" :format="['jpg','jpeg','png']" :before-upload="beforeUpload">
+                    <Button icon="ios-cloud-upload-outline">上传图片</Button>
+                </Upload>
+                <div v-if="file.name">
+                    <Tooltip content="单击下方新建按钮，图片将自动上传">
+                        <Row>Upload file: {{ file.name }}</Row>
+                    </Tooltip>
+                </div>
             </Form>
         </Modal>
-    </Row>
+    </Card>
 </template>
 
 <script>
@@ -136,7 +139,8 @@ export default {
             menuName:"",
             data:[],
             mealInfo:{},
-            modal: false
+            modal: false,
+            file: {}
         }
     },
     mounted(){
@@ -183,11 +187,12 @@ export default {
             });
         },
         asyncSubmit(){
-             axios.post("/CoffeeOrderService/api/menu/addMeal",{...this.mealInfo})
+            axios.post("/CoffeeOrderService/api/menu/addMeal", {...this.mealInfo})
             .then(response=>{
                 if(response.data.success){
-                    this.$Message.success("新建成功");
+                    let loadingCloser = this.$Message.loading("菜品新建成功，正在上传图片");
                     this.getMenuDetail();
+                    this.upload(response.data.mealId, loadingCloser);
                 }
             })
             .catch(error=>{
@@ -203,6 +208,36 @@ export default {
             .finally(() => {
                 this.modal = false;
             });
+        },
+        beforeUpload(file) {
+            this.file = file;
+            return false;
+        },
+        upload(mealId, loadingCloser) {
+            // eslint-disable-next-line
+            debugger
+            let formData = new FormData();
+            formData.append('file', this.file);
+            formData.append('mealId', mealId);
+            axios.post("/CoffeeOrderService/api/menu/uploadImg", formData, {headers: {"Content-Type": "multipart/form-data"}})
+            .then(response=>{
+                if(response.data.success){
+                    this.$Message.success("保存成功");
+                }
+            })
+            .catch(error=>{
+                if(error.response){
+                    if(error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else
+                        this.$Message.warning(error.message);
+                } else {
+                    this.$Message.error("无法发送请求");
+                }
+            })
+            .finally(() => {
+                loadingCloser();
+            })
         }
     }
 }
