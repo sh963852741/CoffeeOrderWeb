@@ -3,7 +3,7 @@ const routes = [
     {
       path: '/',
       name: 'Home',
-      meta: {layout: "user"},
+      meta: {layout: "userheader"},
       component: () => import(/* webpackChunkName: "index" */ '@/views/Home.vue')
     },
     //登录页
@@ -62,7 +62,7 @@ const routes = [
     {
       path: '/usermenu/ordermenu',
       name: 'OrderMenu',
-      meta: {layout: "user"},
+      meta: {layout: "userheader"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderMenu.vue')
     },
     //个人中心页面
@@ -72,6 +72,13 @@ const routes = [
       meta: {layout: "empty"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/Profile/Profile.vue')
     },
+    //前台用户购物车页面
+    {
+      path: '/usermenu/shoppingcart',
+      name: 'ShoppingCart',
+      meta: {layout: "userheader"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/ShoppingCart.vue')
+    },
     //历史订单列表页
     {
         path: '/usermenu/orderlist',
@@ -79,5 +86,17 @@ const routes = [
         meta: {layout: "account"},
         component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderList.vue')
     },
+    {
+      path: '/orderManager/orderlist',
+      name: 'adminOrderList',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/OrderManager/adminOrderList.vue')
+    },
+    {
+      path: '/orderManager/orderDetail',
+      name: 'adminOrderDetail',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/OrderManager/adminOrderDetail.vue')
+    }
 ]
 export default routes;

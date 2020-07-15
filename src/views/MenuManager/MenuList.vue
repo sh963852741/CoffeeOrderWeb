@@ -1,10 +1,6 @@
 <template>
-    <Row>
-        <div class="header">
-            菜单列表管理
-        </div>
-        <Divider />
-        <Row type="flex" :gutter="16">
+    <Card title="菜单列表管理">
+        <Row type="flex" :gutter="16" align="middle">
             <i-col>
                 <Button type="primary" @click="modal = true">新建菜单</Button>
             </i-col>
@@ -13,13 +9,15 @@
             </i-col>
         </Row>
         <Divider />
-        <i-table border :columns="menuListHeader" :data="menuListContent">
-            <template v-slot:action="props">
-                <Button type="primary" @click="toDetail(props.row)">详情</Button>
-                &nbsp;
-                <Button type="error" @click="delMenu(props.row)">删除</Button>
-            </template>
-        </i-table>
+        <Row>
+            <i-table border :columns="menuListHeader" :data="menuListContent">
+                <template v-slot:action="props">
+                    <Button type="primary" @click="toDetail(props.row)">详情</Button>
+                    &nbsp;
+                    <Button type="error" @click="delMenu(props.row)">删除</Button>
+                </template>
+            </i-table>
+        </Row>  
         <Modal v-model="modal" title="新建菜单" loading @on-ok="asyncSubmit" ok-text="新建">
             <Form :model="menuModel" label-position="left" :label-width="80">
                 <FormItem label="菜单名">
@@ -30,7 +28,7 @@
                 </FormItem>
             </Form>
         </Modal>
-    </Row>
+    </Card>
 </template>
 
 <script>
@@ -152,11 +150,4 @@ const axios = require("axios");
 </script>
 
 <style scoped>
-.header{
-    height:50px;
-    background: white ;
-    position: relative;
-    overflow: hidden;
-    font-size: 25px;
-}
 </style>

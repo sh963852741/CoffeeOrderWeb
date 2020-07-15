@@ -1,44 +1,41 @@
 <template>
-    <Content>
-    <Layout :style="{minHeight: '50vh'}">
-        <Sider  hide-trigger collapsible width="240" :collapsed-width="78" :style="{background: 'white'}">
-            <Menu theme="light" active-name="0" :style="{minwidth:300}">
-                 <MenuItem name="0" @click.native="toAllmeal">
-                    <Icon type="ios-pizza" />
-                        全部
-                </MenuItem>
-                <MenuItem v-for="(value,key) in sortMeal" :key="key" :name="key" @click.native="toSpecialMeal(key)">
-                    <Icon type="ios-pizza"  />
-                        {{key}}
-                </MenuItem>
-            </Menu>
+    <Layout style="margin: 50px 10%" :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
+        <Sider style="background-color: #FFF">
+            <Affix>
+                <Menu width="auto" theme="light" active-name="0">
+                    <MenuItem name="0" @click.native="toAllmeal">
+                        <Icon type="ios-pizza" />
+                            全部
+                    </MenuItem>
+                    <MenuItem v-for="(value,key) in sortMeal" :key="key" :name="key" @click.native="toSpecialMeal(key)">
+                        <Icon type="ios-pizza"  />
+                            {{key}}
+                    </MenuItem>
+                </Menu>
+            </Affix>
         </Sider>
-        <Content >
-            <Card :bordered="false">
-                <Row type="flex" :style="{margin:'20px 0px '}" >
-                    <i-col span="6" v-for="(item,index) in meal" v-bind:key="index"  style="margin-bottom:20px;">
-                        <Card style="width:220px" >
-                            <div style="text-align:center">
-                                <img src="@/assets/coffee-logo.png">
-                                <h3>{{item.mealName}}</h3>
-                            </div>
-                            <Divider></Divider>
-                            <Row type="flex">
-                                <i-col span="8">
-                                    <b ><font color="green" size="3">{{item.price}}元</font></b>
-                                </i-col>
-                                <i-col span="8"></i-col>
-                                <i-col span="8" >
-                                    <Button icon="ios-cart-outline" type="error" size="small">添加</Button>
-                                </i-col>
-                            </Row>
-                        </Card>
-                    </i-col>
-                </Row>   
-            </Card>       
+        <Content>
+            <Row type="flex" style="margin: 0 24px">
+                <i-col span="6" style="margin-bottom: 24px" v-for="(item,index) in meal" v-bind:key="index">
+                    <Card style="width: 80%">
+                        <div style="text-align:center">
+                            <img src="@/assets/coffee-logo.png">
+                            <h3>{{item.mealName}}</h3>
+                        </div>
+                        <Divider></Divider>
+                        <Row type="flex" justify="space-between" align="middle">
+                            <i-col>
+                                <b ><font color="green" size="3">{{item.price}}元</font></b>
+                            </i-col>
+                            <i-col>
+                                <Button icon="ios-cart-outline" type="error" @click="addShopCard(item.mealId,item.mealName,item.price)">添加</Button>
+                            </i-col>
+                        </Row>
+                    </Card>
+                </i-col>
+            </Row>  
         </Content>
     </Layout>
-    </Content>
 </template>
 
 
@@ -96,13 +93,12 @@ export default {
                 console.error(error.data)
             })
         },
-        addShopCard(id,mprice)
+        addShopCard(id,name,mprice)
         {
-             axios.post("/CoffeeOrderService/api/shoppingcart/addShoppingCart",{mealId:id,price:mprice})
+             axios.post("/CoffeeOrderService/api/shoppingcart/addShoppingCart",{mealId:id,mealName:name,price:mprice})
              .then(response=>{
                  if(response.data.success){
                      this.$Message.success("添加成功");
-                     this.getAllShop();
                  }else{
                      this.$Message.error(response.data.msg)
                  }
@@ -117,57 +113,5 @@ export default {
 </script>
 
 <style scoped>
-.layout{
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-}
-.layout-logo{
-    width: 300px;
-    height: 40px;
-    background: white;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 10px;
-    left: 20px;
-    font-size:25px;
-}
-.layout-nav{
-    width: 555px;
-    margin: 0 auto;
-    margin-right: 20px;
-}
-.layout-footer-center{
-    text-align: center;
-    background: rgb(160,115,50);
-}
-.demo-carousel{
-    height:430px;
-    background: cornflowerblue;
-    font-size: 30px;
-}
-.ivu-card-body{
-    padding:auto 0px;
-}
-.carousel-img{
-    height:430px;
-    width:100%;
-    border-radius: 5px;
-}
-.pop-ups-img{
-    width:230px;
-    height:150px;
-}
-
-.header{
-    height:50px;
-    background: white ;
-    position: relative;
-    overflow: hidden;
-    font-size: 25px;
-}
 
 </style>

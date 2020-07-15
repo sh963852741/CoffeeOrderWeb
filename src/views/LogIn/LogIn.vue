@@ -17,7 +17,7 @@
                         </FormItem>
                         <FormItem>
                             <Row type="flex" justify="center"> 
-                                <Button type="primary" @click="logIn">登录</Button>
+                                <Button type="primary" @click="logIn">登录后台</Button>
                             </Row> 
                         </FormItem>
                     </Form>
@@ -25,7 +25,7 @@
                 <Row type="flex" justify="center" align="middle">
                     <Button size="small" type="text" :to="{name: 'Regist'}">注册账号</Button>
                     <Divider type="vertical" />
-                    <Button size="small" type="text">后台登录</Button>
+                    <Button size="small" type="text">切换前台</Button>
                     <Divider type="vertical" />
                     <Button size="small" type="text">找回密码</Button>
                 </Row>

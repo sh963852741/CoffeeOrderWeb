@@ -20,14 +20,14 @@
             </Header>
             <Layout>
                 <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu active-name="2-1" theme="light" width="auto" :open-names="['2']">
+                    <Menu :active-name="activeMenu" theme="light" width="auto" :open-names="['1','2','3']">
                         <Submenu name="1">
                             <template slot="title">
                                 <Icon type="ios-navigate"></Icon>
                                 菜单与菜品管理
                             </template>
-                            <MenuItem name="1-1" :to="{name: 'MenuList'}">菜单管理</MenuItem>
-                            <MenuItem name="1-2">菜品管理</MenuItem>
+                            <MenuItem name="MenuList" :to="{name: 'MenuList'}">菜单管理</MenuItem>
+                            <MenuItem name="MenuDetail" :to="{name: 'MenuDetail'}">菜品管理</MenuItem>
                             <MenuItem name="1-3">菜品分析</MenuItem>
                         </Submenu>
                         <Submenu name="2">
@@ -35,20 +35,27 @@
                                 <Icon type="ios-keypad"></Icon>
                                 用户管理
                             </template>
-                            <MenuItem name="2-1" :to="{name: 'UserList'}">用户列表</MenuItem>
+                            <MenuItem name="UserList" :to="{name: 'UserList'}">用户列表</MenuItem>
                             <MenuItem name="2-2">角色管理</MenuItem>
                         </Submenu>
                         <Submenu name="3">
                             <template slot="title">
+                                <Icon type="ios-keypad"></Icon>
+                                订单管理
+                            </template>
+                            <MenuItem name="3-1" :to="{name: 'adminOrderList'}">订单列表</MenuItem>
+                        </Submenu>
+                        <Submenu name="4">
+                            <template slot="title">
                                 <Icon type="ios-analytics"></Icon>
                                 系统配置
                             </template>
-                            <MenuItem name="3-1">关于</MenuItem>
+                            <MenuItem name="4-1">关于</MenuItem>
                         </Submenu>
                     </Menu>
                 </Sider>
                 <Layout :style="{padding: '24px'}">
-                    <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+                    <Content :style="{padding: '0px', minHeight: '0px', background: '#fff'}">
                         <slot></slot>
                     </Content>
                     <Footer class="layout-footer-center">2020 &copy; 精神小伙点餐吧</Footer>
@@ -62,7 +69,9 @@
     const axios = require("axios");
     export default {
         data() {
-            return {}
+            return {
+                activeMenu: this.$route.name
+            }
         },
         methods: {
             logout() {
@@ -87,6 +96,11 @@
                         this.$Message.error("无法发送请求");
                     }
                 });
+            }
+        },
+        watch: {
+            $route(to) {
+                this.activeMenu = to.name;
             }
         }
     }
