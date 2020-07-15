@@ -18,7 +18,7 @@
                             <template slot="title">
                                 <Icon type="md-person"/>我的账户
                             </template>
-                            <MenuItem name="ShoppingCart" :to="{name: 'ShoppingCart'}">购物车</MenuItem >
+                            <MenuItem name="ShoppingCart" @click.native="toCart">购物车</MenuItem >
                             <MenuItem name="center">个人中心</MenuItem >
                         </Submenu>
                         <Submenu name="4">
@@ -46,6 +46,13 @@
 
 <script>
 export default {
+    methods:{
+        toCart(){
+            console.log("a");
+            const {href} =this.$router.resolve({name: 'ShoppingCart'});
+            window.open(href, '_blank');
+        }
+    }
     
 }
 </script>
