@@ -5,7 +5,7 @@
                 <Row>
                     <Table stripe ref="myCart" :columns="columns" :data="mealList"  @on-selection-change="selectChange">
                         <template v-slot:mealId="props">
-                            <strong>{{props.row.mealId}}</strong>
+                            <strong>{{props.row.mealName}}</strong>
                         </template>
                         <template slot-scope="{index}" slot="quality">
                             <i-button
@@ -88,7 +88,7 @@ export default {
             mealList: [],
             selectCounts:0,
             selectPrice:0,
-            selectmeal:[]
+            selectmeal:[],
         };
     },
     mounted() {
