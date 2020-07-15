@@ -40,10 +40,17 @@
                         </Submenu>
                         <Submenu name="3">
                             <template slot="title">
+                                <Icon type="ios-keypad"></Icon>
+                                订单管理
+                            </template>
+                            <MenuItem name="3-1" :to="{name: 'adminOrderList'}">订单列表</MenuItem>
+                        </Submenu>
+                        <Submenu name="4">
+                            <template slot="title">
                                 <Icon type="ios-analytics"></Icon>
                                 系统配置
                             </template>
-                            <MenuItem name="3-1">关于</MenuItem>
+                            <MenuItem name="4-1">关于</MenuItem>
                         </Submenu>
                     </Menu>
                 </Sider>
