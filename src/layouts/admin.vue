@@ -43,7 +43,7 @@
                                 <Icon type="ios-keypad"></Icon>
                                 订单管理
                             </template>
-                            <MenuItem name="3-1" :to="{name: 'adminOrderList'}">订单列表</MenuItem>
+                            <MenuItem name="adminOrderList" :to="{name: 'adminOrderList'}">订单列表</MenuItem>
                         </Submenu>
                         <Submenu name="4">
                             <template slot="title">

@@ -21,7 +21,7 @@
                         <Input prefix="ios-lock" placeholder="密码" size="large" type="password" v-model="logInModel.password" password/>
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" long @click="logIn" size="large">登录</Button>
+                        <Button type="primary" long  size="large" keypress.enter.native ref="loginbutton" @click="logIn">登录</Button>
                         <Checkbox :value="false" size="small">下次自动登录</Checkbox>
                     </FormItem>
                 </Form>
@@ -36,7 +36,7 @@
             <i-col span="4" v-for="index in 4" :key="index">
                 <Card>
                     <div>
-                        <img src="../assets/coffee-logo.png" alt="coffee-logo2"/>
+                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" width="100%"/>
                         <h2>新品推送</h2>
                     </div>
                 </Card>
@@ -46,7 +46,7 @@
             <i-col span="4" v-for="index in 4" :key="index">
                 <Card>
                     <div>
-                        <img src="../assets/coffee-logo.png" alt="coffee-logo2"/>
+                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" width="100%"/>
                         <h2>新品推送</h2>
                     </div>
                 </Card>
@@ -62,7 +62,10 @@ const axios = require("axios");
     export default {
         data () {
             return {
-                logInModel: {}
+                logInModel: {
+                    userName:"",
+                    password:""
+                }
             }
         },
         mounted() {},
@@ -82,6 +85,9 @@ const axios = require("axios");
                 .catch(error => {
                     console.log(error);
                 });
+            },
+            log(){
+                console.log("122")
             }
         }
 }
