@@ -28,8 +28,8 @@
                 <FormItem label="餐点详情">
                     <Input type="textarea" v-model="mealInfo.mealDetail" :autosize="{minRows: 3,maxRows: 5}" placeholder="相关餐点描述"/>
                 </FormItem>
-                <FormItem>
-                    <img :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片" style="width:200px;height:200px"/>
+                <FormItem label="餐点图片">
+                    <img :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${mealInfo.mealId}`" alt="暂无菜品图片" style="width:100%"/>
                 </FormItem>
                 <FormItem>
                     <Upload :action="`/CoffeeOrderService/api/menu/uploadImg?mealId=${mealInfo.mealId}`" :format="['jpg','jpeg','png']" :on-success="getImg">

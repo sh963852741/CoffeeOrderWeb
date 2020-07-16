@@ -21,7 +21,7 @@
                         <Input prefix="ios-lock" placeholder="密码" size="large" type="password" v-model="logInModel.password" password/>
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" long @click="logIn" size="large">登录</Button>
+                        <Button type="primary" long  size="large" keypress.enter.native ref="loginbutton" @click="logIn">登录</Button>
                         <Checkbox :value="false" size="small">下次自动登录</Checkbox>
                     </FormItem>
                 </Form>
@@ -62,7 +62,10 @@ const axios = require("axios");
     export default {
         data () {
             return {
-                logInModel: {}
+                logInModel: {
+                    userName:"",
+                    password:""
+                }
             }
         },
         mounted() {},
@@ -82,6 +85,9 @@ const axios = require("axios");
                 .catch(error => {
                     console.log(error);
                 });
+            },
+            log(){
+                console.log("122")
             }
         }
 }
