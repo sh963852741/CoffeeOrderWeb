@@ -3,7 +3,7 @@
         <Layout>
             <Header>
                 <Menu mode="horizontal" theme="light" active-name="1">
-                    <Row type="flex" align="middle" class="layout-logo">
+                    <Row type="flex" align="middle" class="layout-logo" @click.native="toHome">
                         <img src="@/assets/coffee-logo.png" width="60px" height="40px" alt="coffee-logo"/> 
                         <span>全能咖啡厅</span>
                     </Row>
@@ -47,8 +47,10 @@
 <script>
 export default {
     methods:{
+        toHome(){
+            this.$router.push({name: 'Home'});
+        },
         toCart(){
-            console.log("a");
             const {href} =this.$router.resolve({name: 'ShoppingCart'});
             window.open(href, '_blank');
         }
@@ -71,6 +73,7 @@ export default {
     float: left;
     position: relative;
     margin-left: 64px;
+    cursor: pointer; 
 }
 .layout-nav{
     width: 480px;
