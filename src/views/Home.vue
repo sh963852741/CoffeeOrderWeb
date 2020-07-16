@@ -36,7 +36,7 @@
             <i-col span="4" v-for="index in 4" :key="index">
                 <Card>
                     <div>
-                        <img src="../assets/coffee-logo.png" alt="coffee-logo2"/>
+                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" width="100%"/>
                         <h2>新品推送</h2>
                     </div>
                 </Card>
@@ -46,7 +46,7 @@
             <i-col span="4" v-for="index in 4" :key="index">
                 <Card>
                     <div>
-                        <img src="../assets/coffee-logo.png" alt="coffee-logo2"/>
+                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" width="100%"/>
                         <h2>新品推送</h2>
                     </div>
                 </Card>

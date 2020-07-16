@@ -25,7 +25,7 @@
                 <Row type="flex" justify="center" align="middle">
                     <Button size="small" type="text" :to="{name: 'Regist'}">注册账号</Button>
                     <Divider type="vertical" />
-                    <Button size="small" type="text">切换前台</Button>
+                    <Button size="small" type="text" :to="{name: 'Home'}">切换前台</Button>
                     <Divider type="vertical" />
                     <Button size="small" type="text">找回密码</Button>
                 </Row>

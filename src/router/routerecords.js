@@ -86,5 +86,17 @@ const routes = [
         meta: {layout: "account"},
         component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderList.vue')
     },
+    {
+      path: '/orderManager/orderlist',
+      name: 'adminOrderList',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/OrderManager/adminOrderList.vue')
+    },
+    {
+      path: '/orderManager/orderDetail',
+      name: 'adminOrderDetail',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/OrderManager/adminOrderDetail.vue')
+    }
 ]
 export default routes;
