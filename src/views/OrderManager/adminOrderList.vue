@@ -42,8 +42,8 @@ const axios = require("axios");
                         key: 'userName'
                     },
                     {
-                        title: '订餐数量',
-                        key: 'totalAmount',
+                        title: '总价',
+                        key: 'totalPrice'
                     },
                     {
                         title: '创建时间',
@@ -62,9 +62,12 @@ const axios = require("axios");
         },
         methods: {
             getOrderList() {
-                axios.post("/CoffeeOrderService/api/ordermanage/getOrderList", {})
+                axios.post("/CoffeeOrderService/api/ordermanage/getAllOrder", {})
                 .then(response=> {
                     this.orderListContent = response.data.data;
+                    this.orderListContent.forEach(v=>{
+                        v.totalPrice = Math.round(v.totalPrice * 100) / 100;
+                    })
                 })
                 .catch(error=>{
                     if (error.response) {
@@ -78,7 +81,7 @@ const axios = require("axios");
                 });
             },
             toOrderDetail(row) {
-                this.$router.push({name:"adminOrderDetail", query:{Orders: row.Orders}});
+                this.$router.push({name:"adminOrderDetail", query:{orderId: row.orderId}});
             }
         }
     }

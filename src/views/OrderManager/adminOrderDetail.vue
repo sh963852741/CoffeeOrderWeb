@@ -1,9 +1,9 @@
 <template>
     <Card title="订单详情">
         <Row type="flex" :gutter="16" align="middle">
-            <i-col>
-                <Button type="primary" @click="modal = true" disabled>新建餐点</Button>
-            </i-col>
+            <Button @click="backward">
+                <Icon type="ios-arrow-back" />返回
+            </Button>
             <i-col>
                 <Input search enter-button placeholder="搜索餐点"/>
             </i-col>
@@ -27,12 +27,13 @@
 </template>
 
 <script>
-// const axios = require("axios");
+const axios = require("axios");
 export default {
     data () {
         return {
             modal: false,
             mealModel: {},
+            orderId: "",
             mealListContent: [],
             mealListHeader:[
                 {
@@ -42,16 +43,46 @@ export default {
                 {
                     title: "订餐数量",
                     key: 'amount'
+                },
+                {
+                    title: "餐点价格",
+                    key: 'price'
+                },
+                {
+                    title: "餐点总价",
+                    key: 'totalPrice'
                 }
             ]
         }
     },
     created(){
-        this.mealListContent = this.$route.query.Orders;
+        this.orderId = this.$route.query.orderId;
+    },
+    mounted(){
+        this.getOrderDetail();
     },
     methods:{
         backward(){
             this.$router.go(-1);
+        },
+        getOrderDetail() {
+             axios.post("/CoffeeOrderService/api/ordermanage/getOrderDetail", {orderId: this.orderId})
+                .then(response=> {
+                    this.mealListContent = response.data.data;
+                    this.mealListContent.forEach(v=>{
+                        v.totalPrice = v.price*v.amount;
+                    })
+                })
+                .catch(error=>{
+                    if (error.response) {
+                        if (error.response.status >= 400 && error.response.status < 600)
+                            this.$Message.error(error.message);
+                        else
+                            this.$Message.warning(error.message);
+                    } else {
+                        this.$Message.error("无法发送请求");
+                    }
+                });
         }
     }
 }
