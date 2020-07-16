@@ -20,6 +20,25 @@ let rules = {
         email: [
             {type: 'email', message: "电子邮箱格式不正确", trigger: "blur"}
         ]
+    },
+    createMeal:{
+        mealName:[
+            {required:true,type:'string',min:1,message:"餐点名称不得少于1字符",trigger:"blur"}
+        ],
+        type:[
+            {required:true,message:"请选择餐点类型",trigger:"blur"}
+        ],
+        price:[
+            {required:true,type:'number',message:"价格不能为空",trigger:"blur"},
+            {type:'number',min:0,message:"应输入数字，最小值应为0",trigger:"blur"}
+        ],
+        amount:[
+            {required:true,type:'integer',message:"库存数量不能为空",trigger:"blur"},
+            {type:'integer',min:0,message:"应输入整数，最小值应为0",trigger:"blur"}
+        ],
+        mealDetail:[
+            {required:true,type:"string",message:"请输入餐点描述"}
+        ]
     }
 }
 
