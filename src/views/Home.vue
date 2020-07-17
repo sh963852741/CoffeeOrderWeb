@@ -13,11 +13,11 @@
                 </CarouselItem>
             </Carousel>
             <Card class="login-box" dis-hover :padding="24">
-                <Form style="margin-top: 16px">
-                    <FormItem>
+                <Form style="margin-top: 16px" :model="logInModel" :rules="rules" ref="login">
+                    <FormItem prop="userName">
                         <Input prefix="md-person" placeholder="手机号/账号" size="large" clearable v-model="logInModel.userName"/>
                     </FormItem>
-                    <FormItem>
+                    <FormItem prop="password">
                         <Input prefix="ios-lock" placeholder="密码" size="large" type="password" @on-enter="logIn" v-model="logInModel.password" password/>
                     </FormItem>
                     <FormItem>
@@ -57,6 +57,7 @@
 
 
 <script>
+import rules from "@/common/formRule.js"
 const sha1 = require('sha1');
 const axios = require("axios");
     export default {
@@ -65,25 +66,32 @@ const axios = require("axios");
                 logInModel: {
                     userName:"",
                     password:""
-                }
+                },
+                rules: rules.login
             }
         },
         mounted() {},
         methods: {
             logIn() {
-                axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: sha1(this.logInModel.password)})
-                .then(response => {
-                    if(response.data.success){
-                        this.$Message.success("登录成功");
-                        setTimeout(()=>{
-                            this.$router.push({name: "OrderMenu"});
-                        }, 1500);
+                this.$refs["login"].validate((valid) => {
+                    if (valid) {
+                        axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: sha1(this.logInModel.password)})
+                        .then(response => {
+                            if(response.data.success){
+                                this.$Message.success("登录成功");
+                                setTimeout(()=>{
+                                    this.$router.push({name: "OrderMenu"});
+                                }, 1500);
+                            } else {
+                                this.$Message.error(response.data.msg);
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
                     } else {
-                        this.$Message.error(response.data.msg);
+                        console.log(valid)
                     }
-                })
-                .catch(error => {
-                    console.log(error);
                 });
             },
             log(){
