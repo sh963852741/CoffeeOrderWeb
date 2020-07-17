@@ -117,11 +117,11 @@ export default {
     }
 }
 </script>
-<style lang="less">
-    .role-line {
-        padding: 16px 0px;
-        .ivu-checkbox-group  {
-            display: inline-block;
-        }
-    }
+<style scoped>
+.role-line{
+    padding: 16px 0px;
+}
+.role-line .ivu-checkbox-group {
+    display: inline-block;
+}
 </style>
