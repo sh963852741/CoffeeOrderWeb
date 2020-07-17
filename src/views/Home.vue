@@ -97,7 +97,7 @@ const axios = require("axios");
 .login-box{
     position: absolute;
     top: 100px;
-    right: 200px;
+    right: 15%;
 }
 .carousel-pic{
     background: cornflowerblue;
