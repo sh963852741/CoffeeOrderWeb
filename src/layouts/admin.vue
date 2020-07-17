@@ -36,7 +36,7 @@
                                 用户管理
                             </template>
                             <MenuItem name="UserList" :to="{name: 'UserList'}">用户列表</MenuItem>
-                            <MenuItem name="2-2">角色管理</MenuItem>
+                            <MenuItem name="2-2" :to="{name: 'RoleManager'}">角色管理</MenuItem>
                         </Submenu>
                         <Submenu name="3">
                             <template slot="title">
