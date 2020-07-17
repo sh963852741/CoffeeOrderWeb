@@ -17,7 +17,7 @@
                         </FormItem>
                         <FormItem>
                             <Row type="flex" justify="center"> 
-                                <Button type="primary" @click="logIn">登录后台</Button>
+                                <Button type="primary" @click="logIn" :loading="loading">登录后台</Button>
                             </Row> 
                         </FormItem>
                     </Form>
@@ -42,7 +42,8 @@ export default {
     data() {
         return {
             logInModel: {},
-            rules: rules.login
+            rules: rules.login,
+            loading:false
         };
     },
     mounted() {
@@ -52,6 +53,7 @@ export default {
         logIn() {
             this.$refs["login"].validate((valid) => {
                 if (valid) {
+                    this.loading=true;
                     axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: sha1(this.logInModel.password)})
                     .then(response => {
                         if(response.data.success){
@@ -60,10 +62,12 @@ export default {
                                 this.$router.push({name: "UserList"});
                             }, 1500);
                         } else {
+                            this.loading=false;
                             this.$Message.error(response.data.msg);
                         }
                     })
                     .catch(error => {
+                        this.loading=false;
                         console.log(error);
                     });
                 } else {
