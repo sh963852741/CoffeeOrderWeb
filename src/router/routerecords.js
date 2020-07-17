@@ -86,17 +86,26 @@ const routes = [
         meta: {layout: "account"},
         component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderList.vue')
     },
+    //后台订单列表页
     {
       path: '/orderManager/orderlist',
       name: 'adminOrderList',
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/OrderManager/adminOrderList.vue')
     },
+    //后台订单详细页
     {
       path: '/orderManager/orderDetail',
       name: 'adminOrderDetail',
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/OrderManager/adminOrderDetail.vue')
+    },
+    //后台角色管理页
+    {
+      path: '/userManager/roleManager',
+      name: 'RoleManager',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "role" */ '@/views/UserManager/RoleManager.vue')
     }
 ]
 export default routes;
