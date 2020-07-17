@@ -18,7 +18,7 @@
                         <Input prefix="md-person" placeholder="手机号/账号" size="large" clearable v-model="logInModel.userName"/>
                     </FormItem>
                     <FormItem prop="password">
-                        <Input prefix="ios-lock" placeholder="密码" size="large" type="password" v-model="logInModel.password" password/>
+                        <Input prefix="ios-lock" placeholder="密码" size="large" type="password" @on-enter="logIn" v-model="logInModel.password" password/>
                     </FormItem>
                     <FormItem>
                         <Button type="primary" long  size="large" keypress.enter.native ref="loginbutton" @click="logIn">登录</Button>

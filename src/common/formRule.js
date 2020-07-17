@@ -15,7 +15,7 @@ let rules = {
             {required: true, type: 'string', min: 6, message: "密码长度不得少于6字符", trigger: "blur"}
         ],
         telephone: [
-            {type: 'string', pattern: /^1[34578]\d{9}$/, message: "电话号码格式不正确", trigger: "blur"}
+            {required: true, type: 'string', pattern: /^1[34578]\d{9}$/, message: "电话号码格式不正确", trigger: "blur"}
         ],
         email: [
             {type: 'email', message: "电子邮箱格式不正确", trigger: "blur"}

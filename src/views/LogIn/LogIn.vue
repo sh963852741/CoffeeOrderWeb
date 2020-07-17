@@ -13,7 +13,7 @@
                             <i-input v-model="logInModel.userName" placeholder="请输入您的用户名"></i-input>
                         </FormItem>
                         <FormItem prop="password" label="密码">
-                            <i-input v-model="logInModel.password" placeholder="请输入您的密码" type="password" password></i-input>
+                            <i-input v-model="logInModel.password" placeholder="请输入您的密码" @on-enter="logIn" type="password" password></i-input>
                         </FormItem>
                         <FormItem>
                             <Row type="flex" justify="center"> 
