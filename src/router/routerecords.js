@@ -3,7 +3,7 @@ const routes = [
     {
       path: '/',
       name: 'Home',
-      meta: {layout: "user"},
+      meta: {layout: "userheader"},
       component: () => import(/* webpackChunkName: "index" */ '@/views/Home.vue')
     },
     //登录页
@@ -62,7 +62,7 @@ const routes = [
     {
       path: '/usermenu/ordermenu',
       name: 'OrderMenu',
-      meta: {layout: "user"},
+      meta: {layout: "userheader"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderMenu.vue')
     },
     //个人中心页面

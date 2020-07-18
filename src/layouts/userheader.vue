@@ -19,7 +19,7 @@
                                 <Icon type="md-person"/>我的账户
                             </template>
                             <MenuItem name="ShoppingCart" :to="{name: 'ShoppingCart'}">购物车</MenuItem >
-                            <MenuItem name="center">个人中心</MenuItem >
+                            <MenuItem name="center" :to="{name:'OrderList'}">个人中心</MenuItem >
                         </Submenu>
                         <Submenu name="4">
                             <template slot="title">
