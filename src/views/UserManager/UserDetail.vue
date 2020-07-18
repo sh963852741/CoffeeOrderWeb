@@ -15,7 +15,8 @@
                         <i-input v-model="userInfo.userName"></i-input>
                     </FormItem >
                     <FormItem label="密码">
-                        <i-input v-model="userInfo.password"></i-input>
+                        <Button v-if="isSelf" @click="showModal = true">更改密码</Button>
+                        <Button v-else @click="showModal = true">设置新密码</Button>
                     </FormItem >
                     <FormItem label="电话">
                         <i-input v-model="userInfo.telephone"></i-input>
@@ -34,6 +35,17 @@
                 </Form>
             </i-col>
         </Row>
+        <Modal v-if="isSelf" v-model="showModal" @on-ok="changePassword">
+
+        </Modal>
+        <Modal v-else v-model="showModal" @on-ok="setPassword" >
+            <br>
+            <Form label-position="left" :label-width="75" :model="modalData">
+                <FormItem label="新密码" prop="password">
+                    <Input v-model="modalData.newPassword" placeholder="请输入新密码" />
+                </FormItem>
+            </Form>
+        </Modal>
     </Card>
 </template>
 
@@ -43,8 +55,11 @@ const sha1 = require('sha1');
 export default {
     data(){
         return {
-            userInfo: {},
-            role:[]
+            userInfo: {} ,
+            role:[] ,
+            isSelf: !this.$route.query.userId,
+            showModal: false,
+            modalData: {}
         }
     },
     created() {
@@ -66,11 +81,10 @@ export default {
         },
         saveUserInfo() {
             axios.post("/CoffeeOrderService/api/usermanage/setUserInfo", {userId: this.userInfo.userId,
-                 userName: this.userInfo.userName,
-                 telephone: this.userInfo.telephone,
-                 email: this.userInfo.email,
-                 password: sha1(this.userInfo.password),
-                 roles: this.userInfo.role
+                userName: this.userInfo.userName,
+                telephone: this.userInfo.telephone,
+                email: this.userInfo.email,
+                roles: this.userInfo.role
              })
             .then(response => {
                 if(response.data.success){
@@ -79,7 +93,6 @@ export default {
                 else{
                     this.$Message.error("保存失败");
                 }
-                console.log(response);
             })
             .catch(error => {
                 if (error.response) {
@@ -101,8 +114,6 @@ export default {
             axios.post("/CoffeeOrderService/api/usermanage/getRoleList", {})
             .then(response => {
                 this.role=response.data.roles;
-                console.log(response.data);
-                console.log(this.role)
             })
             .catch(error=>{
                 if (error.response) {
@@ -114,6 +125,33 @@ export default {
                     this.$Message.error("无法发送请求");
                 }
             });
+        },
+        setPassword(){
+            axios.post("/CoffeeOrderService/api/usermanage/setPassword", {userId: this.userInfo.userId, password: sha1(this.modalData.newPassword)})
+            .then(response => {
+                if(response.data.success){
+                    let pwd = this.modalData.newPassword;
+                    this.$Modal.success({
+                        title: "成功修改密码",
+                        content: `请将新密码<strong>&nbsp;${pwd}&nbsp;</strong>告知用户！`
+                    });
+                } else {
+                    this.$Message.error(response.data.msg);
+                }
+            })
+            .catch(error=>{
+                if (error.response) {
+                    if (error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else 
+                        this.$Message.warning(error.message);
+                } else {
+                    this.$Message.error("无法发送请求");
+                }
+            });
+        },
+        changePassword() {
+            this.$Message.info('功能正在开发中');
         }
     }
 }

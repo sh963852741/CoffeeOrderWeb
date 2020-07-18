@@ -65,7 +65,7 @@ export default {
     },
     mounted(){
         this.getMealDetail();
-        },
+    },
     methods:{
         getImg(){
             this.$Message.success("上传成功");
