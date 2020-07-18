@@ -64,10 +64,7 @@
                     </Select>
                 </FormItem>
                 <FormItem prop="mealName" label="餐点菜单">
-                     <Select
-                        v-model="mealInfo.menuId"
-                        style="width:200px"
-                    >
+                    <Select v-model="mealInfo.menuId" style="width:200px">
                         <Option
                             v-for="item in menuType"
                             :value="item.value"
@@ -92,11 +89,13 @@
                 <Upload
                     action="/CoffeeOrderService/api/menu/uploadImg"
                     :format="['jpg','jpeg','png']"
+                    :max-size="1024"
                     :before-upload="beforeUpload"
+                    :on-exceeded-size="handleMaxSize"
                 >
                     <Button icon="ios-cloud-upload-outline">上传图片</Button>
                 </Upload>
-                <div v-if="file.name">
+                <div v-if="file.name!==null">
                     <Tooltip content="单击下方新建按钮，图片将自动上传">
                         <Row>Upload file: {{ file.name }}</Row>
                     </Tooltip>
@@ -179,7 +178,7 @@ export default {
             createMealrules: rules.createMeal,
             mealType: [],
             menuId: "",
-            menuType:[]
+            menuType: []
         };
     },
     mounted() {
@@ -195,36 +194,35 @@ export default {
         }
     },
     methods: {
-        getMenuType(){
-            axios.post("/CoffeeOrderService/api/menu/getMenuList", {})
-                .then(response=>{
-                    if(response.data.success){
-                        this.menuType=[];
-                        for(var p in response.data.data){
+        getMenuType() {
+            axios
+                .post("/CoffeeOrderService/api/menu/getMenuList", {})
+                .then(response => {
+                    if (response.data.success) {
+                        this.menuType = [];
+                        for (var p in response.data.data) {
                             this.menuType.push({
-                                value:response.data.data[p].menuId,
-                                label:response.data.data[p].menuName
-                            })
+                                value: response.data.data[p].menuId,
+                                label: response.data.data[p].menuName
+                            });
                         }
                     }
                 })
-                .catch(error=>{
+                .catch(error => {
                     if (error.response) {
-                        if (error.response.status >= 400 && error.response.status < 600)
+                        if (
+                            error.response.status >= 400 &&
+                            error.response.status < 600
+                        )
                             this.$Message.error(error.message);
-                        else
-                            this.$Message.warning(error.message);
+                        else this.$Message.warning(error.message);
                     } else {
                         this.$Message.error("无法发送请求");
                     }
                 });
-
         },
         getmealtype() {
-            if (
-                this.menuId != undefined &&
-                this.menuId != ""
-            ) {
+            if (this.menuId != undefined && this.menuId != "") {
                 axios
                     .post("/CoffeeOrderService/api/menu/getMealBySort", {
                         mealId: this.menuId
@@ -265,10 +263,7 @@ export default {
             }
         },
         getMenuDetail() {
-            if (
-                this.menuId != undefined &&
-                this.menuId != ""
-            ) {
+            if (this.menuId != undefined && this.menuId != "") {
                 axios
                     .post("/CoffeeOrderService/api/menu/getMealByMenuId", {
                         menuId: this.menuId
@@ -281,20 +276,17 @@ export default {
                     .catch(error => {
                         console.error(error);
                     });
-            }
-            else{
+            } else {
                 axios
-                    .post("/CoffeeOrderService/api/menu/getAllMeal", {
-                    })
+                    .post("/CoffeeOrderService/api/menu/getAllMeal", {})
                     .then(response => {
-                        this.menuName ="所有餐点";
-                       this.data = response.data.data;
-                       this.menuDetail = this.data;
+                        this.menuName = "所有餐点";
+                        this.data = response.data.data;
+                        this.menuDetail = this.data;
                     })
                     .catch(error => {
                         console.error(error);
                     });
-
             }
         },
         toMealDetail(row) {
@@ -378,6 +370,12 @@ export default {
         beforeUpload(file) {
             this.file = file;
             return false;
+        },
+        handleMaxSize(file) {
+            this.$Notice.warning({
+                title: "文件大小超限",
+                desc: "文件  " + file.name + " 太大，上传文件大小不能超过1M"
+            });
         },
         upload(mealId, loadingCloser) {
             // eslint-disable-next-line
