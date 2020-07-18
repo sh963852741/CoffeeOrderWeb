@@ -49,9 +49,24 @@
                     <i-input v-model="mealInfo.mealName"></i-input>
                 </FormItem>
                 <FormItem prop="type" label="餐点类别">
-                    <Select v-model="mealInfo.type" filterable allow-create style="width:200px" @on-create="addType">
+                    <Select
+                        v-model="mealInfo.type"
+                        filterable
+                        allow-create
+                        style="width:200px"
+                        @on-create="addType"
+                    >
                         <Option
                             v-for="item in mealType"
+                            :value="item.value"
+                            :key="item.value"
+                        >{{ item.label }}</Option>
+                    </Select>
+                </FormItem>
+                <FormItem prop="mealName" label="餐点菜单">
+                    <Select v-model="mealInfo.menuId" style="width:200px">
+                        <Option
+                            v-for="item in menuType"
                             :value="item.value"
                             :key="item.value"
                         >{{ item.label }}</Option>
@@ -74,11 +89,13 @@
                 <Upload
                     action="/CoffeeOrderService/api/menu/uploadImg"
                     :format="['jpg','jpeg','png']"
+                    :max-size="1024"
                     :before-upload="beforeUpload"
+                    :on-exceeded-size="handleMaxSize"
                 >
                     <Button icon="ios-cloud-upload-outline">上传图片</Button>
                 </Upload>
-                <div v-if="file.name">
+                <div v-if="file.name!==null">
                     <Tooltip content="单击下方新建按钮，图片将自动上传">
                         <Row>Upload file: {{ file.name }}</Row>
                     </Tooltip>
@@ -156,52 +173,121 @@ export default {
             data: [],
             mealInfo: {},
             modal: false,
-            delmodal:false,
+            delmodal: false,
             file: {},
             createMealrules: rules.createMeal,
-            mealType:[],
+            mealType: [],
+            menuId: "",
+            menuType: []
         };
     },
     mounted() {
         this.getMenuDetail();
         this.getmealtype();
+        this.getMenuType();
     },
     created() {
-        this.mealInfo.menuId = this.$route.query.menuId;
+        if (this.$route.query.menuId == undefined) {
+            this.menuId = "";
+        } else {
+            this.menuId = this.$route.query.menuId;
+        }
     },
     methods: {
-        getmealtype(){
-            axios.post("/CoffeeOrderService/api/menu/getMealBySort",{mealId:this.mealInfo.menuId})
-            .then(response=>{
-                if(response.data.success){
-                   this.mealType=[];
-                    for(var val in response.data.data){
-                        
-                        this.mealType.push({
-                            value:val,
-                            label:val
-                        })
-                    }
-                    this. mealListHeader[3].filters=this.mealType;
-                }
-            })
-            .catch(error=>{
-                 console.error(error);
-            })
-        },
-        getMenuDetail() {
+        getMenuType() {
             axios
-                .post("/CoffeeOrderService/api/menu/getMealByMenuId", {
-                    menuId: this.mealInfo.menuId
-                })
+                .post("/CoffeeOrderService/api/menu/getMenuList", {})
                 .then(response => {
-                    this.menuName = response.data.menuName;
-                    this.data = response.data.data;
-                    this.menuDetail = this.data;
+                    if (response.data.success) {
+                        this.menuType = [];
+                        for (var p in response.data.data) {
+                            this.menuType.push({
+                                value: response.data.data[p].menuId,
+                                label: response.data.data[p].menuName
+                            });
+                        }
+                    }
                 })
                 .catch(error => {
-                    console.error(error);
+                    if (error.response) {
+                        if (
+                            error.response.status >= 400 &&
+                            error.response.status < 600
+                        )
+                            this.$Message.error(error.message);
+                        else this.$Message.warning(error.message);
+                    } else {
+                        this.$Message.error("无法发送请求");
+                    }
                 });
+        },
+        getmealtype() {
+            if (this.menuId != undefined && this.menuId != "") {
+                axios
+                    .post("/CoffeeOrderService/api/menu/getMealBySort", {
+                        mealId: this.menuId
+                    })
+                    .then(response => {
+                        if (response.data.success) {
+                            this.mealType = [];
+                            for (var val in response.data.data) {
+                                this.mealType.push({
+                                    value: val,
+                                    label: val
+                                });
+                            }
+                            this.mealListHeader[3].filters = this.mealType;
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            } else {
+                axios
+                    .post("/CoffeeOrderService/api/menu/getMealBySort", {})
+                    .then(response => {
+                        if (response.data.success) {
+                            this.mealType = [];
+                            for (var val in response.data.data) {
+                                this.mealType.push({
+                                    value: val,
+                                    label: val
+                                });
+                            }
+                            this.mealListHeader[3].filters = this.mealType;
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        },
+        getMenuDetail() {
+            if (this.menuId != undefined && this.menuId != "") {
+                axios
+                    .post("/CoffeeOrderService/api/menu/getMealByMenuId", {
+                        menuId: this.menuId
+                    })
+                    .then(response => {
+                        this.menuName = response.data.menuName;
+                        this.data = response.data.data;
+                        this.menuDetail = this.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            } else {
+                axios
+                    .post("/CoffeeOrderService/api/menu/getAllMeal", {})
+                    .then(response => {
+                        this.menuName = "所有餐点";
+                        this.data = response.data.data;
+                        this.menuDetail = this.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
         },
         toMealDetail(row) {
             this.$router.push({
@@ -224,8 +310,7 @@ export default {
                         this.$Message.success("删除成功");
                         this.getMenuDetail();
                         this.getmealtype();
-                    }
-                    else{
+                    } else {
                         this.$Message.error("删除失败");
                     }
                 })
@@ -286,6 +371,12 @@ export default {
             this.file = file;
             return false;
         },
+        handleMaxSize(file) {
+            this.$Notice.warning({
+                title: "文件大小超限",
+                desc: "文件  " + file.name + " 太大，上传文件大小不能超过1M"
+            });
+        },
         upload(mealId, loadingCloser) {
             // eslint-disable-next-line
             debugger;
@@ -317,24 +408,22 @@ export default {
                     loadingCloser();
                 });
         },
-        delconfirm (row) {
-                this.$Modal.confirm({
-                    title: '删除提示',
-                    content: '<p>是否要删除此餐点?</p>',
-                    onOk: () => {
-                        this.deleteMeal(row);
-                    },
-                    onCancel: () => {
-                    }
-                });
+        delconfirm(row) {
+            this.$Modal.confirm({
+                title: "删除提示",
+                content: "<p>是否要删除此餐点?</p>",
+                onOk: () => {
+                    this.deleteMeal(row);
+                },
+                onCancel: () => {}
+            });
         },
-        addType(val){
+        addType(val) {
             this.mealType.push({
-                value:val,
-                label:val
-            })
+                value: val,
+                label: val
+            });
         }
-        
     }
 };
 </script>

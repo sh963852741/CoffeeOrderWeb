@@ -6,8 +6,8 @@
                     <div class="layout-logo">咖啡厅点餐系统</div>
                     <div class="layout-nav">
                         <Dropdown>
-                            <Button type="primary">
-                                本用户
+                            <Button ghost type="text">
+                                {{login ? userInfo.userName : "未登录"}}
                                 <Icon type="ios-arrow-down"></Icon>
                             </Button>
                             <DropdownMenu slot="list">
@@ -70,8 +70,13 @@
     export default {
         data() {
             return {
-                activeMenu: this.$route.name
+                activeMenu: this.$route.name,
+                userInfo: {},
+                login: false
             }
+        },
+        mounted() {
+            this.getUserInfo();
         },
         methods: {
             logout() {
@@ -85,6 +90,30 @@
                     setTimeout(() => {
                         this.$router.push({name: "LogIn"});
                     }, 2000);
+                })
+                .catch(error => {
+                    if (error.response) {
+                        if (error.response.status >= 400 && error.response.status < 600)
+                            this.$Message.error(error.message);
+                        else 
+                            this.$Message.warning(error.message);
+                    } else {
+                        this.$Message.error("无法发送请求");
+                    }
+                });
+            },
+            getUserInfo() {
+                axios.post("/CoffeeOrderService/api/usermanage/getUserInfo", {})
+                .then(response => {
+                    if(response.data.success) {
+                        this.userInfo = response.data;
+                        this.login = true;
+                    } else {
+                        if(response.data.errorcode === 403)
+                        this.login = false;
+                        else
+                        this.$Message.warning(response.data.msg || "未知错误");
+                    }
                 })
                 .catch(error => {
                     if (error.response) {

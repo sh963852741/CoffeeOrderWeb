@@ -21,7 +21,7 @@
                         <Input prefix="ios-lock" placeholder="密码" size="large" type="password" @on-enter="logIn" v-model="logInModel.password" password/>
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" long  size="large" keypress.enter.native ref="loginbutton" @click="logIn">登录</Button>
+                        <Button type="primary" long  size="large" keypress.enter.native ref="loginbutton" :loading="loading" @click="logIn">登录</Button>
                         <Checkbox :value="false" size="small">下次自动登录</Checkbox>
                     </FormItem>
                 </Form>
@@ -67,7 +67,8 @@ const axios = require("axios");
                     userName:"",
                     password:""
                 },
-                rules: rules.login
+                rules: rules.login,
+                loading:false
             }
         },
         mounted() {},
@@ -75,6 +76,7 @@ const axios = require("axios");
             logIn() {
                 this.$refs["login"].validate((valid) => {
                     if (valid) {
+                        this.loading=true;
                         axios.post("/CoffeeOrderService/api/usermanage/login", {userName: this.logInModel.userName, password: sha1(this.logInModel.password)})
                         .then(response => {
                             if(response.data.success){
@@ -83,10 +85,12 @@ const axios = require("axios");
                                     this.$router.push({name: "OrderMenu"});
                                 }, 1500);
                             } else {
+                                this.loading=false;
                                 this.$Message.error(response.data.msg);
                             }
                         })
                         .catch(error => {
+                            this.loading=false;
                             console.log(error);
                         });
                     } else {
@@ -94,9 +98,6 @@ const axios = require("axios");
                     }
                 });
             },
-            log(){
-                console.log("122")
-            }
         }
 }
 </script>

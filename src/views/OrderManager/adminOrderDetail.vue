@@ -1,18 +1,20 @@
 <template>
     <Card title="订单详情">
-        <Row type="flex" :gutter="16" align="middle">
-            <Button @click="backward">
-                <Icon type="ios-arrow-back" />返回
-            </Button>
-            <i-col>
-                <Input search enter-button placeholder="搜索餐点"/>
-            </i-col>
-        </Row>
-        <Divider />
-        <Row>
-            <i-table border :columns="mealListHeader" :data="mealListContent">
-            </i-table>
-        </Row>  
+            <Row type="flex" :gutter="16" align="middle">
+                <i-col>
+                    <Button @click="backward">
+                        <Icon type="ios-arrow-back" />返回
+                    </Button>
+                </i-col>
+                <i-col>
+                    <Input search enter-button placeholder="搜索餐点"/>
+                </i-col>
+            </Row>
+            <Divider />
+            <Row>
+                <i-table border :columns="mealListHeader" :data="mealListContent">
+                </i-table>
+            </Row>
         <Modal v-model="modal" title="新建餐点" loading  ok-text="新建">
             <Form :model="mealModel" label-position="left" :label-width="80">
                 <FormItem label="餐点名">

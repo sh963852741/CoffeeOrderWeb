@@ -15,7 +15,7 @@
                     <Button type="primary" style="margin-right:15px;" @click="toOrderDetail(row)">详情</Button>
                 </template>
             </i-table>
-        </Row>  
+        </Row>
         <Modal v-model="modal" title="新建订单" loading  ok-text="新建">
             <Form :model="orderModel" label-position="left" :label-width="80">
                 <FormItem label="订单名">
