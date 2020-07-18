@@ -24,10 +24,10 @@
                             ></i-button>
                         </template>
                         <template v-slot:allprice="props">
-                            <strong>{{getSingleAllprice(props.row.quality,props.row.price)}}</strong>
+                            <strong>{{getSingleAllprice(props.row.quality, props.row.price)}}</strong>
                         </template>
-                        <template slot-scope="{row,index}" slot="action">
-                            <i-button type="error"  @click="delShopCart(row,index)">删除</i-button>
+                        <template slot-scope="{row, index}" slot="action">
+                            <i-button type="error" @click="delShopCart(row,index)">删除</i-button>
                         </template>
                     </Table>
                 </Row>
