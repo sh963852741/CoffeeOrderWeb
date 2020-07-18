@@ -37,7 +37,7 @@
                         <i-col >已选 {{getSelectCounts}} 件</i-col>
                         <i-col>共计 {{getSelectPrice}} 元</i-col>
                         <i-col>
-                            <i-button type="primary">结算</i-button>
+                            <i-button type="primary" @click="createOrder">结算</i-button>
                         </i-col>
                     </Row>
                 </Card>
@@ -89,6 +89,7 @@ export default {
             selectCounts:0,
             selectPrice:0,
             selectmeal:[],
+            order:{data:[]}
         };
     },
     mounted() {
@@ -96,7 +97,6 @@ export default {
     },
     computed:{
         getSelectCounts:function(){
-            console.log(this.selectmeal.length)
             return this.selectmeal.length;
         },
         getSelectPrice:function(){
@@ -104,7 +104,6 @@ export default {
             for(var i=0;i<this.selectmeal.length;i++){
                 all+=(this.selectmeal[i].price*this.selectmeal[i].quality)
             }
-            console.log(all)
             return all;
 
         }
@@ -182,6 +181,42 @@ export default {
         selectChange(selection){
             this.selectmeal=selection;
             console.log(selection);
+        },
+        createOrder(){
+            if(this.selectmeal.length==0){
+                this.$Modal.warning({
+                            title:"提示",
+                            content:"尚未选中任何餐点" 
+                        });
+                return
+            }
+            this.order.data=[];
+             for(var i=0;i<this.selectmeal.length;i++){
+                 this.order.data.push({
+                     mealId:this.selectmeal[i].mealId,
+                     amount:this.selectmeal[i].quality
+                 })
+            }
+            axios.post("/CoffeeOrderService/api/ordermanage/createOrder",this.order)
+            .then(response=>{
+                if(response.data.success){
+                    for(var i=0;i<this.selectmeal.length;i++){
+                        axios.post("/CoffeeOrderService/api/shoppingcart/delShoppingCart",{mealId:this.selectmeal[i].mealId})
+                        .then()
+                        .catch(error=>{
+                            this.$Message.error(error.data.msg);
+                        })
+                    }
+                    this.getAllShop();
+                    this.$Message.success("创建成功");
+                }
+                else{
+                    this.$Message.error("创建失败");
+                }
+            })
+            .catch(error=>{
+                this.$Message.error(error.data.msg);
+            })
         }
     }
 };
