@@ -58,6 +58,13 @@ const routes = [
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "users" */ '@/views/UserManager/UserDetail.vue')
     },
+    //个人中心
+    {
+      path: '/usermanager/usercenter',
+      name: 'UserCenter',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "users" */ '@/views/UserManager/UserCenter.vue')
+    },
     //前台用户订餐页面
     {
       path: '/usermenu/ordermenu',

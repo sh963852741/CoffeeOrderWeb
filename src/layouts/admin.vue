@@ -11,7 +11,7 @@
                                 <Icon type="ios-arrow-down"></Icon>
                             </Button>
                             <DropdownMenu slot="list">
-                                <DropdownItem name="profile" @click.native="$router.push({'name': 'UserDetail'})">个人中心</DropdownItem>
+                                <DropdownItem name="profile" @click.native="$router.push({'name': 'UserCenter'})">个人中心</DropdownItem>
                                 <DropdownItem name="logout" @click.native="logout">注销</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
