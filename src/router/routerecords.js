@@ -113,6 +113,13 @@ const routes = [
       name: 'RoleManager',
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "role" */ '@/views/UserManager/RoleManager.vue')
-    }
+    },
+    //地址列表
+    {
+      path: '/usermenu/addressList',
+      name: 'addressList',
+      meta: {layout: "account"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/AddressList.vue')
+    },
 ]
 export default routes;
