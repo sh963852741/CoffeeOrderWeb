@@ -44,6 +44,13 @@ const routes = [
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "menu" */ '@/views/MenuManager/MenuDetail.vue')
     },
+    //餐点分析页
+    {
+      path: '/menumanager/menuanalyze',
+      name: 'MenuAnalyze',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "menu" */ '@/views/MenuManager/MenuAnalyze.vue')
+    },
     //用户列表页
     {
       path: '/usermanager/userlist',

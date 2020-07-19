@@ -28,7 +28,7 @@
                             </template>
                             <MenuItem name="MenuList" :to="{name: 'MenuList'}">菜单管理</MenuItem>
                             <MenuItem name="MenuDetail" :to="{name: 'MenuDetail'}">菜品管理</MenuItem>
-                            <MenuItem name="1-3">菜品分析</MenuItem>
+                            <MenuItem name="MenuAnalyze" :to="{name: 'MenuAnalyze'}">菜品分析</MenuItem>
                         </Submenu>
                         <Submenu name="2">
                             <template slot="title">
