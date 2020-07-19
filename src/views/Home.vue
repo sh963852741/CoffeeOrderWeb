@@ -22,7 +22,7 @@
                     </FormItem>
                     <FormItem>
                         <Button type="primary" long  size="large" keypress.enter.native ref="loginbutton" :loading="loading" @click="logIn">登录</Button>
-                        <Checkbox :value="false" size="small">下次自动登录</Checkbox>
+                        <Checkbox v-model="logInModel.rememberPwd" size="small">下次自动登录</Checkbox>
                     </FormItem>
                 </Form>
                 <Row type="flex" justify="center" align="middle">
@@ -60,18 +60,25 @@
 import rules from "@/common/formRule.js"
 const sha1 = require('sha1');
 const axios = require("axios");
+import app from "@/common/app.js"
     export default {
         data () {
             return {
                 logInModel: {
                     userName:"",
-                    password:""
+                    password:"",
+                    rememberPwd: false
                 },
                 rules: rules.login,
                 loading:false
             }
         },
         mounted() {},
+        created() {
+            if(app.loginSettings.rememberPwd){
+                this.logInModel = app.loginSettings;
+            }
+        },
         methods: {
             logIn() {
                 this.$refs["login"].validate((valid) => {
@@ -81,6 +88,7 @@ const axios = require("axios");
                         .then(response => {
                             if(response.data.success){
                                 this.$Message.success("登录成功");
+                                localStorage.setItem("loginSettings", JSON.stringify(this.logInModel));
                                 setTimeout(()=>{
                                     this.$router.push({name: "OrderMenu"});
                                 }, 1500);

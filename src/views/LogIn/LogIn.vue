@@ -1,6 +1,6 @@
 <template>
     <Row type="flex" justify="center" style="margin-top: 15vh">
-        <i-col span="5">
+        <i-col span="4">
             <Card dis-hover>
                 <template v-slot:title>
                     <Row style="font-size: 28px; text-align: center">
@@ -10,15 +10,14 @@
                 <Row>
                     <Form :model="logInModel" :rules="rules" ref="login">
                         <FormItem prop="userName" label="用户名">
-                            <i-input v-model="logInModel.userName" placeholder="请输入您的用户名"></i-input>
+                            <i-input v-model="logInModel.userName" placeholder="请输入您的用户名" size="large"></i-input>
                         </FormItem>
                         <FormItem prop="password" label="密码">
-                            <i-input v-model="logInModel.password" placeholder="请输入您的密码" @on-enter="logIn" type="password" password></i-input>
+                            <i-input v-model="logInModel.password" placeholder="请输入您的密码" size="large" @on-enter="logIn" type="password" password></i-input>
                         </FormItem>
                         <FormItem>
-                            <Row type="flex" justify="center"> 
-                                <Button type="primary" @click="logIn" :loading="loading">登录后台</Button>
-                            </Row> 
+                            <Button type="primary" @click="logIn" :loading="loading" size="large" long>登录后台</Button>
+                            <Checkbox v-model="logInModel.rememberPwd" size="small">下次自动登录</Checkbox>
                         </FormItem>
                     </Form>
                 </Row>
@@ -36,15 +35,23 @@
 
 <script>
 import rules from "@/common/formRule.js"
+import app from "@/common/app.js"
 const axios = require("axios");
 const sha1 = require('sha1');
 export default {
     data() {
         return {
-            logInModel: {},
+            logInModel: {
+                rememberPwd: false
+            },
             rules: rules.login,
-            loading:false
+            loading: false
         };
+    },
+    created() {
+        if(app.loginSettings.rememberPwd){
+            this.logInModel = app.loginSettings;
+        }
     },
     mounted() {
         
@@ -58,6 +65,7 @@ export default {
                     .then(response => {
                         if(response.data.success){
                             this.$Message.success("登录成功");
+                            localStorage.setItem("loginSettings", JSON.stringify(this.logInModel));
                             setTimeout(()=>{
                                 this.$router.push({name: "UserList"});
                             }, 1500);

@@ -86,6 +86,13 @@ const routes = [
         meta: {layout: "account"},
         component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderList.vue')
     },
+    //历史订单详细页
+    {
+        path: '/usermenu/orderlist',
+        name: 'OrderDetail',
+        meta: {layout: "account"},
+        component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderDetail.vue')
+    },
     //后台订单列表页
     {
       path: '/orderManager/orderlist',
