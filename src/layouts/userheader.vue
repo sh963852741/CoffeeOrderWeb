@@ -19,7 +19,7 @@
                                 <Icon type="md-person"/>我的账户
                             </template>
                             <MenuItem name="ShoppingCart" @click.native="toCart">购物车</MenuItem >
-                            <MenuItem name="center">个人中心</MenuItem >
+                            <MenuItem name="center" @click.native="toAccount">个人中心</MenuItem >
                         </Submenu>
                         <Submenu name="4">
                             <template slot="title">
@@ -52,6 +52,10 @@ export default {
         },
         toCart(){
             const {href} =this.$router.resolve({name: 'ShoppingCart'});
+            window.open(href, '_blank');
+        },
+        toAccount(){
+            const {href} =this.$router.resolve({name: 'OrderList'});
             window.open(href, '_blank');
         }
     }
