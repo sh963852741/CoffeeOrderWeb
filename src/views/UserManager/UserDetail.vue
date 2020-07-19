@@ -15,7 +15,7 @@
                         <i-input v-model="userInfo.userName"></i-input>
                     </FormItem >
                     <FormItem label="密码">
-                        <Button v-if="isSelf" @click="showModal = true">更改密码</Button>
+                        <Button v-if="isSelf" >进入个人中心</Button>
                         <Button v-else @click="showModal = true">设置新密码</Button>
                     </FormItem >
                     <FormItem label="电话">

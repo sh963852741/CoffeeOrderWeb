@@ -78,10 +78,7 @@ export default {
                     })
                     .catch(error=>{
                         if (error.response) {
-                            if (error.response.status >= 400 && error.response.status < 600)
-                                this.$Message.error(error.message);
-                            else 
-                                this.$Message.warning(error.message);
+                            this.$Message.error(error.message);
                         } else {
                             this.$Message.error("无法发送请求");
                         }
