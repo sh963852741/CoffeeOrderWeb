@@ -1,4 +1,4 @@
-<template>
+<!--template>
     <div class="layout">
         <Layout>
             <Header :style="{background:'#fff'}">
@@ -51,11 +51,11 @@
                             </div>
                                 
                                      <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" >
-                                    <MenuItem name="1">追踪订单</MenuItem>
-                                    <MenuItem name="2">订单记录</MenuItem>
-                                    <MenuItem name="3">地址簿</MenuItem>
-                                    <MenuItem name="4">账户信息</MenuItem>
-                                    <MenuItem name="5">修改密码</MenuItem>
+                                    <MenuItem name="1" ><Icon type="ios-list-box" />追踪订单</MenuItem>
+                                    <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
+                                    <MenuItem name="3"><Icon type="ios-book" />地址簿</MenuItem>
+                                    <MenuItem name="4"><Icon type="ios-person" />账户信息</MenuItem>
+                                    <MenuItem name="5"><Icon type="ios-key" />修改密码</MenuItem>
                                     </Menu>
                            
                            
@@ -101,6 +101,66 @@
 
     </div>
     
+</template-->
+
+<template>
+    <div class="layout">
+        <Layout>
+            <Header>
+                <Menu mode="horizontal" theme="light" active-name="1">
+                    <Row type="flex" align="middle" class="layout-logo">
+                        <img src="@/assets/coffee-logo.png" width="60px" height="40px" alt="coffee-logo"/> 
+                        <span>全能咖啡厅</span>
+                    </Row>
+                    <div class="layout-nav">
+                        <MenuItem name="Home" :to="{name:'Home'}">
+                            <Icon type="md-home" />首&nbsp;页
+                        </MenuItem>
+                        <MenuItem name="OrderMenu" :to="{name:'OrderMenu'}">
+                                <Icon type="ios-paper"/>浏览菜单
+                        </MenuItem>
+                        <Submenu name="3">
+                            <template slot="title">
+                                <Icon type="md-person"/>我的账户
+                            </template>
+                            <MenuItem name="ShoppingCart" :to="{name: 'ShoppingCart'}">购物车</MenuItem >
+                            <MenuItem name="center" :to="{name:'OrderList'}">个人中心</MenuItem >
+                        </Submenu>
+                        <Submenu name="4">
+                            <template slot="title">
+                                <Icon type="md-help-circle" />帮&nbsp;助&nbsp;
+                            </template>
+                            <MenuItem name="4-1">网站条款</MenuItem >
+                            <MenuItem name="4-2">常见问题</MenuItem >
+                            <MenuItem name="4-3">订餐须知</MenuItem >
+                            <MenuItem name="4-4">餐饮公示</MenuItem >
+                        </Submenu>
+                    </div>
+                </Menu>
+            </Header>
+            <Content>
+                <Layout :style="{minHeight:'380px',margin:'50px 0',background: '#fff'}">
+                    <Sider hide-trigger :style="{background: '#fff',padding:'20px 0px 0px 0px'}" >
+                        <div style="font-size:20px;margin:10px 10px;"> 
+                            <Icon type="md-person" size="24"/>
+                            我的账户
+                        </div>    
+                        <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" >
+                            <MenuItem name="1" ><Icon type="ios-list-box" />追踪订单</MenuItem>
+                            <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
+                            <MenuItem name="3" :to="{name:'addressList'}"><Icon type="ios-book" />地址簿</MenuItem>
+                            <MenuItem name="4"><Icon type="ios-person" />账户信息</MenuItem>
+                            <MenuItem name="5"><Icon type="ios-key" />修改密码</MenuItem>
+                            </Menu>  
+                    </Sider>
+                    <slot></slot>
+                </Layout> 
+            </Content>
+            <Footer class="layout-footer-center">
+                2020 &copy; 精神小伙点餐吧
+            </Footer>
+        </Layout>
+    </div>
 </template>
 
 
@@ -136,7 +196,6 @@ export default {
 }
 .layout-footer-center{
     text-align: center;
-    background: rgb(160,115,50);
 }
 .demo-carousel{
     height:430px;
@@ -164,4 +223,14 @@ export default {
     font-size: 25px;
 }
 
+.ivu-layout-header {
+    background: #FFF;
+    padding: 0 10%;
+    height: 60px;
+    line-height: 60px;
+}
+.ivu-layout-content{
+    padding: 0 10%;
+}
 </style>
+
