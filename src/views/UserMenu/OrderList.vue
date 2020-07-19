@@ -14,33 +14,7 @@
                         </i-col>
                     </Row>
                 <Tabs v-model="value">
-                    <TabPane label="已完成" name="name1" @click="resetData">
-                        <Table stripe :columns="columns12" :data="finishedOrderList">
-                        <template slot-scope="{ row }" slot="orderId">
-                        <strong>{{ row.orderId }}</strong>
-                        </template>
-                        <template slot-scope="{ row }" slot="totalPrice">
-                        ¥{{ row.totalPrice }}元
-                        </template>
-                        <template slot-scope="{ row }" slot="action">
-                            <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
-                        </template>
-                    </Table>
-                    </TabPane>
-                    <TabPane label="进行中" name="name2" @on-click="resetData">
-                        <Table stripe :columns="columns12" :data="unfinishedOrderList">
-                            <template slot-scope="{ row }" slot="orderId">
-                            <strong>{{ row.orderId }}</strong>
-                            </template>
-                            <template slot-scope="{ row }" slot="totalPrice">
-                            ¥{{ row.totalPrice }}元
-                            </template>
-                            <template slot-scope="{ row }" slot="action">
-                                <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
-                            </template>
-                        </Table>
-                    </TabPane>
-                    <TabPane label="所有订单" name="name3" @click="resetData">
+                    <TabPane label="所有订单" name="name1" @click="resetData">
                         <Table stripe :columns="columns12" :data="data">
                             <template slot-scope="{ row }" slot="orderId">
                             <strong>{{ row.orderId }}</strong>
@@ -53,6 +27,33 @@
                             </template>
                         </Table>
                     </TabPane>
+                    <TabPane label="已完成" name="name2" @click="resetData">
+                        <Table stripe :columns="columns12" :data="finishedOrderList">
+                        <template slot-scope="{ row }" slot="orderId">
+                        <strong>{{ row.orderId }}</strong>
+                        </template>
+                        <template slot-scope="{ row }" slot="totalPrice">
+                        ¥{{ row.totalPrice }}元
+                        </template>
+                        <template slot-scope="{ row }" slot="action">
+                            <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
+                        </template>
+                    </Table>
+                    </TabPane>
+                    <TabPane label="进行中" name="name3" @on-click="resetData">
+                        <Table stripe :columns="columns12" :data="unfinishedOrderList">
+                            <template slot-scope="{ row }" slot="orderId">
+                            <strong>{{ row.orderId }}</strong>
+                            </template>
+                            <template slot-scope="{ row }" slot="totalPrice">
+                            ¥{{ row.totalPrice }}元
+                            </template>
+                            <template slot-scope="{ row }" slot="action">
+                                <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
+                            </template>
+                        </Table>
+                    </TabPane>
+                    
                 </Tabs>
             </Content>
         </Layout>
