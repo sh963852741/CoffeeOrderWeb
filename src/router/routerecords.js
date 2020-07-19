@@ -44,6 +44,13 @@ const routes = [
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "menu" */ '@/views/MenuManager/MenuDetail.vue')
     },
+    //餐点分析页
+    {
+      path: '/menumanager/menuanalyze',
+      name: 'MenuAnalyze',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "menu" */ '@/views/MenuManager/MenuAnalyze.vue')
+    },
     //用户列表页
     {
       path: '/usermanager/userlist',
@@ -57,6 +64,13 @@ const routes = [
       name: 'UserDetail',
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "users" */ '@/views/UserManager/UserDetail.vue')
+    },
+    //个人中心
+    {
+      path: '/usermanager/usercenter',
+      name: 'UserCenter',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "users" */ '@/views/UserManager/UserCenter.vue')
     },
     //前台用户订餐页面
     {
@@ -120,6 +134,13 @@ const routes = [
       name: 'ForgotPwd',
       meta: {layout: "empty"},
       component: () => import(/* webpackChunkName: "users" */ '@/views/LogIn/ForgotPwd.vue')
-    }
+    },
+    //地址列表
+    {
+      path: '/usermenu/addressList',
+      name: 'addressList',
+      meta: {layout: "account"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/AddressList.vue')
+    },
 ]
 export default routes;
