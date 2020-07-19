@@ -148,7 +148,7 @@
                         <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" >
                             <MenuItem name="1" ><Icon type="ios-list-box" />追踪订单</MenuItem>
                             <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
-                            <MenuItem name="3"><Icon type="ios-book" />地址簿</MenuItem>
+                            <MenuItem name="3" :to="{name:'addressList'}"><Icon type="ios-book" />地址簿</MenuItem>
                             <MenuItem name="4"><Icon type="ios-person" />账户信息</MenuItem>
                             <MenuItem name="5"><Icon type="ios-key" />修改密码</MenuItem>
                             </Menu>  

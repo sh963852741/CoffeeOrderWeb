@@ -3,16 +3,16 @@
         <Layout :style="{minHeight: '300px',background:'#fff',padding:'20px '}">
             <Content>
                 <Row type="flex">
-                        <i-col span="6">
-                            <div style="font-size:20px;margin:10px 0;">   
-                                订单记录
-                            </div>
-                        </i-col>
-                        <i-col span="8"></i-col>
-                        <i-col span="10" style="padding:10px 0;">
-                            <Input search enter-button placeholder="请输入日期：年-月-日" @on-search="searchFinishedOrder"/>
-                        </i-col>
-                    </Row>
+                    <i-col span="6">
+                        <div style="font-size:20px;margin:10px 0;">   
+                            订单记录
+                        </div>
+                    </i-col>
+                    <i-col span="8"></i-col>
+                    <i-col span="10" style="padding:10px 0;">
+                        <Input search enter-button placeholder="请输入日期：年-月-日" @on-search="searchFinishedOrder"/>
+                    </i-col>
+                </Row>
                 <Tabs v-model="value">
                     <TabPane label="所有订单" name="name1" @click="resetData">
                         <Table stripe :columns="columns12" :data="data">
@@ -122,12 +122,17 @@ export default {
         getOrderListByUserId(){
             axios.post('/CoffeeOrderService/api/ordermanage/getOrderListByUserId',{})
             .then(response=>{
+                if(response.data.success){
                     this.data = response.data.data;
                     this.data3=this.data;
                     this.data1=this.data.filter(e=>e.status.indexOf("已完成")!==-1);
                     this.data2=this.data.filter(e=>e.status.indexOf("已创建")!==-1);
                     this.finishedOrderList=this.data1;
                     this.unfinishedOrderList= this.data2;
+                }
+                else{
+                    this.$Message.error(response.data.msg)
+                }
                 })
                 .catch(error=>{
                     if (error.response) {
