@@ -15,7 +15,6 @@
                     <Button type="primary" style="margin-right:15px;" @click="toOrderDetail(row)">详情</Button>
                 </template>
             </i-table>
-            <Page :total="dataCount" :page-size="pageSize" show-total @on-change="changePage" style="margin-top:15px;"/>   
         </Row>
         <Modal v-model="modal" title="新建订单" loading  ok-text="新建">
             <Form :model="orderModel" label-position="left" :label-width="80">
@@ -69,15 +68,9 @@ const axios = require("axios");
                 axios.post("/CoffeeOrderService/api/ordermanage/getAllOrder", {})
                 .then(response=> {
                     this.orderListContent = response.data.data;
-                    this.dataCount= this.orderListContent.length;
                     this.orderListContent.forEach(v=>{
                         v.totalPrice = Math.round(v.totalPrice * 100) / 100;
                     })
-                    if(this.dataCount<this.pageSize) {
-                        this.showlist = this.orderListContent;
-                    } else {
-                        this.showlist = this.orderListContent.slice(0,this.pageSize)
-                    }
                 })
                 .catch(error=>{
                     if (error.response) {
@@ -92,11 +85,6 @@ const axios = require("axios");
             },
             toOrderDetail(row) {
                 this.$router.push({name:"adminOrderDetail", query:{orderId: row.orderId}});
-            },
-            changePage(index) {
-                var start = (index-1)*this.pageSize;
-                var end = index*this.pageSize;
-                this.showlist = this.orderListContent.slice(start,end);
             }
         }
     }
