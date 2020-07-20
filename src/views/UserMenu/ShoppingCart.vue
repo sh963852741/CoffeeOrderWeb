@@ -194,13 +194,17 @@ export default {
              for(var i=0;i<this.selectmeal.length;i++){
                  this.order.data.push({
                      mealId:this.selectmeal[i].mealId,
-                     amount:this.selectmeal[i].quality
+                     quality:this.selectmeal[i].quality,
+                     mealName:this.selectmeal[i].mealName,
+                     price:this.selectmeal[i].price,
+                     allprice:this.getSingleAllprice(this.selectmeal[i].quality,this.selectmeal)
+
                  })
             }
             this.$router.push({
                 name: "CreateOrder",
-                params: {selectMeal:this.selectmeal,total:this.getSelectPrice}  
-                });  
+                params: {selectMeal:this.order.data,total:this.getSelectPrice}  
+                });
         }
     }
 };
