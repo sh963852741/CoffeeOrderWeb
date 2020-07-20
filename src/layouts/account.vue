@@ -108,7 +108,7 @@
         <Layout>
             <Header>
                 <Menu mode="horizontal" theme="light" active-name="1">
-                    <Row type="flex" align="middle" class="layout-logo">
+                    <Row type="flex" align="middle" class="layout-logo" @click.native="$router.push({'name': 'Home'})">
                         <img src="@/assets/coffee-logo.png" width="60px" height="40px" alt="coffee-logo"/> 
                         <span>全能咖啡厅</span>
                     </Row>
@@ -126,7 +126,7 @@
                             <MenuItem name="ShoppingCart" :to="{name: 'ShoppingCart'}">购物车</MenuItem >
                             <MenuItem name="center" :to="{name:'OrderList'}">个人中心</MenuItem >
                         </Submenu>
-                        <Submenu name="4">
+                        <Submenu name="4" :disabled="true">
                             <template slot="title">
                                 <Icon type="md-help-circle" />帮&nbsp;助&nbsp;
                             </template>
@@ -166,7 +166,7 @@
 
 <script>
 export default {
-    
+  
 }
 </script>
 
@@ -179,20 +179,17 @@ export default {
     overflow: hidden;
 }
 .layout-logo{
-    width: 300px;
-    height: 40px;
-    background: white;
+    background: #FFF;
     border-radius: 3px;
     float: left;
     position: relative;
-    top: 10px;
-    left: 20px;
-    font-size:25px;
+    margin-left: 64px;
+    cursor: pointer; 
 }
 .layout-nav{
-    width: 555px;
+    width: 480px;
     margin: 0 auto;
-    margin-right: 20px;
+    margin-right: 64px;
 }
 .layout-footer-center{
     text-align: center;
