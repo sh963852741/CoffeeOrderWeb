@@ -16,7 +16,8 @@
                     &nbsp;
                     <i-button type="error" @click="delUser(props.row)">删除</i-button>
                 </template>
-            </i-table>    
+            </i-table>
+            <Page :total="dataCount" :page-size="pageSize" show-total show-sizer @on-page-size-change="pageSizeChange" @on-change="changePage" style="margin-top:15px;"/>    
         </Row>
         <Modal v-model="modal" title="新建用户" loading @on-ok="asyncSubmit" ok-text="新建">
             <Form :model="userInfo" label-position="left" :label-width="80">
@@ -61,6 +62,11 @@ export default {
                 }
             ],
             userlist: [],
+            //每页显示用户数
+            pageSize:15,
+            page:1,
+            //总条数
+            dataCount: 0,
             data: [],
             userInfo: {},
             modal: false
@@ -71,10 +77,11 @@ export default {
     },
     methods:{
         getUserlist() {
-            axios.post("/CoffeeOrderService/api/usermanage/getUserList", {})
+            axios.post("/CoffeeOrderService/api/usermanage/getUserList", {page: this.page, pageSize: this.pageSize})
             .then(response => {
                 if(response.data.success) {
                     this.data = response.data.data;
+                    this.dataCount = response.data.totalRows;
                     this.userlist = this.data;
                 } else {
                     this.$Message.warning(response.data.msg || "未知错误");
@@ -90,6 +97,14 @@ export default {
                     this.$Message.error("无法发送请求");
                 }
             });
+        },
+        changePage(index) {
+            this.page = index;
+            this.getUserlist();
+        },
+        pageSizeChange (pz) {
+            this.pageSize = pz;
+            this.getUserlist();
         },
         toDetail(row) {
             this.$router.push({name:"UserDetail", query:{userId: row.userId}});
