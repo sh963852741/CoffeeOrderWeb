@@ -5,12 +5,15 @@
                 <Button type="primary" @click="modal = true">新建用户</Button>
             </i-col>
             <i-col>
+                <Button type="primary" @click="exportTable">导出Excel</Button>
+            </i-col>
+            <i-col>
                 <i-input placeholder="请输入用户名进行搜索" search enter-button @on-search="searchUser"></i-input>
             </i-col>
         </Row>
         <Divider />
         <Row>
-            <i-table stripe :columns="columns" :data="userlist">
+            <i-table stripe :columns="columns" :data="userlist" ref="userTable">
                 <template v-slot:action="props">
                     <i-button type="primary" @click="toDetail(props.row)">详情</i-button>
                     &nbsp;
@@ -157,8 +160,15 @@ export default {
             .finally(() => {
                 this.modal = false;
             });
+        },
+        exportTable() {
+            this.$refs.userTable.exportCsv({
+                filename: "用户列表",
+                original: false,
+                columns: this.columns,
+                data: this.userlist
+            });
         }
-       
     }
 }
 </script>
