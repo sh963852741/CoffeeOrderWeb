@@ -222,50 +222,45 @@ export default {
                 });
         },
         getmealtype() {
-            if (this.menuId != undefined && this.menuId != "") {
-                axios
-                    .post("/CoffeeOrderService/api/menu/getMealBySort", {
-                        mealId: this.menuId
-                    })
-                    .then(response => {
-                        if (response.data.success) {
-                            this.mealType = [];
-                            for (var val in response.data.data) {
-                                this.mealType.push({
-                                    value: val,
-                                    label: val
-                                });
-                            }
-                            this.mealListHeader[3].filters = this.mealType;
+            if (this.menuId) {
+                axios.post("/CoffeeOrderService/api/menu/getMealByKind", { mealId: this.menuId })
+                .then(response => {
+                    if (response.data.success) {
+                        this.mealType = [];
+                        for (let val of response.data.data) {
+                            this.mealType.push({
+                                value: val,
+                                label: val
+                            });
                         }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
+                        this.mealListHeader[3].filters = this.mealType;
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
             } else {
-                axios
-                    .post("/CoffeeOrderService/api/menu/getMealBySort", {})
-                    .then(response => {
-                        if (response.data.success) {
-                            this.mealType = [];
-                            for (var val in response.data.data) {
-                                this.mealType.push({
-                                    value: val,
-                                    label: val
-                                });
-                            }
-                            this.mealListHeader[3].filters = this.mealType;
+                axios.post("/CoffeeOrderService/api/menu/getMealByKind", {})
+                .then(response => {
+                    if (response.data.success) {
+                        this.mealType = [];
+                        for (let val of response.data.data) {
+                            this.mealType.push({
+                                value: val,
+                                label: val
+                            });
                         }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
+                        this.mealListHeader[3].filters = this.mealType;
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
             }
         },
         getMenuDetail() {
-            if (this.menuId != undefined && this.menuId != "") {
-                axios
-                    .post("/CoffeeOrderService/api/menu/getMealByMenuId", {
+            if (this.menuId) {
+                axios.post("/CoffeeOrderService/api/menu/getMealByMenuId", {
                         menuId: this.menuId
                     })
                     .then(response => {

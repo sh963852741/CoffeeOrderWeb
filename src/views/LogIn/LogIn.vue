@@ -26,7 +26,7 @@
                     <Divider type="vertical" />
                     <Button size="small" type="text" :to="{name: 'Home'}">切换前台</Button>
                     <Divider type="vertical" />
-                    <Button size="small" type="text">找回密码</Button>
+                    <Button size="small" type="text" :to="{name: 'ForgotPwd'}">找回密码</Button>
                 </Row>
             </Card>
         </i-col>
@@ -70,14 +70,19 @@ export default {
                                 this.$router.push({name: "UserList"});
                             }, 1500);
                         } else {
-                            this.loading=false;
                             this.$Message.error(response.data.msg);
                         }
                     })
                     .catch(error => {
+                        if (error.response) {
+                            this.$Message.error(error.message);
+                        } else {
+                            this.$Message.error("无法发送请求");
+                        }
+                    })
+                    .finally(() => {
                         this.loading=false;
-                        console.log(error);
-                    });
+                    })
                 } else {
                     console.log(valid)
                 }

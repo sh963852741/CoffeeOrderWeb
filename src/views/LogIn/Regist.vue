@@ -70,7 +70,7 @@ export default {
                         if(response.data.success){
                             this.$Message.success("注册成功，跳转至登录页面. . .");
                             setTimeout(()=>{
-                                this.$router.push({name: "LogIn"});
+                                window.history.go(-1);
                             }, 1500);
                         } else {
                             this.$Message.error(response.data.msg);
@@ -78,10 +78,7 @@ export default {
                     })
                     .catch(error=>{
                         if (error.response) {
-                            if (error.response.status >= 400 && error.response.status < 600)
-                                this.$Message.error(error.message);
-                            else 
-                                this.$Message.warning(error.message);
+                            this.$Message.error(error.message);
                         } else {
                             this.$Message.error("无法发送请求");
                         }

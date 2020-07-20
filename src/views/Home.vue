@@ -12,7 +12,7 @@
                     <div class="carousel-pic">1</div>
                 </CarouselItem>
             </Carousel>
-            <Card class="login-box" dis-hover :padding="24">
+            <Card class="login-box" dis-hover :padding="24" style="margin-right:20px">
                 <Tabs value="name1">
                     <TabPane label="密码登录" name="name1">
                         <Form  style="margin-top: 16px" :model="logInModel" :rules="rules" ref="login">
@@ -27,9 +27,9 @@
                                 <Checkbox v-model="logInModel.rememberPwd" size="small">下次自动登录</Checkbox>
                             </FormItem>
                              <Row type="flex" justify="center" align="middle">
-                                <Button size="small" type="text">注册用户</Button>
+                                <Button size="small" type="text" :to="{name: 'Regist'}">注册用户</Button>
                                 <Divider type="vertical" />
-                                <Button size="small" type="text">忘记密码</Button>
+                                <Button size="small" type="text" :to="{name: 'ForgotPwd'}">忘记密码</Button>
                             </Row>
                         </Form>
                     </TabPane>
@@ -39,10 +39,14 @@
                                 <Input prefix="ios-phone-portrait" placeholder="请输入手机号" size="large" clearable v-model="logInByMobileModel.phoneNumber"/>
                             </FormItem>
                             <FormItem prop="verificationCode">
-                                <i-input prefix="md-keypad" placeholder="请输入验证码" size="large" v-model="logInByMobileModel.verificationCode">
-                                    <Icon type="md-keypad"  slot="prepend"/>
-                                    <Button slot="append" @click="getVerificationCode" size="large">获取验证码</Button>
+                                <Row type="flex" justify="space-between">
+                                <i-input prefix="md-keypad" style="width: 60%" placeholder="请输入验证码" size="large" v-model="logInByMobileModel.verificationCode">
+                                    <template v-slot:prepend>
+                                        <Icon type="md-keypad"/>
+                                    </template>
                                 </i-input>
+                                <Button size="large" :disabled="waitForCount" @click="getVerificationCode">{{codeTip}}</Button>
+                                </Row>
                             </FormItem>
                             <FormItem>
                                 <Button type="primary" long  size="large" keypress.enter.native  :loading="loading" @click="logInByMobile1">登录</Button>
@@ -97,8 +101,11 @@ import app from "@/common/app.js"
                     verificationCode:""
                 },
                 rules: rules.login,
-                rules2:rules.loginByMobile,
-                loading:false,
+                rules2: rules.loginByMobile,
+                loading: false,
+                count: 0,
+                codeTip: "获取验证码",
+                waitForCount: false
             }
         },
         mounted() {},
@@ -160,12 +167,23 @@ import app from "@/common/app.js"
                 });
             },
             getVerificationCode(){
-                this.$refs["logInByMobile"].validateField('phoneNumber',valid=>{
-                    if(valid===''){
+                this.$refs["logInByMobile"].validateField('phoneNumber',valid => {
+                    if(!valid) {
+                        this.waitForCount = true;
+                        this.count = 60;
+                        let countDown = setInterval(() => {
+                            if(this.count < 1) {
+                                this.waitForCount = false;
+                                this.codeTip = "获取验证码"
+                                clearInterval(countDown);
+                            } else {
+                                this.codeTip = this.count-- + 's后重发';
+                            }
+                        }, 1000);
                         axios.post("/CoffeeOrderService/api/usermanage/getVerificationCode", {telephone: this.logInByMobileModel.phoneNumber})
                         .then(response => {
                             if(response.data.success){
-                                this.logInByMobileModel.verificatonCode=response.data.VerificatonCode;
+                                this.logInByMobileModel.verificationCode = response.data.VerificationCode;
                             } else {
                                 this.$Message.error(response.data.msg);
                             }
