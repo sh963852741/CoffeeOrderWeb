@@ -197,26 +197,10 @@ export default {
                      amount:this.selectmeal[i].quality
                  })
             }
-            axios.post("/CoffeeOrderService/api/ordermanage/createOrder",this.order)
-            .then(response=>{
-                if(response.data.success){
-                    for(var i=0;i<this.selectmeal.length;i++){
-                        axios.post("/CoffeeOrderService/api/shoppingcart/delShoppingCart",{mealId:this.selectmeal[i].mealId})
-                        .then()
-                        .catch(error=>{
-                            this.$Message.error(error.data.msg);
-                        })
-                    }
-                    this.getAllShop();
-                    this.$Message.success("创建成功");
-                }
-                else{
-                    this.$Message.error("创建失败");
-                }
-            })
-            .catch(error=>{
-                this.$Message.error(error.data.msg);
-            })
+            this.$router.push({
+                name: "CreateOrder",
+                params: {selectMeal:this.selectmeal,total:this.getSelectPrice}  
+                });  
         }
     }
 };
