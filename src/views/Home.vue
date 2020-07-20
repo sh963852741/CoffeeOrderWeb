@@ -27,9 +27,9 @@
                                 <Checkbox v-model="logInModel.rememberPwd" size="small">下次自动登录</Checkbox>
                             </FormItem>
                              <Row type="flex" justify="center" align="middle">
-                                <Button size="small" type="text">注册用户</Button>
+                                <Button size="small" type="text" :to="{name: 'Regist'}">注册用户</Button>
                                 <Divider type="vertical" />
-                                <Button size="small" type="text">忘记密码</Button>
+                                <Button size="small" type="text" :to="{name: 'ForgotPwd'}">忘记密码</Button>
                             </Row>
                         </Form>
                     </TabPane>
