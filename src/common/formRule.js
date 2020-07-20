@@ -38,8 +38,29 @@ let rules = {
         ],
         mealDetail:[
             {required:true,type:"string",message:"请输入餐点描述"}
-        ]
-    }
+        ],
+    },
+    createAddr:{
+        receiver:[
+            {required:true,type:'string',min:1,message:"请输入姓名",trigger:"blur"}
+        ],
+        telephone:[
+            {required:true,message:"手机号不可为空",trigger:"blur"},
+            { pattern: /^\d{11}$/, message: '请输入正确的手机号码', trigger: 'blur' }
+        ],
+        provence:[
+            {required:true,type:'string',message:"省份不能为空",trigger:"blur"},
+        ],
+        city:[
+            {required:true,type:'string',message:"城市不能为空",trigger:"blur"},
+        ],
+        street:[
+            {required:true,type:"string",message:"街道不能为空",trigger:"blur"}
+        ],
+        address:[
+            {required:true,type:"string",message:"具体地址不能为空",trigger:"blur"}
+        ],
+    },
 }
 
 
