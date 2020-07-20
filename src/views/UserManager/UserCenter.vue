@@ -1,5 +1,5 @@
 <template>
-    <Card title="用户详情">
+    <Card title="个人中心">
         <Row>
             <Button  @click="back">
                 <Icon type="ios-arrow-back" />返回
@@ -15,7 +15,7 @@
                         <i-input v-model="userInfo.userName"></i-input>
                     </FormItem >
                     <FormItem label="密码">
-                        <Button v-if="isSelf" >进入个人中心</Button>
+                        <Button v-if="isSelf" @click="showModal = true">更改密码</Button>
                         <Button v-else @click="showModal = true">设置新密码</Button>
                     </FormItem >
                     <FormItem label="电话">
@@ -35,13 +35,13 @@
                 </Form>
             </i-col>
         </Row>
-        <Modal v-if="isSelf" v-model="showModal" @on-ok="changePassword">
-
-        </Modal>
-        <Modal v-else v-model="showModal" @on-ok="setPassword" >
+        <Modal v-model="showModal" @on-ok="changePassword" >
             <br>
             <Form label-position="left" :label-width="75" :model="modalData">
-                <FormItem label="新密码" prop="password">
+                <FormItem label="原密码" prop="prePassword">
+                    <Input v-model="modalData.prePassword" placeholder="请输入原密码" />
+                </FormItem>
+                <FormItem label="新密码" prop="newPassword">
                     <Input v-model="modalData.newPassword" placeholder="请输入新密码" />
                 </FormItem>
             </Form>
@@ -126,15 +126,16 @@ export default {
                 }
             });
         },
-        setPassword(){
-            axios.post("/CoffeeOrderService/api/usermanage/setPassword", {userId: this.userInfo.userId, password: sha1(this.modalData.newPassword)})
+        changePassword(){
+            axios.post("/CoffeeOrderService/api/usermanage/ChangePassword", {userId: this.userInfo.userId, prePassword: sha1(this.modalData.prePassword), newPassword: sha1(this.modalData.newPassword)})
             .then(response => {
                 if(response.data.success){
-                    let pwd = this.modalData.newPassword;
                     this.$Modal.success({
                         title: "成功修改密码",
-                        content: `请将新密码<strong>&nbsp;${pwd}&nbsp;</strong>告知用户！`
                     });
+                    setTimeout(()=>{
+                                this.$router.push({name: "LogIn"});
+                    }, 1500);
                 } else {
                     this.$Message.error(response.data.msg);
                 }
@@ -149,9 +150,6 @@ export default {
                     this.$Message.error("无法发送请求");
                 }
             });
-        },
-        changePassword() {
-            this.$Message.info('功能正在开发中');
         }
     }
 }

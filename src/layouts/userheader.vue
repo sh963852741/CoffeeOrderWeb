@@ -21,7 +21,7 @@
                             <MenuItem name="ShoppingCart" @click.native="toCart">购物车</MenuItem >
                             <MenuItem name="center" @click.native="toAccount">个人中心</MenuItem >
                         </Submenu>
-                        <Submenu name="4">
+                        <Submenu name="4" :disabled="true">
                             <template slot="title">
                                 <Icon type="md-help-circle" />帮&nbsp;助&nbsp;
                             </template>

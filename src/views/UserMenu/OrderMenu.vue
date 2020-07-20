@@ -98,22 +98,7 @@ export default {
             this.nowtitle.title = key;
         },
         getAllmeal() {
-            console.log(this.menuId);
-            if (this.menuId.id == "") {
-                axios
-                    .post("/CoffeeOrderService/api/menu/getAllMeal", {})
-                    .then(response => {
-                        if (response.data.success) {
-                            this.meal = response.data.data;
-                            this.allMeal = this.meal;
-                        } else {
-                            this.$Message.error(response.data.msg);
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error.data);
-                    });
-            } else {
+            if (this.menuId.id) {
                 axios
                     .post("/CoffeeOrderService/api/menu/getMealByMenuId", {
                         menuId: this.menuId.id
@@ -129,31 +114,42 @@ export default {
                     .catch(error => {
                         console.error(error.data);
                     });
+            } else {
+                axios.post("/CoffeeOrderService/api/menu/getAllMeal", {})
+                .then(response => {
+                    if (response.data.success) {
+                        this.meal = response.data.data;
+                        this.allMeal = this.meal;
+                    } else {
+                        this.$Message.error(response.data.msg);
+                    }
+                })
+                .catch(error => {
+                    console.error(error.data);
+                });
             }
         },
         getmealbysort() {
-            if (this.menuId == "") {
-                axios
-                    .post("/CoffeeOrderService/api/menu/getMealBySort", {})
-                    .then(response => {
-                        if (response.data.success) {
-                            this.sortMeal = response.data.data;
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error.message);
-                    });
+            if (this.menuId.id) {
+                axios.post("/CoffeeOrderService/api/menu/getMealBySort", {menuId:this.menuId.id})
+                .then(response => {
+                    if (response.data.success) {
+                        this.sortMeal = response.data.data;
+                    }
+                })
+                .catch(error => {
+                    console.error(error.data);
+                });
             } else {
-                axios
-                    .post("/CoffeeOrderService/api/menu/getMealBySort", {menuId:this.menuId.id})
-                    .then(response => {
-                        if (response.data.success) {
-                            this.sortMeal = response.data.data;
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error.data);
-                    });
+                axios.post("/CoffeeOrderService/api/menu/getMealBySort", {})
+                .then(response => {
+                    if (response.data.success) {
+                        this.sortMeal = response.data.data;
+                    }
+                })
+                .catch(error => {
+                    console.error(error.message);
+                });
             }
         },
         addShopCard(id, name, mprice) {
