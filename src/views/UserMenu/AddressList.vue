@@ -318,6 +318,7 @@ export default {
                     this.getAddress();
                 }
                 else{
+                    this.data[index].isDefaultAddr=false;
                     this.$Message.error("设置失败，请刷新重试")
                 }
             })
