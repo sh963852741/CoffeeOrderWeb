@@ -44,6 +44,13 @@ const routes = [
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "menu" */ '@/views/MenuManager/MenuDetail.vue')
     },
+    //餐点分析页
+    {
+      path: '/menumanager/menuanalyze',
+      name: 'MenuAnalyze',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "menu" */ '@/views/MenuManager/MenuAnalyze.vue')
+    },
     //用户列表页
     {
       path: '/usermanager/userlist',
@@ -58,6 +65,13 @@ const routes = [
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "users" */ '@/views/UserManager/UserDetail.vue')
     },
+    //个人中心
+    {
+      path: '/usermanager/usercenter',
+      name: 'UserCenter',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "users" */ '@/views/UserManager/UserCenter.vue')
+    },
     //前台用户订餐页面
     {
       path: '/usermenu/ordermenu',
@@ -70,7 +84,7 @@ const routes = [
       path: '/profile/profile',
       name: 'Profile',
       meta: {layout: "empty"},
-      component: () => import(/* webpackChunkName: "order" */ '@/views/Profile/Profile.vue')
+      component: () => import(/* webpackChunkName: "users" */ '@/views/Profile/Profile.vue')
     },
     //前台用户购物车页面
     {
@@ -113,6 +127,13 @@ const routes = [
       name: 'RoleManager',
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "role" */ '@/views/UserManager/RoleManager.vue')
+    },
+    //后台角色管理页
+    {
+      path: '/userManager/forgotpwd',
+      name: 'ForgotPwd',
+      meta: {layout: "empty"},
+      component: () => import(/* webpackChunkName: "users" */ '@/views/LogIn/ForgotPwd.vue')
     },
     //地址列表
     {
