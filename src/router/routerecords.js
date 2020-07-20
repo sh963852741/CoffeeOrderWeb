@@ -113,6 +113,13 @@ const routes = [
       name: 'RoleManager',
       meta: {layout: "admin"},
       component: () => import(/* webpackChunkName: "role" */ '@/views/UserManager/RoleManager.vue')
-    }
+    },
+    //新建订单页
+    {
+        path: '/usermenu/createorder',
+        name: 'CreateOrder',
+        meta: {layout: "userheader"},
+        component: () => import(/* webpackChunkName: "role" */ '@/views/UserMenu/CreateOrder.vue')
+      }
 ]
 export default routes;
