@@ -26,19 +26,21 @@
                                 <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
                             </template>
                         </Table>
+                        <Page :total="allCount" :page-size="pageSize" show-total @on-change="changePage1" style="margin-top:15px;"/>
                     </TabPane>
                     <TabPane label="已完成" name="name2" @click="resetData">
                         <Table stripe :columns="columns12" :data="finishedOrderList">
-                        <template slot-scope="{ row }" slot="orderId">
-                        <strong>{{ row.orderId }}</strong>
-                        </template>
-                        <template slot-scope="{ row }" slot="totalPrice">
-                        ¥{{ row.totalPrice }}元
-                        </template>
-                        <template slot-scope="{ row }" slot="action">
-                            <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
-                        </template>
-                    </Table>
+                            <template slot-scope="{ row }" slot="orderId">
+                            <strong>{{ row.orderId }}</strong>
+                            </template>
+                            <template slot-scope="{ row }" slot="totalPrice">
+                            ¥{{ row.totalPrice }}元
+                            </template>
+                            <template slot-scope="{ row }" slot="action">
+                                <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
+                            </template>
+                        </Table>
+                        <Page :total="finishedCount" :page-size="pageSize" show-total @on-change="changePage2" style="margin-top:15px;"/>
                     </TabPane>
                     <TabPane label="进行中" name="name3" @on-click="resetData">
                         <Table stripe :columns="columns12" :data="unfinishedOrderList">
@@ -52,8 +54,8 @@
                                 <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
                             </template>
                         </Table>
-                    </TabPane>
-                    
+                        <Page :total="unfinishedCount" :page-size="pageSize" show-total @on-change="changePage3" style="margin-top:15px;"/>
+                    </TabPane>                   
                 </Tabs>
             </Content>
         </Layout>
@@ -106,9 +108,13 @@ export default {
                     },
                 ],
                 data:[],
-                data1:[],
-                data2:[],
-                data3:[],
+                finished:[],
+                unfinished:[],
+                all:[],
+                allCount:0,
+                finishedCount:0,
+                unfinishedCount:0,
+                pageSize:10,
                 finishedOrderList:[],
                 unfinishedOrderList:[],
                 value:"name1"
@@ -124,11 +130,29 @@ export default {
             .then(response=>{
                 if(response.data.success){
                     this.data = response.data.data;
-                    this.data3=this.data;
-                    this.data1=this.data.filter(e=>e.status.indexOf("已完成")!==-1);
-                    this.data2=this.data.filter(e=>e.status.indexOf("已创建")!==-1);
+                    this.all=this.data;
+                    this.finished=this.data.filter(e=>e.status.indexOf("已完成")!==-1);
+                    this.unfinished=this.data.filter(e=>e.status.indexOf("已创建")!==-1);
                     this.finishedOrderList=this.data1;
                     this.unfinishedOrderList= this.data2;
+                    this.finishedCount = this.finished.length;
+                    this.unfinishedCount = this.unfinished.length;
+                    this.allCount = this.all.length;
+                    if(this.allCount<this.pageSize) {
+                        this.data = this.all;
+                    } else {
+                        this.data = this.all.slice(0,this.pageSize)
+                    }
+                    if(this.finishedCount<this.pageSize) {
+                        this.finishedOrderList = this.finished;
+                    } else {
+                        this.finishedOrderList = this.finished.slice(0,this.pageSize)
+                    }
+                    if(this.unfinishedCount<this.pageSize) {
+                        this.unfinishedOrderList = this.unfinished;
+                    } else {
+                        this.unfinishedOrderList = this.unfinished.slice(0,this.pageSize)
+                    }
                 }
                 else{
                     this.$Message.error(response.data.msg)
@@ -156,25 +180,41 @@ export default {
         },
         searchFinishedOrder(condition){
             if(this.value==="name1"){
-                this.finishedOrderList=this.data1.filter(e=>e.createdTime.indexOf(condition)!==-1);
+                this.data=this.all.filter(e=>e.createdTime.indexOf(condition)!==-1);
+                console.log(this.data);             
             }
             else if(this.value==="name2"){
-                this.unFinishedOrderList=this.data2.filter(e=>e.createdTime.indexOf(condition)!==-1);
+                this.finishedOrderList=this.finished.filter(e=>e.createdTime.indexOf(condition)!==-1);
             }else{
-                this.data=this.data3.filter(e=>e.createdTime.indexOf(condition)!==-1);
+                this.unfinishedOrderList=this.unfinished.filter(e=>e.createdTime.indexOf(condition)!==-1);
             }
         },
         resetData(){
             if(this.value==="name1"){
-                this.finishedOrderList=this.data1;
+                this.finishedOrderList=this.finished;
                 console.log(this.finishedOrderList);
             }
             else if(this.value==="name2"){
-                this.unFinishedOrderList=this.data2;
+                this.unfinishedOrderList=this.unfinished;
             }else{
-                this.data=this.data3;
-                console.log(this.data3);
+                this.data=this.all;
+                console.log(this.all);
             }
+        },
+        changePage1(index) {
+            var start = (index-1)*this.pageSize;
+            var end = index*this.pageSize;
+            this.data = this.all.slice(start,end);
+        },
+        changePage2(index) {
+            var start = (index-1)*this.pageSize;
+            var end = index*this.pageSize;
+            this.finishedOrderList = this.finished.slice(start,end);
+        },
+        changePage3(index) {
+            var start = (index-1)*this.pageSize;
+            var end = index*this.pageSize;
+            this.unfinishedOrderList = this.unfinished.slice(start,end);
         }
     }
 }
