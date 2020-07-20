@@ -56,11 +56,17 @@
                                    <p class="info2"> ¥20元</p>
                                 </i-col>
                             </Row-->
-                            <Table stripe :columns="columns1" :data="mealList">
+                            <Table :columns="columns1" :data="mealList">
                                <template slot-scope="{ row }" slot="mealName">
                                    <Row type="flex">
                                        <i-col span="11">
-                                            <img src="@/assets/coffee-logo.png" width="70px" height="70px"/>
+                                           <img
+                                                :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${row.mealId}`"
+                                                alt="暂无菜品图片"
+                                                style="width:100%;height:70px"
+                                                :onabort="defaultImg"
+                                                :onerror="defaultImg"
+                                            />
                                        </i-col>
                                        <i-col span="13">
                                             <p style="padding:25px 0;float:left;"><strong>{{row.mealName}}</strong></p>
@@ -149,6 +155,8 @@ export default {
                     subtotal:20
                 },
             ],
+            defaultImg:
+                'this.src="' + require("@/assets/coffee-logo.png") + '"',
             orderInfo:{},
             mealList:[],
             now: 0,
@@ -177,7 +185,7 @@ export default {
         getOrderDetail(){
             axios.post('/CoffeeOrderService/api/ordermanage/getOrderDetail',{orderId:this.orderInfo.orderId})
             .then(response=>{
-                    this.mealList = response.data.data;
+                    this.mealList = response.data.meals;
                     this.isTakeOut = response.data.isTakeOut;
                     this.now = this.currentType[response.data.status];
             })
