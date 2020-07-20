@@ -70,7 +70,7 @@ export default {
                         if(response.data.success){
                             this.$Message.success("注册成功，跳转至登录页面. . .");
                             setTimeout(()=>{
-                                this.$router.push({name: "LogIn"});
+                                window.history.go(-1);
                             }, 1500);
                         } else {
                             this.$Message.error(response.data.msg);
