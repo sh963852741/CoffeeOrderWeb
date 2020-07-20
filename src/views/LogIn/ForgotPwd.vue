@@ -82,6 +82,9 @@ export default {
             .then(response => {
                 if(response.data.success){
                     this.$Message.success("密码已更改");
+                    setTimeout(()=>{
+                        window.history.go(-1);
+                    }, 1500);
                 } else {
                     this.$Message.error(response.data.msg);
                 }
