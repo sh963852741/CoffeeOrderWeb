@@ -15,6 +15,7 @@
                     <Button type="primary" style="margin-right:15px;" @click="toOrderDetail(row)">详情</Button>
                 </template>
             </i-table>
+            <Page :total="dataCount" :page-size-opts="sizeArray" :page-size="pageSize" show-total show-sizer @on-page-size-change="pageSizeChange" @on-change="changePage" style="margin-top:15px;"/>
         </Row>
         <Modal v-model="modal" title="新建订单" loading  ok-text="新建">
             <Form :model="orderModel" label-position="left" :label-width="80">
@@ -38,6 +39,7 @@ const axios = require("axios");
                 dataCount: 0,
                 pageSize:15,
                 orderModel: {},
+                sizeArray:[10,20,30,40,1000],
                 orderListHeader: [
                     {
                         title: '用户名',
@@ -85,7 +87,15 @@ const axios = require("axios");
             },
             toOrderDetail(row) {
                 this.$router.push({name:"adminOrderDetail", query:{orderId: row.orderId}});
-            }
+            },
+            changePage(index) {
+                this.page = index;
+                this.getOrderList();
+            },
+            pageSizeChange (pz) {
+                this.pageSize = pz;
+                this.getOrderList();
+            },
         }
     }
 </script>

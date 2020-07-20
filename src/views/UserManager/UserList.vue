@@ -20,7 +20,7 @@
                     <i-button type="error" @click="delUser(props.row)">删除</i-button>
                 </template>
             </i-table>
-            <Page :total="dataCount" :page-size="pageSize" show-total show-sizer @on-page-size-change="pageSizeChange" @on-change="changePage" style="margin-top:15px;"/>    
+            <Page :total="dataCount" :page-size-opts="sizeArray" :page-size="pageSize" show-total show-sizer @on-page-size-change="pageSizeChange" @on-change="changePage" style="margin-top:15px;"/>    
         </Row>
         <Modal v-model="modal" title="新建用户" loading @on-ok="asyncSubmit" ok-text="新建">
             <Form :model="userInfo" label-position="left" :label-width="80">
@@ -64,6 +64,7 @@ export default {
                     slot: 'action'
                 }
             ],
+            sizeArray: [10,20,30,40,1000],
             userlist: [],
             //每页显示用户数
             pageSize:15,
