@@ -56,7 +56,7 @@
                                    <p class="info2"> ¥20元</p>
                                 </i-col>
                             </Row-->
-                            <Table :columns="columns1" :data="mealList">
+                            <Table :columns="columns1" :data="mealList.meals">
                                <template slot-scope="{ row }" slot="mealName">
                                    <Row type="flex">
                                        <i-col span="11">
@@ -85,25 +85,26 @@
                             </Table>
                             <Row type="flex">
                                 <i-col span="6">
-                                    <p class="info">包装费：¥4元</p>
+                                    <p class="info">包装费：¥{{mealList.packingCharges}}元</p>
                                 </i-col>
                                 <i-col span="2"></i-col>
                                 <i-col span="6">
-                                    <p class="info">配送费：¥4元</p>
+                                    <p class="info">配送费：¥{{mealList.deliveryFee}}元</p>
                                 </i-col>
                                 <i-col span="4"></i-col>
                                 <i-col span="6">
-                                     <p class="info" style="font-size:18px;"><strong>总计：¥{{totalPrice}}元</strong></p>
+                                     <p class="info" style="font-size:18px;"><strong>总计：¥{{mealList.totalPrice}}元</strong></p>
                                 </i-col>
                             </Row>
                         </i-col> 
                         <i-col span="2"></i-col> 
                     </Row>
                     <p class="info" style="float:left;">配送地址：</p>
-                    <p class="info" >福建省厦门市思明区滨海街道厦大学生公寓</p>
+                    <p class="info" >{{address.provence}} {{address.street}}街道</p>
                     <p class="info">配送骑手：外卖小哥（联系方式：1390000000）</p>
                     <p class="info">下单时间：{{createdTime}}</p>
-                    <p class="info">支付方式：微信支付</p>
+                    <p class="info">支付方式: {{mealList.payment}}</p>
+                    <p class="info">备注: {{mealList.remark}}</p>
                  </Card>
              </Content>
         </Layout>
@@ -161,8 +162,11 @@ export default {
             mealList:[],
             now: 0,
             createdTime:"",
-            totalPrice:"",
+            totalPrice:0,
+            deliveryFee:0,
+            packingCharges:0,
             status:"",
+            address:{},
             currentType:{
                 "已创建":0,
                 "制作中":1,
@@ -185,9 +189,9 @@ export default {
         getOrderDetail(){
             axios.post('/CoffeeOrderService/api/ordermanage/getOrderDetail',{orderId:this.orderInfo.orderId})
             .then(response=>{
-                    this.mealList = response.data.meals;
-                    this.isTakeOut = response.data.isTakeOut;
+                    this.mealList = response.data;
                     this.now = this.currentType[response.data.status];
+                    this.getAddress(this.mealList.addrId)
             })
             .catch(error=>{
                 if (error.response) {
@@ -202,6 +206,22 @@ export default {
         },
         back(){
             this.$router.go(-1);
+        },
+        getAddress(addrId){
+            axios.post('/CoffeeOrderService/api/usermanage/GetAddrById',{id:addrId})
+            .then(response=>{
+                 this.address = response.data;
+            })
+            .catch(error=>{
+                if (error.response) {
+                    if (error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else
+                        this.$Message.warning(error.message);
+                } else {
+                    this.$Message.error("无法发送请求");
+                }
+            });
         }
     }
 }
