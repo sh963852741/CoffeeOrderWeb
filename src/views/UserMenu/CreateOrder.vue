@@ -174,15 +174,27 @@
 <script>
 const axios = require("axios");
 export default {
+    created(){
+        //this.orderPreId = this.$route.query.orderPreId;
+        let data = JSON.parse(localStorage.getItem("shoppingcart"));
+        this.mealList = data.selectMeal;
+        this.subPrice = data.total;
+        this.totalPrice = this.subPrice;
+        for(var i=0;i<this.mealList.length;++i){
+            this.mealIdList.push({mealId:this.mealList[i].mealId,amount:this.mealList[i].quality});
+            this.mealList[i].allprice=this.mealList[i].quality*this.mealList[i].price;
+        }
+    },
     data(){
         return{
-            orderInfo:{},
+            // orderPreId: "",
+            orderInfo: {},
             diningWay:'堂食',
             columns1:[
                 {
                     title:"餐点名称",
                     slot:"mealName",
-                    width:200,
+                    width: 200,
                     align: 'center'
                 },
                 {
@@ -232,15 +244,6 @@ export default {
             packingCharges:0,
             deliveryFee:0,
         }
-    },
-    created(){
-        this.mealList=this.$route.params.selectMeal;
-        for(var i=0;i<this.mealList.length;++i){
-            this.mealIdList.push({mealId:this.mealList[i].mealId,amount:this.mealList[i].quality});
-            this.mealList[i].allprice=this.mealList[i].quality*this.mealList[i].price;
-        }
-         this.subPrice=this.$route.params.total;
-        this.totalPrice=this.subPrice;
     },
     mounted(){
         this.getALLAddr();
