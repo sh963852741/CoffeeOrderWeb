@@ -67,7 +67,7 @@
                         <img
                                 :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${meal[index].mealId}`"
                                 alt="coffee-logo2"
-                                style="width:100%;height:150px"
+                                style="width:60%"
                                 :onabort="defaultImg"
                                 :onerror="defaultImg"
                             />
@@ -88,7 +88,7 @@
                        <img
                                 :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${meal[index+4].mealId}`"
                                 alt="coffee-logo2"
-                                style="width:100%;height:150px"
+                                style="width:60%"
                                 :onabort="defaultImg"
                                 :onerror="defaultImg"
                             />
