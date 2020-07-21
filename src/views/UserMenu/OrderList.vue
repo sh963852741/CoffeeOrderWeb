@@ -229,13 +229,17 @@ export default {
             }
         },
         resetData(){
-            if(this.value==="name1"){
+            if(this.value==="name2"){
                 this.finishedOrderList=this.finished;
                 console.log(this.finishedOrderList);
             }
-            else if(this.value==="name2"){
+            else if(this.value==="name3"){
                 this.unfinishedOrderList=this.unfinished;
-            }else{
+            }
+            else if(this.value==="name4"){
+                this.doingList = this.doing;
+            }
+            else{
                 this.data=this.all;
                 console.log(this.all);
             }

@@ -141,15 +141,11 @@
             <Content>
                 <Layout :style="{minHeight:'380px',margin:'50px 0',background: '#fff'}">
                     <Sider hide-trigger :style="{background: '#fff',padding:'20px 0px 0px 0px'}" >
-                        <div style="font-size:20px;margin:10px 10px;"> 
-                            <Icon type="md-person" size="24"/>
-                            我的账户
-                        </div>    
                         <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" >
-                            <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
-                            <MenuItem name="3" :to="{name:'addressList'}"><Icon type="ios-book" />地址簿</MenuItem>
-                            <MenuItem name="4"><Icon type="ios-person" />账户信息</MenuItem>
-                            </Menu>  
+                        <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
+                        <MenuItem name="3" :to="{name:'addressList'}"><Icon type="ios-book" />地址簿</MenuItem>
+                        <MenuItem name="4" :to="{name: 'UserMenuCenter'}"><Icon type="ios-person" />账户信息</MenuItem>
+                        </Menu>  
                     </Sider>
                     <slot></slot>
                 </Layout> 
