@@ -175,32 +175,26 @@
 const axios = require("axios");
 export default {
     created(){
-        this.orderPreId = this.$route.query.orderPreId;
-        let data = JSON.parse(localStorage.getItem(this.orderPreId));
+        //this.orderPreId = this.$route.query.orderPreId;
+        let data = JSON.parse(localStorage.getItem("shoppingcart"));
         this.mealList = data.selectMeal;
         this.subPrice = data.total;
-        this.totalPrice=this.subPrice;
-
-        window.onbeforeunload = function(e) {
-            e = e || window.event;
-        // 兼容IE8和Firefox 4之前的版本
-        if (e) {
-            e.returnValue = "您是否确认离开此页面-您输入的数据可能不会被保存";
+        this.totalPrice = this.subPrice;
+        for(var i=0;i<this.mealList.length;++i){
+            this.mealIdList.push({mealId:this.mealList[i].mealId,amount:this.mealList[i].quality});
+            this.mealList[i].allprice=this.mealList[i].quality*this.mealList[i].price;
         }
-        // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-        return "您是否确认离开此页面-您输入的数据可能不会被保存";
-        };
     },
     data(){
         return{
-            orderPreId: "",
+            // orderPreId: "",
             orderInfo: {},
             diningWay:'堂食',
             columns1:[
                 {
                     title:"餐点名称",
                     slot:"mealName",
-                    width:200,
+                    width: 200,
                     align: 'center'
                 },
                 {
@@ -250,15 +244,6 @@ export default {
             packingCharges:0,
             deliveryFee:0,
         }
-    },
-    created(){
-        this.mealList=this.$route.params.selectMeal;
-        for(var i=0;i<this.mealList.length;++i){
-            this.mealIdList.push({mealId:this.mealList[i].mealId,amount:this.mealList[i].quality});
-            this.mealList[i].allprice=this.mealList[i].quality*this.mealList[i].price;
-        }
-         this.subPrice=this.$route.params.total;
-        this.totalPrice=this.subPrice;
     },
     mounted(){
         this.getALLAddr();
