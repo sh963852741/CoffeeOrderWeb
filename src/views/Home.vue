@@ -64,11 +64,17 @@
                 <Card>
                     <div class="good">
                         <Tag class="tag" color="orange">店长推荐</Tag>
-                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" />
+                        <img
+                                :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${meal[index].mealId}`"
+                                alt="coffee-logo2"
+                                style="width:100%;height:150px"
+                                :onabort="defaultImg"
+                                :onerror="defaultImg"
+                            />
                         <Row>
-                            <div class="title">新品推送</div>
-                            <div class="desc">商品描述</div>
-                            <span class="price">25元</span>
+                            <div class="title">{{meal[index].mealName}}</div>
+                            <div class="desc">{{meal[index].mealDetail}}</div>
+                            <span class="price">{{meal[index].price}}元</span>
                         </Row>
                     </div>
                 </Card>
@@ -79,11 +85,17 @@
                 <Card>
                     <div class="good">
                         <Tag class="tag" color="green">降价促销</Tag>
-                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" />
-                        <div class="title">新品推送</div>
-                        <div class="desc">商品描述</div>
-                        <span class="price">25元</span>
-                        <s class="price" style="color: #c5c8ce;">18元</s>
+                       <img
+                                :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${meal[index+4].mealId}`"
+                                alt="coffee-logo2"
+                                style="width:100%;height:150px"
+                                :onabort="defaultImg"
+                                :onerror="defaultImg"
+                            />
+                        <div class="title">{{meal[index+4].mealName}}</div>
+                        <div class="desc">{{meal[index+4].mealDetail}}</div>
+                        <span class="price">{{meal[index+4].price-4}}元</span>
+                        <s class="price" style="color: #c5c8ce;">{{meal[index+4].price}}元</s>
                     </div>
                 </Card>
             </i-col>
@@ -114,10 +126,15 @@ import app from "@/common/app.js"
                 loading: false,
                 count: 0,
                 codeTip: "获取验证码",
-                waitForCount: false
+                waitForCount: false,
+                meal:[],
+                defaultImg:
+                'this.src="' + require("@/assets/coffee-logo.png") + '"',
             }
         },
-        mounted() {},
+        mounted() {
+            this.getAllmeal();
+        },
         created() {
             if(app.loginSettings.rememberPwd){
                 this.logInModel = app.loginSettings;
@@ -204,7 +221,21 @@ import app from "@/common/app.js"
                         console.log(valid)
                     }
                 });
-            }
+            },
+            getAllmeal() {
+                axios
+                    .post("/CoffeeOrderService/api/menu/getAllMeal", {})
+                    .then(response => {
+                        if (response.data.success) {
+                            this.meal = response.data.data;
+                        } else {
+                            this.$Message.error("获取推荐失败");
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error.data);
+                    });
+                },
            
         }
 }
