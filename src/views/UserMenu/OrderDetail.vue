@@ -10,6 +10,17 @@
                  </div>
                 
                  <Card>
+                    <Steps :current="now"  v-if="!isTakeOut">
+                        <Step title="已创建"></Step>
+                        <Step title="制作中"></Step>
+                        <Step title="已完成"></Step>
+                    </Steps>
+                    <Steps :current="now"  v-else>
+                        <Step title="已创建"></Step>
+                        <Step title="制作中"></Step>
+                        <Step title="配送中"></Step>
+                        <Step title="已完成"></Step>
+                    </Steps>
                     <p class="info" style="">订单编号：{{orderInfo.orderId}}</p>
                     <p slot="extra" style="font-size:17px;"><strong>{{status}}</strong></p>
                     <p class="info">订单内容：</p>
@@ -45,11 +56,17 @@
                                    <p class="info2"> ¥20元</p>
                                 </i-col>
                             </Row-->
-                            <Table stripe :columns="columns1" :data="mealList">
+                            <Table :columns="columns1" :data="mealList.meals">
                                <template slot-scope="{ row }" slot="mealName">
                                    <Row type="flex">
                                        <i-col span="11">
-                                            <img src="@/assets/coffee-logo.png" width="70px" height="70px"/>
+                                           <img
+                                                :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${row.mealId}`"
+                                                alt="暂无菜品图片"
+                                                style="width:100%;height:70px"
+                                                :onabort="defaultImg"
+                                                :onerror="defaultImg"
+                                            />
                                        </i-col>
                                        <i-col span="13">
                                             <p style="padding:25px 0;float:left;"><strong>{{row.mealName}}</strong></p>
@@ -68,25 +85,26 @@
                             </Table>
                             <Row type="flex">
                                 <i-col span="6">
-                                    <p class="info">包装费：¥4元</p>
+                                    <p class="info">包装费：¥{{mealList.packingCharges}}元</p>
                                 </i-col>
                                 <i-col span="2"></i-col>
                                 <i-col span="6">
-                                    <p class="info">配送费：¥4元</p>
+                                    <p class="info">配送费：¥{{mealList.deliveryFee}}元</p>
                                 </i-col>
                                 <i-col span="4"></i-col>
                                 <i-col span="6">
-                                     <p class="info" style="font-size:18px;"><strong>总计：¥{{totalPrice}}元</strong></p>
+                                     <p class="info" style="font-size:18px;"><strong>总计：¥{{mealList.totalPrice}}元</strong></p>
                                 </i-col>
                             </Row>
                         </i-col> 
                         <i-col span="2"></i-col> 
                     </Row>
                     <p class="info" style="float:left;">配送地址：</p>
-                    <p class="info" >福建省厦门市思明区滨海街道厦大学生公寓</p>
+                    <p class="info" >{{address.provence}} {{address.street}}街道</p>
                     <p class="info">配送骑手：外卖小哥（联系方式：1390000000）</p>
                     <p class="info">下单时间：{{createdTime}}</p>
-                    <p class="info">支付方式：微信支付</p>
+                    <p class="info">支付方式: {{mealList.payment}}</p>
+                    <p class="info">备注: {{mealList.remark}}</p>
                  </Card>
              </Content>
         </Layout>
@@ -138,18 +156,31 @@ export default {
                     subtotal:20
                 },
             ],
+            defaultImg:
+                'this.src="' + require("@/assets/coffee-logo.png") + '"',
             orderInfo:{},
             mealList:[],
+            now: 0,
             createdTime:"",
-            totalPrice:"",
-            status:""
+            totalPrice:0,
+            deliveryFee:0,
+            packingCharges:0,
+            status:"",
+            address:{},
+            currentType:{
+                "已创建":0,
+                "制作中":1,
+                "配送中":2,
+                "已完成":3
+            },
+            isTakeOut: false
         }
     },
     created(){
-        this.orderInfo.orderId=this.$route.query.orderId;
-        this.createdTime=this.$route.query.createdTime;
-        this.totalPrice=this.$route.query.totalPrice;
-        this.status=this.$route.query.status;
+        this.orderInfo.orderId=this.$route.params.orderId;
+        this.createdTime=this.$route.params.createdTime;
+        this.totalPrice=this.$route.params.totalPrice;
+        this.status=this.$route.params.status;
     },
     mounted(){
         this.getOrderDetail();
@@ -158,7 +189,9 @@ export default {
         getOrderDetail(){
             axios.post('/CoffeeOrderService/api/ordermanage/getOrderDetail',{orderId:this.orderInfo.orderId})
             .then(response=>{
-                    this.mealList = response.data.data;
+                    this.mealList = response.data;
+                    this.now = this.currentType[response.data.status];
+                    this.getAddress(this.mealList.addrId)
             })
             .catch(error=>{
                 if (error.response) {
@@ -173,6 +206,22 @@ export default {
         },
         back(){
             this.$router.go(-1);
+        },
+        getAddress(addrId){
+            axios.post('/CoffeeOrderService/api/usermanage/GetAddrById',{id:addrId})
+            .then(response=>{
+                 this.address = response.data;
+            })
+            .catch(error=>{
+                if (error.response) {
+                    if (error.response.status >= 400 && error.response.status < 600)
+                        this.$Message.error(error.message);
+                    else
+                        this.$Message.warning(error.message);
+                } else {
+                    this.$Message.error("无法发送请求");
+                }
+            });
         }
     }
 }
