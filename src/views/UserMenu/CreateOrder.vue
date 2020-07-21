@@ -179,7 +179,7 @@ export default {
         let data = JSON.parse(localStorage.getItem(this.orderPreId));
         this.mealList = data.selectMeal;
         this.subPrice = data.total;
-        this.totalPrice=this.subPrice;
+        this.totalPrice = this.subPrice;
 
         window.onbeforeunload = function(e) {
             e = e || window.event;
@@ -200,7 +200,7 @@ export default {
                 {
                     title:"餐点名称",
                     slot:"mealName",
-                    width:200,
+                    width: 200,
                     align: 'center'
                 },
                 {
