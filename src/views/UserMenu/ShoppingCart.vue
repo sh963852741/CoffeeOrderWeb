@@ -89,7 +89,9 @@ export default {
             selectCounts:0,
             selectPrice:0,
             selectmeal:[],
-            order:{data:[]}
+            order:{
+                data:[]
+            }
         };
     },
     mounted() {
@@ -128,7 +130,8 @@ export default {
             axios
                 .post("/CoffeeOrderService/api/shoppingcart/addShoppingCart", {
                     mealId: this.mealList[index].mealId,
-                    price: this.mealList[index].price
+                    price: this.mealList[index].price,
+                    addend: 1
                 })
                 .then(response => {
                     if (!response.data.success) {
@@ -185,22 +188,39 @@ export default {
         createOrder(){
             if(this.selectmeal.length==0){
                 this.$Modal.warning({
-                            title:"提示",
-                            content:"尚未选中任何餐点" 
-                        });
+                        title:"提示",
+                        content:"尚未选中任何餐点" 
+                    });
                 return
             }
             this.order.data=[];
-             for(var i=0;i<this.selectmeal.length;i++){
-                 this.order.data.push({
-                     mealId:this.selectmeal[i].mealId,
-                     amount:this.selectmeal[i].quality
-                 })
+            for(let i = 0; i < this.selectmeal.length; i++){
+                this.order.data.push({
+                    mealId:this.selectmeal[i].mealId,
+                    quality:this.selectmeal[i].quality,
+                    mealName:this.selectmeal[i].mealName,
+                    price:this.selectmeal[i].price,
+                    allprice:this.getSingleAllprice(this.selectmeal[i].quality,this.selectmeal)
+                })
             }
+            // let guid = this.makeGuid();
+            let data = {
+                selectMeal: this.order.data,
+                total: this.getSelectPrice
+            };
+            localStorage.removeItem("shoppingcart");
+            localStorage.setItem("shoppingcart", JSON.stringify(data))
             this.$router.push({
-                name: "CreateOrder",
-                params: {selectMeal:this.selectmeal,total:this.getSelectPrice}  
-                });  
+                name: "CreateOrder" //,
+                //query: {orderPreId: guid} 
+            });
+        },
+        makeGuid() {
+            return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                let r = Math.random() * 16 | 0,
+                    v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+            });
         }
     }
 };
