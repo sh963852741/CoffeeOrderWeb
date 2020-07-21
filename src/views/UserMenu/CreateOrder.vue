@@ -4,14 +4,7 @@
         :style="{padding: '0', minHeight: '280px', background: ''}"
     >
         <Content>
-        <!--Row type="flex">
-            <i-col span="16"-->
                 <Card :model="orderInfo" :bordered="false" dis-hovez style="width:67%;float:left;">
-                    <!--h3 style="float:left;">选择就餐方式:</h3>
-                    <RadioGroup v-model="diningWay">
-                        <Radio label="堂食" border></Radio>
-                        <Radio label="外卖" border></Radio>
-                    </RadioGroup-->
                     <Form>
                     <FormItem label="选择就餐方式:">
                         <RadioGroup v-model="diningWay" @click.native="calcTakeOutCharge">
@@ -30,8 +23,8 @@
                                     v-bind:key="index"
                                 >          
                                     <Card @click.native="chooseAddr(index)">
-                                        <p slot="title">{{item.receiver}}（收）</p>
-                                        <p slot="extra" v-if="item.isDefaultAddr===true">默认地址</p>
+                                        <p slot="title">{{item.receiver}}（收）</p>   
+                                        <Tag color="geekblue" slot="extra" v-if="item.isDefaultAddr===true">默认地址</Tag>
                                         <p>联系方式：{{item.telephone}}</p>
                                         <P>送餐地址：</P>
                                         <P>{{item.provence+item.city+item.street+item.address}}</P>
@@ -39,52 +32,51 @@
                                 </i-col>          
                             </Row>
                         </FormItem>
-                    <FormItem label="我的订单:" >
-                        <Table stripe :columns="columns1" :data="mealList">
-                               <template slot-scope="{ row }" slot="mealName">
-                                   <Row type="flex">
-                                       <i-col span="11">
-                                            <img 
-                                            :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${row.mealId}`"
-                                            alt="暂无菜品图片" 
-                                            width="70px" 
-                                            height="70px"/>
-                                       </i-col>
-                                       <i-col span="13">
-                                            <p style="padding:25px 0;float:left;"><strong>{{row.mealName}}</strong></p>
-                                       </i-col> 
-                                   </Row>
-                               </template>
-                               <template slot-scope="{ row }" slot="price">
-                                   ¥{{row.price}}
-                               </template>
-                               <template slot-scope="{ row }" slot="quality">
-                                   ×{{row.quality}}
-                               </template>
-                               <template slot-scope="{ row }" slot="allprice">
-                                   ¥{{row.allprice}}
-                               </template>
-                            </Table>
-                    </FormItem>
-                    <FormItem label="餐具数量:" >
-                        <Input v-model="tablewareNumber" placeholder="请输入所需餐具数量" />
-                    </FormItem>
-                    <FormItem label="订单备注:" >
-                        <Input v-model="remark" placeholder="请输入订单备注" type="textarea" :autosize="{minRows: 3,maxRows: 5}"/>
-                    </FormItem>
-                     <FormItem label="支付方式:" >
-                        <RadioGroup v-model="paymentMethod">
-                            <Radio label="微信支付" border></Radio>
-                            <Radio label="支付宝支付" border></Radio>
-                            <Radio label="储蓄卡支付" border></Radio>
-                            <Radio label="花呗支付" border></Radio>
-                            <Radio label="咖啡币支付" border></Radio>
-                        </RadioGroup>
-                    </FormItem>
+                        <FormItem label="我的订单:" >
+                            <Table stripe :columns="columns1" :data="mealList">
+                                <template slot-scope="{ row }" slot="mealName">
+                                    <Row type="flex">
+                                        <i-col span="11">
+                                                <img 
+                                                :src="`/CoffeeOrderService/api/menu/downloadImg?mealId=${row.mealId}`"
+                                                alt="暂无菜品图片" 
+                                                width="70px" 
+                                                height="70px"/>
+                                        </i-col>
+                                        <i-col span="13">
+                                                <p style="padding:25px 0;float:left;"><strong>{{row.mealName}}</strong></p>
+                                        </i-col> 
+                                    </Row>
+                                </template>
+                                <template slot-scope="{ row }" slot="price">
+                                    ¥{{row.price}}
+                                </template>
+                                <template slot-scope="{ row }" slot="quality">
+                                    ×{{row.quality}}
+                                </template>
+                                <template slot-scope="{ row }" slot="allprice">
+                                    ¥{{row.allprice}}
+                                </template>
+                                </Table>
+                        </FormItem>
+                        <FormItem label="餐具数量:" >
+                            <Input v-model="tablewareNumber" placeholder="请输入所需餐具数量" />
+                        </FormItem>
+                        <FormItem label="订单备注:" >
+                            <i-input v-model="remark" placeholder="请输入订单备注" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></i-input>
+                        </FormItem>
+                        <FormItem label="支付方式:" >
+                            <RadioGroup v-model="paymentMethod">
+                                <Radio label="微信支付" border></Radio>
+                                <Radio label="支付宝支付" border></Radio>
+                                <Radio label="储蓄卡支付" border></Radio>
+                                <Radio label="花呗支付" border></Radio>
+                                <Radio label="咖啡币支付" border></Radio>
+                            </RadioGroup>
+                        </FormItem>
                     </Form>
                 </Card>
-            <!--/i-col-->
-               <Affix>
+                <Affix>
                     <List border style="background:#fff;float:right;width:32%;">
                         <template slot="header">
                             <p style="text-align: center;">订单合计</p>
@@ -107,7 +99,18 @@
                                     <p>送餐时间：</p> 
                                 </i-col>
                                 <i-col span="16">
-                                    <p style="text-align: right;">预计送餐时间<br>2020/7/20 15:00</p> 
+                                    <p style="text-align: right;">预计送餐时间<br>{{this.estimatedTime}}
+                                    </p> 
+                                </i-col>
+                            </Row>
+                        </ListItem>
+                        <ListItem v-if='diningWay==="外卖"'>
+                            <Row type="flex" style="width:100%;">
+                                <i-col span="8">
+                                    <p>收获人：</p> 
+                                </i-col>
+                                <i-col span="16">
+                                    <p style="text-align: right;">{{addrList[chooseAddrIndex].receiver}}</p> 
                                 </i-col>
                             </Row>
                         </ListItem>
@@ -167,7 +170,6 @@
                     </List>
                </Affix>
             </Content>
-        <!--/Row-->
     </Layout>
 </template>
 
@@ -175,7 +177,6 @@
 const axios = require("axios");
 export default {
     created(){
-        //this.orderPreId = this.$route.query.orderPreId;
         let data = JSON.parse(localStorage.getItem("shoppingcart"));
         this.mealList = data.selectMeal;
         this.subPrice = data.total;
@@ -187,7 +188,6 @@ export default {
     },
     data(){
         return{
-            // orderPreId: "",
             orderInfo: {},
             diningWay:'堂食',
             columns1:[
@@ -243,6 +243,7 @@ export default {
             isTakeOut:false,
             packingCharges:0,
             deliveryFee:0,
+            estimatedTime:(new Date()).getTime() - 60 * 30 * 1000,
         }
     },
     mounted(){
@@ -278,6 +279,19 @@ export default {
                 this.deliveryFee=4;
                 this.isTakeOut=true;
                 this.addrId=this.addrList[this.chooseAddrIndex].id;
+                let hh = new Date().getHours();
+                let mf =new Date().getMinutes();
+                if(mf<30){
+                    mf+=30;
+                }else{
+                    if(mf>30 && mf<40){
+                        mf="0"+mf-30;
+                    }else{
+                        mf-=30;
+                    }
+                    hh++;
+                }
+                this.estimatedTime=hh+":"+mf+":00";
             }else{
                 this.totalPrice=this.subPrice;
                 this.packingCharges=0;
@@ -285,7 +299,6 @@ export default {
                 this.isTakeOut=false;
                 this.addrId=null;
             }
-            console.log(this.deliveryFee);
         },
         createOrder(){
              axios.post('/CoffeeOrderService/api/ordermanage/createOrder',
@@ -304,6 +317,9 @@ export default {
                             this.delShopCart(this.mealList[i]);
                         }
                         this.$Message.success("订单创建成功");
+                        setTimeout(()=>{
+                                    this.$router.push({name: "OrderList"});
+                        }, 1500);
                     }
             })
             .catch(error=>{
