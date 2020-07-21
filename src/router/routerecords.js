@@ -136,6 +136,13 @@ const routes = [
         name: 'CreateOrder',
         meta: {layout: "userheader"},
         component: () => import(/* webpackChunkName: "role" */ '@/views/UserMenu/CreateOrder.vue')
+    },
+    //地址薄
+    {
+        path: '/usermenu/addresslist',
+        name: 'addressList',
+        meta: {layout: "account"},
+        component: () => import(/* webpackChunkName: "role" */ '@/views/UserMenu/AddressList.vue')
     }
 ]
 export default routes;
