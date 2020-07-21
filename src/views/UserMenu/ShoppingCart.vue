@@ -193,18 +193,17 @@ export default {
             this.order.data=[];
              for(var i=0;i<this.selectmeal.length;i++){
                  this.order.data.push({
-                     mealId:this.selectmeal[i].mealId,
-                     quality:this.selectmeal[i].quality,
-                     mealName:this.selectmeal[i].mealName,
-                     price:this.selectmeal[i].price,
-                     allprice:this.getSingleAllprice(this.selectmeal[i].quality,this.selectmeal)
-
+                    mealId:this.selectmeal[i].mealId,
+                    quality:this.selectmeal[i].quality,
+                    mealName:this.selectmeal[i].mealName,
+                    price:this.selectmeal[i].price,
+                    allprice:this.getSingleAllprice(this.selectmeal[i].quality,this.selectmeal)
                  })
             }
             this.$router.push({
                 name: "CreateOrder",
                 params: {selectMeal:this.order.data,total:this.getSelectPrice}  
-                });
+                });  
         }
     }
 };
