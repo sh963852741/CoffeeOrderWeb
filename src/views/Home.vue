@@ -68,7 +68,7 @@
                         <Row>
                             <div class="title">新品推送</div>
                             <div class="desc">商品描述</div>
-                            <div class="price">25元</div>
+                            <span class="price">25元</span>
                         </Row>
                     </div>
                 </Card>
@@ -78,10 +78,12 @@
             <i-col span="6" v-for="index in 4" :key="index">
                 <Card>
                     <div class="good">
+                        <Tag class="tag" color="green">降价促销</Tag>
                         <img src="../assets/coffee-logo.png" alt="coffee-logo2" />
                         <div class="title">新品推送</div>
-                            <div class="desc">商品描述</div>
-                            <div class="price">25元</div>
+                        <div class="desc">商品描述</div>
+                        <span class="price">25元</span>
+                        <s class="price" style="color: #c5c8ce;">18元</s>
                     </div>
                 </Card>
             </i-col>
