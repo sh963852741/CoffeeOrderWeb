@@ -162,7 +162,7 @@
                             </Row>
                         </ListItem>
                         <ListItem>
-                            <Button type="primary" long>提交订单</Button>
+                            <Button type="primary" long @click="createOrder">提交订单</Button>
                         </ListItem>
                     </List>
                </Affix>
@@ -219,6 +219,7 @@ export default {
                 },
             ],
             mealList:[],
+            mealIdList:[],
             subPrice:0,
             totalPrice:0,
             tablewareNumber:0,
@@ -226,6 +227,7 @@ export default {
             paymentMethod:"微信支付",
             addrList:[],
             chooseAddrIndex:0,
+            addrId:null,
             isTakeOut:false,
             packingCharges:0,
             deliveryFee:0,
@@ -233,12 +235,15 @@ export default {
     },
     created(){
         this.mealList=this.$route.params.selectMeal;
-        this.subPrice=this.$route.params.getSelectPrice;
+        for(var i=0;i<this.mealList.length;++i){
+            this.mealIdList.push({mealId:this.mealList[i].mealId,amount:this.mealList[i].quality});
+            this.mealList[i].allprice=this.mealList[i].quality*this.mealList[i].price;
+        }
+         this.subPrice=this.$route.params.total;
         this.totalPrice=this.subPrice;
     },
     mounted(){
         this.getALLAddr();
-        this.createOrder();
     },
     computed:{
     },
@@ -247,7 +252,6 @@ export default {
              axios.post('/CoffeeOrderService/api/usermanage/getAddrListByUserId',{})
             .then(response=>{
                     this.addrList = response.data.data;
-                    console.log(this.mealList);
             })
             .catch(error=>{
                 if (error.response) {
@@ -262,7 +266,7 @@ export default {
         },
         chooseAddr(index){
             this.chooseAddrIndex=index;
-            console.log(this.chooseAddrIndex);
+            this.addrId=this.addrList[index].id;
         },
          calcTakeOutCharge(){
             if(this.diningWay==="堂食"){
@@ -270,26 +274,34 @@ export default {
                 this.packingCharges=4;
                 this.deliveryFee=4;
                 this.isTakeOut=true;
+                this.addrId=this.addrList[this.chooseAddrIndex].id;
             }else{
                 this.totalPrice=this.subPrice;
                 this.packingCharges=0;
                 this.deliveryFee=0;
                 this.isTakeOut=false;
+                this.addrId=null;
             }
             console.log(this.deliveryFee);
         },
         createOrder(){
              axios.post('/CoffeeOrderService/api/ordermanage/createOrder',
-             {addrId:this.chooseAddrIndex,
+             {addrId:this.addrId,
              remark:this.remark,
              payment:this.paymentMethod,
              packingCharges:this.packingCharges,
              deliveryFee:this.deliveryFee,
              isTakeOut:this.isTakeOut,
-             data:this.mealList})
+             data:this.mealIdList})
             .then(response=>{
-                    this.addrList = response.data.data;
-                    console.log(this.mealList);
+                    if(response.data.success){
+                        console.log("okk");
+                        for(var i=0;i<this.mealList.length;++i)
+                        {
+                            this.delShopCart(this.mealList[i]);
+                        }
+                        this.$Message.success("订单创建成功");
+                    }
             })
             .catch(error=>{
                 if (error.response) {
@@ -301,7 +313,21 @@ export default {
                     this.$Message.error("无法发送请求");
                 }
             });
-        }
+        },
+        delShopCart(row){
+            axios.post("/CoffeeOrderService/api/shoppingcart/delShoppingCart",{mealId:row.mealId})
+            .then(response=>{
+                if(response.data.success){
+                    console.log("购物车选项清空成功");
+                }
+                else{
+                    this.$Message.error("购物车选项清空失败");
+                }
+            })
+            .catch(error=>{
+                this.$Message.error(error.data.msg);
+            });
+        },
     }
 }
 </script>
