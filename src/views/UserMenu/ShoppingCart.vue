@@ -128,6 +128,7 @@ export default {
             axios
                 .post("/CoffeeOrderService/api/shoppingcart/addShoppingCart", {
                     mealId: this.mealList[index].mealId,
+                    addend:1,
                     price: this.mealList[index].price
                 })
                 .then(response => {
