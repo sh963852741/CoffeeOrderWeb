@@ -203,15 +203,16 @@ export default {
                     allprice:this.getSingleAllprice(this.selectmeal[i].quality,this.selectmeal)
                 })
             }
-            let guid = this.makeGuid();
+            // let guid = this.makeGuid();
             let data = {
                 selectMeal: this.order.data,
                 total: this.getSelectPrice
             };
-            localStorage.setItem(guid, JSON.stringify(data))
+            localStorage.removeItem("shoppingcart");
+            localStorage.setItem("shoppingcart", JSON.stringify(data))
             this.$router.push({
-                name: "CreateOrder",
-                query: {orderPreId: guid} 
+                name: "CreateOrder" //,
+                //query: {orderPreId: guid} 
             });
         },
         makeGuid() {
