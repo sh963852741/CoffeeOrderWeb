@@ -142,13 +142,9 @@
                 <Layout :style="{minHeight:'380px',margin:'50px 0',background: '#fff'}">
                     <Sider hide-trigger :style="{background: '#fff',padding:'20px 0px 0px 0px'}" >
                         <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" >
-                            <MenuGroup title="订单管理">
-                                <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
-                            </MenuGroup>
-                            <MenuGroup title="账户信息">
-                                <MenuItem name="3" :to="{name:'addressList'}"><Icon type="ios-book" />地址簿</MenuItem>
-                                <MenuItem name="4"><Icon type="ios-person" />账户信息</MenuItem>
-                            </MenuGroup>
+                        <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
+                        <MenuItem name="3" :to="{name:'addressList'}"><Icon type="ios-book" />地址簿</MenuItem>
+                        <MenuItem name="4" :to="{name: 'UserMenuCenter'}"><Icon type="ios-person" />账户信息</MenuItem>
                         </Menu>  
                     </Sider>
                     <slot></slot>
