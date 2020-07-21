@@ -10,6 +10,17 @@
                  </div>
                 
                  <Card>
+                    <Steps :current="now"  v-if="!isTakeOut">
+                        <Step title="已创建"></Step>
+                        <Step title="制作中"></Step>
+                        <Step title="已完成"></Step>
+                    </Steps>
+                    <Steps :current="now"  v-else>
+                        <Step title="已创建"></Step>
+                        <Step title="制作中"></Step>
+                        <Step title="配送中"></Step>
+                        <Step title="已完成"></Step>
+                    </Steps>
                     <p class="info" style="">订单编号：{{orderInfo.orderId}}</p>
                     <p slot="extra" style="font-size:17px;"><strong>{{status}}</strong></p>
                     <p class="info">订单内容：</p>
@@ -140,16 +151,24 @@ export default {
             ],
             orderInfo:{},
             mealList:[],
+            now: 0,
             createdTime:"",
             totalPrice:"",
-            status:""
+            status:"",
+            currentType:{
+                "已创建":0,
+                "制作中":1,
+                "配送中":2,
+                "已完成":3
+            },
+            isTakeOut: false
         }
     },
     created(){
-        this.orderInfo.orderId=this.$route.query.orderId;
-        this.createdTime=this.$route.query.createdTime;
-        this.totalPrice=this.$route.query.totalPrice;
-        this.status=this.$route.query.status;
+        this.orderInfo.orderId=this.$route.params.orderId;
+        this.createdTime=this.$route.params.createdTime;
+        this.totalPrice=this.$route.params.totalPrice;
+        this.status=this.$route.params.status;
     },
     mounted(){
         this.getOrderDetail();
@@ -159,6 +178,8 @@ export default {
             axios.post('/CoffeeOrderService/api/ordermanage/getOrderDetail',{orderId:this.orderInfo.orderId})
             .then(response=>{
                     this.mealList = response.data.data;
+                    this.isTakeOut = response.data.isTakeOut;
+                    this.now = this.currentType[response.data.status];
             })
             .catch(error=>{
                 if (error.response) {

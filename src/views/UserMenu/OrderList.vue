@@ -23,7 +23,8 @@
                             ¥{{ row.totalPrice }}元
                             </template>
                             <template slot-scope="{ row }" slot="action">
-                                <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
+                                <Button type="info" size="small" style="margin-right: 5px" v-if="row.status!='已完成'" @click="changeState(row.orderId,row.status)">{{nextState[row.status]}}</Button>
+                                <Button type="primary" size="small" @click="toDetail(row)">查看详情</Button>
                             </template>
                         </Table>
                         <Page :total="allCount" :page-size="pageSize" show-total @on-change="changePage1" style="margin-top:15px;"/>
@@ -37,12 +38,13 @@
                             ¥{{ row.totalPrice }}元
                             </template>
                             <template slot-scope="{ row }" slot="action">
+                                <Button type="info" size="small" style="margin-right: 5px" v-if="row.status!='已完成'" @click="changeState(row.orderId,row.status)">{{nextState[row.status]}}</Button>
                                 <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
                             </template>
                         </Table>
                         <Page :total="finishedCount" :page-size="pageSize" show-total @on-change="changePage2" style="margin-top:15px;"/>
                     </TabPane>
-                    <TabPane label="进行中" name="name3" @on-click="resetData">
+                    <TabPane label="待付款" name="name3" @on-click="resetData">
                         <Table stripe :columns="columns12" :data="unfinishedOrderList">
                             <template slot-scope="{ row }" slot="orderId">
                             <strong>{{ row.orderId }}</strong>
@@ -51,11 +53,27 @@
                             ¥{{ row.totalPrice }}元
                             </template>
                             <template slot-scope="{ row }" slot="action">
+                                <Button type="info" size="small" style="margin-right: 5px" v-if="row.status!='已完成'" @click="changeState(row.orderId,row.status)">{{nextState[row.status]}}</Button>
                                 <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
                             </template>
                         </Table>
                         <Page :total="unfinishedCount" :page-size="pageSize" show-total @on-change="changePage3" style="margin-top:15px;"/>
-                    </TabPane>                   
+                    </TabPane>
+                    <TabPane label="进行中" name="name4" @on-click="resetData">
+                        <Table stripe :columns="columns12" :data="doingList">
+                            <template slot-scope="{ row }" slot="orderId">
+                            <strong>{{ row.orderId }}</strong>
+                            </template>
+                            <template slot-scope="{ row }" slot="totalPrice">
+                            ¥{{ row.totalPrice }}元
+                            </template>
+                            <template slot-scope="{ row }" slot="action">
+                                <Button type="info" size="small" style="margin-right: 5px" v-if="row.status!='已完成'" @click="changeState(row.orderId,row.status)">{{nextState[row.status]}}</Button>
+                                <Button type="primary" size="small" style="margin-right: 5px" @click="toDetail(row)">查看详情</Button>
+                            </template>
+                        </Table>
+                        <Page :total="doingCount" :page-size="pageSize" show-total @on-change="changePage4" style="margin-top:15px;"/>
+                    </TabPane>                     
                 </Tabs>
             </Content>
         </Layout>
@@ -89,7 +107,7 @@ export default {
                     {
                         title: '操作',
                         slot: 'action',
-                        width: 150,
+                        width: 200,
                         align: 'center'
                     }
                 ],
@@ -110,14 +128,31 @@ export default {
                 data:[],
                 finished:[],
                 unfinished:[],
+                doing:[],
                 all:[],
                 allCount:0,
                 finishedCount:0,
                 unfinishedCount:0,
+                doingCount:0,
                 pageSize:10,
+                /*已完成 */
                 finishedOrderList:[],
+                /*待付款 */
                 unfinishedOrderList:[],
-                value:"name1"
+                /*进行中 */
+                doingList:[],
+                value:"name1",
+                nextState: {
+                    "已创建":"付款",
+                    "制作中":"取餐",
+                    "配送中":"确认收货"
+                },
+                /*与上方的nextState key相同，只是对应的value改了个名字 点付款=传已完成 */
+                changeStatus:{
+                    "已创建":"制作中",
+                    "制作中":"已完成",
+                    "配送中":"已完成"
+                }
             }
     },
     mounted(){
@@ -133,11 +168,11 @@ export default {
                     this.all=this.data;
                     this.finished=this.data.filter(e=>e.status.indexOf("已完成")!==-1);
                     this.unfinished=this.data.filter(e=>e.status.indexOf("已创建")!==-1);
-                    this.finishedOrderList=this.data1;
-                    this.unfinishedOrderList= this.data2;
+                    this.doing = this.data.filter(e=>e.status.indexOf("配送中")!==-1||e.status.indexOf("制作中")!==-1);
                     this.finishedCount = this.finished.length;
                     this.unfinishedCount = this.unfinished.length;
                     this.allCount = this.all.length;
+                    this.doingCount = this.doing.length;
                     if(this.allCount<this.pageSize) {
                         this.data = this.all;
                     } else {
@@ -152,6 +187,11 @@ export default {
                         this.unfinishedOrderList = this.unfinished;
                     } else {
                         this.unfinishedOrderList = this.unfinished.slice(0,this.pageSize)
+                    }
+                    if(this.doingCount<this.pageSize) {
+                        this.doingList = this.doing;
+                    } else {
+                        this.doingList = this.doing.slice(0,this.pageSize)
                     }
                 }
                 else{
@@ -169,14 +209,13 @@ export default {
                     }
                 });
         },
-        sortOrderList(){
-            
+        sortOrderList(){           
             this.finishedOrderList=this.data.filter(e=>e.status.indexOf("已完成")!==-1);
             this.unfinishedOrderList=this.data.filter(e=>e.status.indexOf("已创建")!==-1);
 
         },
         toDetail(row){
-            this.$router.push({name:"OrderDetail",query: {orderId: row.orderId,createdTime:row.createdTime,totalPrice:row.totalPrice,status:row.status}});
+            this.$router.push({name:"OrderDetail",params: {orderId: row.orderId,createdTime:row.createdTime,totalPrice:row.totalPrice,status:row.status}});
         },
         searchFinishedOrder(condition){
             if(this.value==="name1"){
@@ -215,6 +254,33 @@ export default {
             var start = (index-1)*this.pageSize;
             var end = index*this.pageSize;
             this.unfinishedOrderList = this.unfinished.slice(start,end);
+        },
+        changePage4(index) {
+            var start = (index-1)*this.pageSize;
+            var end = index*this.pageSize;
+            this.doingList = this.doing.slice(start,end);
+        },
+        changeState(orderId, status) {
+            axios.post('/CoffeeOrderService/api/ordermanage/setOrderStatus',{orderId: orderId, targetStatus: this.changeStatus[status]})
+            .then(response=>{
+                if(response.data.success){
+                    this.$Message.success("修改成功");
+                    window.location.reload();
+                }
+                else{
+                    this.$Message.error(response.data.msg)
+                }
+                })
+                .catch(error=>{
+                    if (error.response) {
+                        if (error.response.status >= 400 && error.response.status < 600)
+                            this.$Message.error(error.message);
+                        else
+                            this.$Message.warning(error.message);
+                    } else {
+                        this.$Message.error("无法发送请求");
+                    }
+            });
         }
     }
 }
