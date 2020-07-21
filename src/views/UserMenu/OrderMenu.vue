@@ -157,7 +157,8 @@ export default {
                 .post("/CoffeeOrderService/api/shoppingcart/addShoppingCart", {
                     mealId: id,
                     mealName: name,
-                    price: mprice
+                    price: mprice,
+                    addend: 1
                 })
                 .then(response => {
                     if (response.data.success) {

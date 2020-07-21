@@ -1,6 +1,6 @@
 <template>
     <Row type="flex" justify="center" style="margin-top: 15vh">
-        <i-col span="4">
+        <i-col span="5">
             <Card dis-hover>
                 <template v-slot:title>
                     <Row style="font-size: 28px; text-align: center">

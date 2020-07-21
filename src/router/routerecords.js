@@ -104,7 +104,7 @@ const routes = [
     },
     //历史订单详细页
     {
-        path: '/usermenu/orderlist',
+        path: '/usermenu/orderdetail',
         name: 'OrderDetail',
         meta: {layout: "account"},
         component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderDetail.vue')
@@ -136,6 +136,6 @@ const routes = [
         name: 'CreateOrder',
         meta: {layout: "userheader"},
         component: () => import(/* webpackChunkName: "role" */ '@/views/UserMenu/CreateOrder.vue')
-      }
+    }
 ]
 export default routes;

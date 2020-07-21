@@ -11,8 +11,13 @@
         <Divider />
         <Row>
             <i-table border :columns="menuListHeader" :data="menuListContent">
+                <template v-slot:menuName="props">
+                    {{props.row.menuName}}&nbsp;<Tag v-if="props.row.active" color="primary">已激活</Tag>
+                </template>
                 <template v-slot:action="props">
                     <Button type="primary" @click="toDetail(props.row)">详情</Button>
+                    &nbsp;
+                    <Button type="primary" :disabled="props.row.active" @click="setActive(props.row)">激活</Button>
                     &nbsp;
                     <Button type="error" @click="delMenu(props.row)">删除</Button>
                 </template>
@@ -41,7 +46,7 @@ const axios = require("axios");
                 menuListHeader: [
                     {
                         title: '菜单名',
-                        key: 'menuName'
+                        slot: 'menuName'
                     },
                     {
                         title: '类别',
@@ -83,16 +88,27 @@ const axios = require("axios");
         methods: {
             getMenuList(){
                 axios.post("/CoffeeOrderService/api/menu/getMenuList", {})
-                .then(response=>{
+                .then(response => {
                     this.menuList = response.data.data;
                     this.menuListContent = this.menuList;
                 })
-                .catch(error=>{
+                .catch(error => {
                     if (error.response) {
-                        if (error.response.status >= 400 && error.response.status < 600)
-                            this.$Message.error(error.message);
-                        else
-                            this.$Message.warning(error.message);
+                        this.$Message.error(error.message);
+                    } else {
+                        this.$Message.error("无法发送请求");
+                    }
+                });
+            },
+            setActive(row){
+                axios.post("/CoffeeOrderService/api/menu/setMenuActive", {menuId: row.menuId})
+                .then(response => {
+                    if(response.data.success) this.getMenuList();
+                    else this.$Message.error(response.data.msg);
+                })
+                .catch(error => {
+                    if (error.response) {
+                        this.$Message.error(error.message);
                     } else {
                         this.$Message.error("无法发送请求");
                     }
