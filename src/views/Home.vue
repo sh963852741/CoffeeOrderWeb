@@ -59,22 +59,29 @@
                 </Tabs>
             </Card>
         </div>
-        <Row type="flex" justify="space-between" style="margin-top: 24px">
-            <i-col span="4" v-for="index in 4" :key="index">
+        <Row type="flex" style="margin-top: 24px" :gutter="24">
+            <i-col span="6" v-for="index in 4" :key="index">
                 <Card>
-                    <div>
-                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" width="100%"/>
-                        <h2>新品推送</h2>
+                    <div class="good">
+                        <Tag class="tag" color="orange">店长推荐</Tag>
+                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" />
+                        <Row>
+                            <div class="title">新品推送</div>
+                            <div class="desc">商品描述</div>
+                            <div class="price">25元</div>
+                        </Row>
                     </div>
                 </Card>
             </i-col>
         </Row>
-        <Row type="flex" justify="space-between" style="margin-top: 24px; margin-bottom: 24px">
-            <i-col span="4" v-for="index in 4" :key="index">
+        <Row type="flex" justify="space-between" style="margin-top: 24px; margin-bottom: 24px" :gutter="24">
+            <i-col span="6" v-for="index in 4" :key="index">
                 <Card>
-                    <div>
-                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" width="100%"/>
-                        <h2>新品推送</h2>
+                    <div class="good">
+                        <img src="../assets/coffee-logo.png" alt="coffee-logo2" />
+                        <div class="title">新品推送</div>
+                            <div class="desc">商品描述</div>
+                            <div class="price">25元</div>
                     </div>
                 </Card>
             </i-col>
@@ -212,5 +219,29 @@ import app from "@/common/app.js"
     background: cornflowerblue;
     height: 436px;
     width: 100%;
+}
+
+.good{
+    text-align: center;
+}
+
+.good .title{
+    font-size: 16px;
+    font-weight: 700;
+    margin: 8px 0;
+}
+.good .desc{
+    font-size: 14px;
+    color: #808695;
+}
+.good .price{
+    font-size: 14px;
+    color: #ff6700;
+    margin: 8px 0;
+}
+.good .tag{
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 </style>

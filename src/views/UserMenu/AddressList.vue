@@ -2,12 +2,8 @@
     <Content>
         <Layout :style="{minHeight: '300px',background:'#fff',padding:'20px '}">
             <Content>
-                <Row type="flex">
-                    <i-col span="6">
-                        <div style="font-size:20px;margin:10px 0;">地址薄</div>
-                    </i-col>
-                    <i-col span="12"></i-col>
-                    <i-col span="6" style="padding:10px 0;">
+                <Row type="flex" style="padding: 10px 0">
+                    <i-col>
                         <Button type="primary" @click="modal=true">添加新地址</Button>
                     </i-col>
                 </Row>
