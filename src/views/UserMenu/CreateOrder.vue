@@ -301,6 +301,9 @@ export default {
                             this.delShopCart(this.mealList[i]);
                         }
                         this.$Message.success("订单创建成功");
+                        setTimeout(()=>{
+                                    this.$router.push({name: "OrderList"});
+                        }, 1500);
                     }
             })
             .catch(error=>{
