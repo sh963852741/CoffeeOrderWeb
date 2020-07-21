@@ -81,6 +81,13 @@ const routes = [
       meta: {layout: "userheader"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderMenu.vue')
     },
+    //菜品页面
+    {
+      path: '/menumanager/menuanalyze',
+      name: 'MenuAnalyze',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/MenuManager/MenuAnalyze.vue')
+    },
     //个人中心页面
     {
       path: '/profile/profile',
