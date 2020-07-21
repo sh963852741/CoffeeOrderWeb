@@ -174,9 +174,27 @@
 <script>
 const axios = require("axios");
 export default {
+    created(){
+        this.orderPreId = this.$route.query.orderPreId;
+        let data = JSON.parse(localStorage.getItem(this.orderPreId));
+        this.mealList = data.selectMeal;
+        this.subPrice = data.total;
+        this.totalPrice=this.subPrice;
+
+        window.onbeforeunload = function(e) {
+            e = e || window.event;
+        // 兼容IE8和Firefox 4之前的版本
+        if (e) {
+            e.returnValue = "您是否确认离开此页面-您输入的数据可能不会被保存";
+        }
+        // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+        return "您是否确认离开此页面-您输入的数据可能不会被保存";
+        };
+    },
     data(){
         return{
-            orderInfo:{},
+            orderPreId: "",
+            orderInfo: {},
             diningWay:'堂食',
             columns1:[
                 {

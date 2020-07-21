@@ -41,18 +41,25 @@
                             <h3>{{item.mealName}}</h3>
                         </div>
                         <Divider></Divider>
-                        <Row type="flex" justify="space-between" align="middle">
+                        <Row type="flex" align="middle" justify="space-between">
                             <i-col>
                                 <b>
                                     <font color="green" size="3">{{item.price}}元</font>
                                 </b>
                             </i-col>
                             <i-col>
-                                <Button
-                                    icon="ios-cart-outline"
-                                    type="error"
-                                    @click="addShopCard(item.mealId,item.mealName,item.price)"
-                                >添加</Button>
+                            <Button
+                                icon="ios-cart-outline"
+                                type="error"
+                                 @click="addShopCard(item.mealId,item.shopCount,item.price)"
+                            >添加</Button>
+                            </i-col>
+                        </Row>
+                         <Divider></Divider>
+                        <Row tpye="flex"> 
+                            <i-col>
+                                <font size="2">数量：</font>
+                                <InputNumber :min="1" v-model="meal[index].shopCount" size="small"></InputNumber>
                             </i-col>
                         </Row>
                     </Card>
@@ -75,12 +82,12 @@ export default {
             userInfo: {},
             defaultImg:
                 'this.src="' + require("@/assets/coffee-logo.png") + '"',
-            menuId: {id:""}
+            menuId: { id: "" }
         };
     },
     created() {
-        if(this.$route.query.menuId!=undefined){
-            this.menuId.id=this.$$route.query.menuId;
+        if (this.$route.query.menuId != undefined) {
+            this.menuId.id = this.$$route.query.menuId;
         }
     },
     mounted() {
@@ -95,6 +102,9 @@ export default {
         },
         toSpecialMeal(key) {
             this.meal = this.sortMeal[key];
+            for (var i = 0; i < this.meal.length; i++) {
+                this.meal[i].shopCount = 1;
+            }
             this.nowtitle.title = key;
         },
         getAllmeal() {
@@ -106,6 +116,9 @@ export default {
                     .then(response => {
                         if (response.data.success) {
                             this.meal = response.data.data;
+                            for (var i = 0; i < this.meal.length; i++) {
+                                this.meal[i].shopCount = 1;
+                            }
                             this.allMeal = this.meal;
                         } else {
                             this.$Message.error(response.data.msg);
@@ -115,48 +128,57 @@ export default {
                         console.error(error.data);
                     });
             } else {
-                axios.post("/CoffeeOrderService/api/menu/getAllMeal", {})
-                .then(response => {
-                    if (response.data.success) {
-                        this.meal = response.data.data;
-                        this.allMeal = this.meal;
-                    } else {
-                        this.$Message.error(response.data.msg);
-                    }
-                })
-                .catch(error => {
-                    console.error(error.data);
-                });
+                axios
+                    .post("/CoffeeOrderService/api/menu/getAllMeal", {})
+                    .then(response => {
+                        if (response.data.success) {
+                            this.meal = response.data.data;
+                            for (var i = 0; i < this.meal.length; i++) {
+                                this.meal[i].shopCount = 1;
+                            }
+                            this.allMeal = this.meal;
+                        } else {
+                            this.$Message.error(response.data.msg);
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error.data);
+                    });
             }
         },
         getmealbysort() {
             if (this.menuId.id) {
-                axios.post("/CoffeeOrderService/api/menu/getMealBySort", {menuId:this.menuId.id})
-                .then(response => {
-                    if (response.data.success) {
-                        this.sortMeal = response.data.data;
-                    }
-                })
-                .catch(error => {
-                    console.error(error.data);
-                });
+                axios
+                    .post("/CoffeeOrderService/api/menu/getMealBySort", {
+                        menuId: this.menuId.id
+                    })
+                    .then(response => {
+                        if (response.data.success) {
+                            this.sortMeal = response.data.data;
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error.data);
+                    });
             } else {
-                axios.post("/CoffeeOrderService/api/menu/getMealBySort", {})
-                .then(response => {
-                    if (response.data.success) {
-                        this.sortMeal = response.data.data;
-                    }
-                })
-                .catch(error => {
-                    console.error(error.message);
-                });
+                axios
+                    .post("/CoffeeOrderService/api/menu/getMealBySort", {})
+                    .then(response => {
+                        if (response.data.success) {
+                            this.sortMeal = response.data.data;
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error.message);
+                    });
             }
         },
-        addShopCard(id, name, mprice) {
+        addShopCard(id, amount, mprice) {
+            console.log(amount)
             axios
                 .post("/CoffeeOrderService/api/shoppingcart/addShoppingCart", {
                     mealId: id,
-                    mealName: name,
+                    addend: amount,
                     price: mprice
                 })
                 .then(response => {
@@ -169,7 +191,7 @@ export default {
                 .catch(error => {
                     this.$Message.error(error.data.msg);
                 });
-        }
+        },
     }
 };
 </script>
