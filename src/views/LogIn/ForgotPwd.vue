@@ -1,6 +1,6 @@
 <template>
     <Row type="flex" justify="center" style="margin-top: 15vh">
-        <i-col span="4">
+        <i-col span="5">
             <Card dis-hover>
                 <template v-slot:title>
                     <Row style="font-size: 28px; text-align: center">
@@ -8,23 +8,23 @@
                     </Row>
                 </template>
                 <Row>
-                    <Form :model="pwdModel" ref="pwd" label-position="left" :label-width="75">
+                    <Form :model="pwdModel" :rules="rules" ref="pwd" label-position="left" :label-width="75">
                         <FormItem prop="userName" label="用户名">
                             <i-input v-model="pwdModel.userName" placeholder="请输入您的用户名"></i-input>
                         </FormItem>
                         <FormItem prop="mobile" label="手机号">
                             <i-input v-model="pwdModel.telephone" placeholder="请输入您的手机号"></i-input>
                         </FormItem>
-                        <FormItem prop="mobile" label="验证码">
+                        <FormItem prop="verify" label="验证码">
                             <Row type="flex" justify="space-between">
-                                <i-input style="width: 40%" placeholder="4位" v-model="pwdModel.code"></i-input>
+                                <i-input style="width: 60%" placeholder="4位字母或数字" v-model="pwdModel.code"></i-input>
                                 <Button @click="getCode" :disabled="waitForCount">{{codeTip}}</Button>
                             </Row>
                         </FormItem>
-                        <FormItem prop="password" :maxlength="14" label="密码">
+                        <FormItem prop="password" :maxlength="14" label="密码" placeholder="请输入密码">
                             <i-input v-model="pwdModel.password" type="password"></i-input>
                         </FormItem>
-                        <FormItem prop="checkPwd" :maxlength="14" label="确认密码">
+                        <FormItem prop="checkPwd" :maxlength="14" label="确认密码" placeholder="请输入确认密码">
                             <i-input v-model="pwdModel.checkPwd" type="password"></i-input>
                         </FormItem>
                         <Button type="primary" @click="setPwd" long>更改密码</Button>
@@ -36,11 +36,27 @@
 </template>
 
 <script>
+import rules from "@/common/formRule.js"
 const axios = require("axios");
 const sha1 = require('sha1');
 export default {
     data(){
+        const validatePassCheck = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入确认密码'));
+            } else if (value !== this.pwdModel.password) {
+                callback(new Error('两次输入的密码不一致'));
+            } else {
+                callback();
+            }
+        };
         return{
+            rules: {
+                ...rules.forgotPwd,
+                checkPwd: [
+                    { validator: validatePassCheck, trigger: 'blur' }
+                ]
+            },
             pwdModel: {},
             count: 0,
             waitForCount: false,

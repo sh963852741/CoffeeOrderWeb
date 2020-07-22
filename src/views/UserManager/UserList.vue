@@ -117,25 +117,32 @@ export default {
             this.userlist = this.data.filter(e => e.userName.indexOf(condition) !== -1 );
         },
         delUser(row) {
-            axios.post("/CoffeeOrderService/api/usermanage/deleteUser", {userId: row.userId})
-            .then(response => {
-                if(response.data.success) 
-                {
-                    this.$Message.success("删除成功");
-                    this.getUserlist();
-                } else {
-                    this.$Message.warning(response.data.msg);
-                }
-            })
-            .catch(error => {
-                if (error.response) {
-                    if (error.response.status >= 400 && error.response.status < 600)
-                        this.$Message.error(error.message);
-                    else 
-                        this.$Message.warning(error.message);
-                } else {
-                    this.$Message.error("无法发送请求");
-                }
+            this.$Modal.confirm({
+                title: "删除提示",
+                content: "<p>是否要删除此用户?</p>",
+                onOk: () => {
+                    axios.post("/CoffeeOrderService/api/usermanage/deleteUser", {userId: row.userId})
+                    .then(response => {
+                        if(response.data.success) 
+                        {
+                            this.$Message.success("删除成功");
+                            this.getUserlist();
+                        } else {
+                            this.$Message.warning(response.data.msg);
+                        }
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            if (error.response.status >= 400 && error.response.status < 600)
+                                this.$Message.error(error.message);
+                            else 
+                                this.$Message.warning(error.message);
+                        } else {
+                            this.$Message.error("无法发送请求");
+                        }
+                    });
+                },
+                onCancel: () => {}
             });
         },
         asyncSubmit() {

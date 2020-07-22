@@ -2,7 +2,7 @@
     <Card title="餐品满意度分析">
         <Row type="flex" :gutter="16" align="middle">
             <i-col span="6">
-                <Card style="height:312px;">
+                <Card>
                     <p slot="title" style="height:100%">
                         订单量
                         <Tag color="green" style="float:right">
@@ -12,7 +12,7 @@
                     <h1 style="margin-top:40px;margin-bottom:10px">{{data.totalOrders}}</h1>
                     <p>累计评分</p>
                     <Rate allow-half v-model="valueHalf"/>
-                    <Row style="border-bottom: 1px solid #e8eaec;margin-top:50px;margin-bottom:10px">
+                    <Row style="border-bottom: 1px solid #e8eaec;margin-top:54px;margin-bottom:10px">
                     </Row>
                     <Row>             
                         <i-col span="12">
@@ -25,16 +25,18 @@
                 </Card>
             </i-col>
             <i-col span="6">
-                <Card style="height:312px;">
+                <Card>
                     <p slot="title" style="height:100%">
                         销售额
                         <Tag color="blue" style="float:right">
                             月
                         </Tag>
                     </p>
-                    <h1 style="margin-top:40px">¥{{data.moneyPerMonth}}元</h1>
-                    <Progress :percent="65" hide-info style="margin-top:30px;"/>
-                    <Row style="border-bottom: 1px solid #e8eaec;margin-top:65px;margin-bottom:10px">
+                    <div >
+                        <h1 style="margin-top:40px">¥{{data.moneyPerMonth}}元</h1>
+                        <Progress :percent="65" hide-info style="margin-top:30px;"/>
+                    </div>
+                    <Row style="border-bottom: 1px solid #e8eaec;margin-top:69px;margin-bottom:10px">
                     </Row>
                     <Row>             
                         <i-col span="12">
@@ -54,7 +56,7 @@
                             月
                         </Tag>
                     </p>
-                    <div id="paymentWay" style="height:200px;width:100%;overflow:hidden;"/>
+                    <div id="paymentWay" style="height:200px;width:100%;"/>
                     <Row style="border-bottom: 1px solid #e8eaec;margin-bottom:10px;">
                     </Row>
                     <Row>             
@@ -176,21 +178,40 @@ const echarts = require("echarts");
                         }
                     },
                     series: [{
-                            type: 'pie',
-                            radius: '45%',
-                            center: ['50%', '50%'],
-                            data:[],
+                        type: 'pie',
+                        center: ['50%', '50%'],
+                        data:[],
+                        radius: ['60%', '80%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
                             label: {
-                                position: 'outer',
-                                fontSize: '15'
-                            },
-                            left: 0,
-                            right:40,
-                            top: 0,
-                            bottom:40
-                        }]
+                                show: true,
+                                fontSize: '18',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        left: 0,
+                        right:0,
+                        top: 0,
+                        bottom:0
+                    }],
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{b}: {c} ({d}%)' 
+                    }
                 },
                 mealCondition: {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{b}: {c} ({d}%)' 
+                    },
                     title: {
                         left: '50%',
                         top: '80%',
@@ -203,7 +224,6 @@ const echarts = require("echarts");
                     },
                     series: [{
                             type: 'pie',
-                            radius: '45%',
                             center: ['50%', '50%'],
                             data: [],
                             label: {
@@ -211,9 +231,9 @@ const echarts = require("echarts");
                                 fontSize: '15'
                             },
                             left: 0,
-                            right:40,
+                            right: 0,
                             top: 0,
-                            bottom:40
+                            bottom: 0
                         }]
                     }
                 };

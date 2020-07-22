@@ -354,26 +354,27 @@ export default {
             }
         },
         createOrder(){
-             axios.post('/CoffeeOrderService/api/ordermanage/createOrder',
-             {addrId:this.addrId,
-             remark:this.remark,
-             payment:this.paymentMethod,
-             packingCharges:this.packingCharges,
-             deliveryFee:this.deliveryFee,
-             isTakeOut:this.isTakeOut,
-             data:this.mealIdList})
+            axios.post('/CoffeeOrderService/api/ordermanage/createOrder',
+            {addrId:this.addrId,
+            remark:this.remark,
+            payment:this.paymentMethod,
+            packingCharges:this.packingCharges,
+            deliveryFee:this.deliveryFee,
+            isTakeOut:this.isTakeOut,
+            data:this.mealIdList})
             .then(response=>{
-                    if(response.data.success){
-                        console.log("okk");
-                        for(var i=0;i<this.mealList.length;++i)
-                        {
-                            this.delShopCart(this.mealList[i]);
-                        }
-                        this.$Message.success("订单创建成功");
-                        setTimeout(()=>{
-                                    this.$router.push({name: "OrderList"});
-                        }, 1500);
+                if(response.data.success){
+                    for(let i=0; i<this.mealList.length; ++i)
+                    {
+                        this.delShopCart(this.mealList[i]);
                     }
+                    this.$Message.success("订单创建成功");
+                    setTimeout(()=>{
+                                this.$router.push({name: "OrderList"});
+                    }, 1500);
+                }else{
+                    this.$Message.error(response.data.msg);
+                }
             })
             .catch(error=>{
                 if (error.response) {
