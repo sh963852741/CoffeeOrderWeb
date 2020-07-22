@@ -12,7 +12,7 @@
                     <img src="@/assets/Carousel3.jpg"  style="width:100%" />
                 </CarouselItem>
             </Carousel>
-            <Card class="login-box" dis-hover :padding="24" style="margin-right:20px">
+            <Card class="login-box" dis-hover :padding="24" style="margin-right:6%;margin-top:4%;">
                 <Tabs value="name1">
                     <TabPane label="密码登录" name="name1">
                         <Form  style="margin-top: 16px" :model="logInModel" :rules="rules" ref="login">
