@@ -12,25 +12,24 @@
                 <Divider />
                 <Row>
                     <i-col span="6" offset="9">
-                        <Form :model="userInfo" label-position="left" :label-width="80">
-                            <FormItem label="用户名">
+                        <Form :model="userInfo" :rules="myrule" label-position="left" :label-width="80">
+                            <FormItem label="用户名" prop="userName">
                                 <i-input v-model="userInfo.userName"></i-input>
                             </FormItem >
                             <FormItem label="密码">
-                                <Button v-if="isSelf" @click="showModal = true">更改密码</Button>
-                                <Button v-else @click="showModal = true">设置新密码</Button>
+                                <Button @click="showModal = true">设置新密码</Button>
                             </FormItem >
-                            <FormItem label="电话">
+                            <FormItem label="电话" prop="telephone">
                                 <i-input v-model="userInfo.telephone"></i-input>
                             </FormItem >
-                            <FormItem label="电子邮箱">
+                            <FormItem label="电子邮箱" prop="email">
                                 <i-input v-model="userInfo.email"></i-input>
                             </FormItem >
-                            <FormItem label="角色">
+                            <!--FormItem label="角色">
                                 <i-select v-model="userInfo.role" multiple>
                                     <i-option v-for="(item,index) in role" v-bind:key="index" :value="item">{{item}}</i-option>
                                 </i-select>
-                            </FormItem >
+                            </FormItem-->
                             <FormItem >
                                 <Button type="primary" @click="saveUserInfo">保存</Button>
                             </FormItem >
@@ -39,12 +38,15 @@
                 </Row>
                 <Modal v-model="showModal" @on-ok="changePassword" >
                     <br>
-                    <Form label-position="left" :label-width="75" :model="modalData">
+                    <Form label-position="left" :rules="myrule" :label-width="75" :model="modalData">
                         <FormItem label="原密码" prop="prePassword">
-                            <Input v-model="modalData.prePassword" placeholder="请输入原密码" />
+                            <Input password type="password" :maxlength="14" v-model="modalData.prePassword" placeholder="请输入原密码" />
                         </FormItem>
                         <FormItem label="新密码" prop="newPassword">
-                            <Input v-model="modalData.newPassword" placeholder="请输入新密码" />
+                            <Input password type="password" :maxlength="14" v-model="modalData.newPassword" placeholder="请输入新密码" />
+                        </FormItem>
+                        <FormItem label="确认密码" prop="chkPassword">
+                            <Input password type="password" :maxlength="14" v-model="modalData.chkPassword" placeholder="请输入确认密码" />
                         </FormItem>
                     </Form>
                 </Modal>
@@ -54,14 +56,31 @@
 </template>
 
 <script>
+import rules from "@/common/formRule.js"
 const axios = require("axios");
 const sha1 = require('sha1');
 export default {
     data(){
+        const validatePassCheck = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入确认密码'));
+            } else if (value !== this.modalData.newPassword) {
+                callback(new Error('两次输入的密码不一致'));
+            } else {
+                callback();
+            }
+        };
         return {
+            myrule: {
+                ...rules.regist,
+                prePassword: rules.regist.password,
+                newPassword: rules.regist.password,
+                chkPassword: [
+                    { validator: validatePassCheck, trigger: 'blur' }
+                ]
+            },
             userInfo: {} ,
             role:[] ,
-            isSelf: !this.$route.query.userId,
             showModal: false,
             modalData: {}
         }

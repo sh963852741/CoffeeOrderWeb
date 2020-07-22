@@ -17,7 +17,7 @@
                     <TabPane label="所有订单" name="name1" @click="resetData">
                         <Table stripe :columns="columns12" :data="data">
                             <template slot-scope="{ row }" slot="orderId">
-                            <strong>{{ row.orderId }}</strong>
+                            <strong>{{ row.orderId }}</strong><Tag color="gold" v-if="row.isTakeOut">外卖</Tag>
                             </template>
                             <template slot-scope="{ row }" slot="totalPrice">
                             ¥{{ row.totalPrice }}元
@@ -32,7 +32,7 @@
                     <TabPane label="已完成" name="name2" @click="resetData">
                         <Table stripe :columns="columns12" :data="finishedOrderList">
                             <template slot-scope="{ row }" slot="orderId">
-                            <strong>{{ row.orderId }}</strong>
+                            <strong>{{ row.orderId }}</strong><Tag color="gold" v-if="row.isTakeOut">外卖</Tag>
                             </template>
                             <template slot-scope="{ row }" slot="totalPrice">
                             ¥{{ row.totalPrice }}元
@@ -47,7 +47,7 @@
                     <TabPane label="待付款" name="name3" @on-click="resetData">
                         <Table stripe :columns="columns12" :data="unfinishedOrderList">
                             <template slot-scope="{ row }" slot="orderId">
-                            <strong>{{ row.orderId }}</strong>
+                                <strong>{{ row.orderId }}</strong><Tag color="gold" v-if="row.isTakeOut">外卖</Tag>
                             </template>
                             <template slot-scope="{ row }" slot="totalPrice">
                             ¥{{ row.totalPrice }}元
@@ -62,7 +62,7 @@
                     <TabPane label="进行中" name="name4" @on-click="resetData">
                         <Table stripe :columns="columns12" :data="doingList">
                             <template slot-scope="{ row }" slot="orderId">
-                            <strong>{{ row.orderId }}</strong>
+                            <strong>{{ row.orderId }}</strong><Tag color="gold" v-if="row.isTakeOut">外卖</Tag>
                             </template>
                             <template slot-scope="{ row }" slot="totalPrice">
                             ¥{{ row.totalPrice }}元
@@ -88,11 +88,11 @@ export default {
                 columns12: [
                     {
                         title: '订单编号',
-                        slot: 'orderId'
+                        slot: 'orderId',
+                        width: 350
                     },
                     {
                         title: '下单时间',
-                        width: 200,
                         key: 'createdTime'
                     },
                     {
@@ -107,7 +107,6 @@ export default {
                     {
                         title: '操作',
                         slot: 'action',
-                        width: 200,
                         align: 'center'
                     }
                 ],
@@ -165,6 +164,9 @@ export default {
             .then(response=>{
                 if(response.data.success){
                     this.data = response.data.data;
+                    for(let item of this.data){
+                        item.createdTime = item.createdTime.substring(0, item.createdTime.length-2)
+                    }
                     this.all=this.data;
                     this.finished=this.data.filter(e=>e.status.indexOf("已完成")!==-1);
                     this.unfinished=this.data.filter(e=>e.status.indexOf("已创建")!==-1);

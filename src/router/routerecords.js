@@ -18,6 +18,13 @@ const routes = [
     },
     //注册页
     {
+      path: '/usermanager/forgotpwd',
+      name: 'ForgotPwd',
+      meta: {layout: "empty"},
+      component: () => import(/* webpackChunkName: "users" */ '@/views/LogIn/ForgotPwd.vue')
+    },
+    //找回密码页
+    {
       path: '/usermanager/regist',
       name: 'Regist',
       meta: {layout: "empty"},
