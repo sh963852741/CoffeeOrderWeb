@@ -215,7 +215,7 @@ export default {
 
         },
         toDetail(row){
-            this.$router.push({name:"OrderDetail",params: {orderId: row.orderId,createdTime:row.createdTime,totalPrice:row.totalPrice,status:row.status}});
+            this.$router.push({name:"OrderDetail",query:{orderId: row.orderId,},params: {createdTime:row.createdTime,totalPrice:row.totalPrice,status:row.status}});
         },
         searchFinishedOrder(condition){
             if(this.value==="name1"){
