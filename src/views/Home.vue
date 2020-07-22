@@ -17,10 +17,10 @@
                     <TabPane label="密码登录" name="name1">
                         <Form  style="margin-top: 16px" :model="logInModel" :rules="rules" ref="login">
                             <FormItem prop="userName">
-                                <Input prefix="md-person" placeholder="请输入账号" size="large" clearable v-model="logInModel.userName"/>
+                                <Input prefix="md-person" :maxlength="20" max placeholder="请输入账号" size="large" clearable v-model="logInModel.userName"/>
                             </FormItem>
                             <FormItem prop="password">
-                                <Input prefix="ios-lock" placeholder="请输入密码" size="large" type="password" @on-enter="logIn" v-model="logInModel.password" password/>
+                                <Input prefix="ios-lock" :maxlength="14" placeholder="请输入密码" size="large" type="password" @on-enter="logIn" v-model="logInModel.password" password/>
                             </FormItem>
                             <FormItem>
                                 <Button type="primary" long  size="large" keypress.enter.native ref="loginbutton" :loading="loading" @click="logIn">登录</Button>
