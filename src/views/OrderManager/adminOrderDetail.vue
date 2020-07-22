@@ -70,7 +70,7 @@ export default {
         getOrderDetail() {
              axios.post("/CoffeeOrderService/api/ordermanage/getOrderDetail", {orderId: this.orderId})
                 .then(response=> {
-                    this.mealListContent = response.data.data;
+                    this.mealListContent = response.data.meals;
                     this.mealListContent.forEach(v=>{
                         v.totalPrice = v.price*v.amount;
                     })
