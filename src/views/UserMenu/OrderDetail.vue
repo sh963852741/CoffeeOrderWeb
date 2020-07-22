@@ -100,7 +100,8 @@
                         <i-col span="2"></i-col> 
                     </Row>
                     <p class="info" style="float:left;">配送地址：</p>
-                    <p class="info" >{{address.provence}} {{address.street}}街道</p>
+                    <p class="info" v-if="JSON.stringify(address) != '{}'">{{address.provence}} {{address.street}}</p>
+                    <p class="info" v-else>未填写</p>
                     <p class="info">配送骑手：外卖小哥（联系方式：1390000000）</p>
                     <p class="info">下单时间：{{createdTime}}</p>
                     <p class="info">支付方式: {{mealList.payment}}</p>
@@ -177,7 +178,7 @@ export default {
         }
     },
     created(){
-        this.orderInfo.orderId=this.$route.params.orderId;
+        this.orderInfo.orderId=this.$route.query.orderId;
         this.createdTime=this.$route.params.createdTime;
         this.totalPrice=this.$route.params.totalPrice;
         this.status=this.$route.params.status;
@@ -191,6 +192,7 @@ export default {
             .then(response=>{
                     this.mealList = response.data;
                     this.now = this.currentType[response.data.status];
+                    if(this.mealList.addrId!=null)
                     this.getAddress(this.mealList.addrId)
             })
             .catch(error=>{
