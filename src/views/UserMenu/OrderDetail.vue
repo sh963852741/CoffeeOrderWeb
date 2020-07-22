@@ -103,7 +103,7 @@
                     <p class="info" v-if="JSON.stringify(address) != '{}'">{{address.provence}} {{address.street}}</p>
                     <p class="info" v-else>未填写</p>
                     <p class="info">配送骑手：外卖小哥（联系方式：1390000000）</p>
-                    <p class="info">下单时间：{{createdTime}}</p>
+                    <p class="info">下单时间：{{mealList.createdTime}}</p>
                     <p class="info">支付方式: {{mealList.payment}}</p>
                     <p class="info">备注: {{mealList.remark}}</p>
                  </Card>
