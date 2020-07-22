@@ -81,6 +81,13 @@ const routes = [
       meta: {layout: "userheader"},
       component: () => import(/* webpackChunkName: "order" */ '@/views/UserMenu/OrderMenu.vue')
     },
+    //菜品页面
+    {
+      path: '/menumanager/menuanalyze',
+      name: 'MenuAnalyze',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "order" */ '@/views/MenuManager/MenuAnalyze.vue')
+    },
     //个人中心页面
     {
       path: '/profile/profile',
@@ -143,6 +150,13 @@ const routes = [
         name: 'addressList',
         meta: {layout: "account"},
         component: () => import(/* webpackChunkName: "role" */ '@/views/UserMenu/AddressList.vue')
-    }
+    },
+    //餐点分析页
+    {
+      path: '/menumanager/menuanalyze',
+      name: 'MenuAnalyze',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "menu" */ '@/views/MenuManager/MenuAnalyze.vue')
+    },
 ]
 export default routes;

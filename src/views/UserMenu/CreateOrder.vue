@@ -6,7 +6,10 @@
         <Content>
                 <Card :model="orderInfo" :bordered="false" dis-hovez style="width:67%;float:left;">
                     <Form>
-                    <FormItem label="选择就餐方式:">
+                    <FormItem>
+                        <template slot="label">
+                                <strong style="font-size:18px;">就餐方式:</strong>
+                            </template>
                         <RadioGroup v-model="diningWay" @click.native="calcTakeOutCharge">
                             <Radio label="堂食" border ></Radio>
                             <Radio label="外卖" border ></Radio>
@@ -14,7 +17,10 @@
                     </FormItem>
                     </Form>
                     <Form label-position="top">
-                        <FormItem label="选择收货地址:" ref="carrayOutForm" v-if='diningWay==="外卖"'>
+                        <FormItem  ref="carrayOutForm" v-if='diningWay==="外卖"'>
+                            <template slot="label">
+                                <strong style="font-size:18px;">收货地址:</strong>
+                            </template>
                             <Row type="flex">
                                 <i-col
                                     span="8"
@@ -23,16 +29,27 @@
                                     v-bind:key="index"
                                 >          
                                     <Card @click.native="chooseAddr(index)">
-                                        <p slot="title">{{item.receiver}}（收）</p>   
-                                        <Tag color="geekblue" slot="extra" v-if="item.isDefaultAddr===true">默认地址</Tag>
-                                        <p>联系方式：{{item.telephone}}</p>
-                                        <P>送餐地址：</P>
+                                        <Row type="flex" align="middle">
+                                            <i-col span="12">
+                                            <p style="font-size:16px;">{{item.receiver}}（收）</p>
+                                            </i-col>  
+                                            <i-col span="12">
+                                                <Tag style="float:right;" color="geekblue" v-if="item.isDefaultAddr===true" >默认地址</Tag>
+                                            </i-col>
+                                        </Row>
+                                        <Divider style="margin:10px 0;height:0.5px;" size="small"/>
+                                        <!--p style="font-size:16px;" slot="title">{{item.receiver}}（收）</p>
+                                        <Tag style="float:right;"  color="geekblue" v-if="item.isDefaultAddr===true" >默认地址</Tag-->
+                                        <p>{{item.telephone}}</p>
                                         <P>{{item.provence+item.city+item.street+item.address}}</P>
                                     </Card>
                                 </i-col>          
                             </Row>
                         </FormItem>
-                        <FormItem label="我的订单:" >
+                        <FormItem >
+                            <template slot="label">
+                                <strong style="font-size:18px;">我的订单:</strong>
+                            </template>
                             <Table stripe :columns="columns1" :data="mealList">
                                 <template slot-scope="{ row }" slot="mealName">
                                     <Row type="flex">
@@ -59,13 +76,22 @@
                                 </template>
                                 </Table>
                         </FormItem>
-                        <FormItem label="餐具数量:" >
+                        <FormItem>
+                            <template slot="label">
+                                <strong style="font-size:18px;">餐具数量:</strong>
+                            </template>
                             <Input v-model="tablewareNumber" placeholder="请输入所需餐具数量" />
                         </FormItem>
-                        <FormItem label="订单备注:" >
+                        <FormItem >
+                            <template slot="label">
+                                <strong style="font-size:18px;">订单备注:</strong>
+                            </template>
                             <i-input v-model="remark" placeholder="请输入订单备注" type="textarea" :autosize="{minRows: 3,maxRows: 5}"></i-input>
                         </FormItem>
-                        <FormItem label="支付方式:" >
+                        <FormItem>
+                            <template slot="label">
+                                <strong style="font-size:18px;">支付方式:</strong>
+                            </template>
                             <RadioGroup v-model="paymentMethod">
                                 <Radio label="微信支付" border></Radio>
                                 <Radio label="支付宝支付" border></Radio>
@@ -79,7 +105,7 @@
                 <Affix>
                     <List border style="background:#fff;float:right;width:32%;">
                         <template slot="header">
-                            <p style="text-align: center;">订单合计</p>
+                            <p style="text-align: center;font-size:18px" ><strong>订单合计</strong></p>
                         </template>
                         <ListItem v-if='diningWay==="外卖"'>
                             <Row type="flex" style="width:100%;">
@@ -88,7 +114,9 @@
                             </i-col>
                             <i-col span="16">
                                 <p style="text-align: right;">
+                                    <strong>
                                     {{addrList[chooseAddrIndex].provence+addrList[chooseAddrIndex].city+addrList[chooseAddrIndex].street+addrList[chooseAddrIndex].address}}
+                                    </strong>
                                 </p> 
                             </i-col>
                         </Row>
@@ -99,7 +127,8 @@
                                     <p>送餐时间：</p> 
                                 </i-col>
                                 <i-col span="16">
-                                    <p style="text-align: right;">预计送餐时间<br>{{this.estimatedTime}}
+                                    <p style="text-align: right;">预计送餐时间<br>
+                                        <strong>{{this.estimatedTime}}</strong>
                                     </p> 
                                 </i-col>
                             </Row>
@@ -107,10 +136,14 @@
                         <ListItem v-if='diningWay==="外卖"'>
                             <Row type="flex" style="width:100%;">
                                 <i-col span="8">
-                                    <p>收获人：</p> 
+                                    <p>收货人：</p> 
                                 </i-col>
                                 <i-col span="16">
-                                    <p style="text-align: right;">{{addrList[chooseAddrIndex].receiver}}</p> 
+                                    <p style="text-align: right;">
+                                        <strong>
+                                            {{addrList[chooseAddrIndex].receiver}}
+                                        </strong>
+                                    </p> 
                                 </i-col>
                             </Row>
                         </ListItem>
@@ -120,7 +153,11 @@
                                     <p>联系电话：</p> 
                                 </i-col>
                                 <i-col span="16">
-                                    <p style="text-align: right;">{{addrList[chooseAddrIndex].telephone}}</p> 
+                                    <p style="text-align: right;">
+                                        <strong>
+                                            {{addrList[chooseAddrIndex].telephone}}
+                                        </strong>
+                                    </p> 
                                 </i-col>
                             </Row>
                         </ListItem>
@@ -130,7 +167,11 @@
                                     <p>小计：</p> 
                                 </i-col>
                                 <i-col span="16">
-                                    <p style="text-align: right;">¥{{subPrice}}</p> 
+                                    <p style="text-align: right;">
+                                        <strong>
+                                            ¥{{subPrice}}
+                                        </strong>
+                                    </p> 
                                 </i-col>
                             </Row>
                         </ListItem>
@@ -140,7 +181,11 @@
                                     <p>包装费：</p> 
                                 </i-col>
                                 <i-col span="16">
-                                    <p style="text-align: right;">¥{{packingCharges}}</p> 
+                                    <p style="text-align: right;">
+                                        <strong>
+                                            ¥{{packingCharges}}
+                                        </strong>
+                                    </p> 
                                 </i-col>
                             </Row>
                         </ListItem>
@@ -150,17 +195,25 @@
                                     <p>配送费：</p> 
                                 </i-col>
                                 <i-col span="16">
-                                    <p style="text-align: right;">¥{{deliveryFee}}</p> 
+                                    <p style="text-align: right;">
+                                        <strong>
+                                            ¥{{deliveryFee}}
+                                        </strong>
+                                    </p> 
                                 </i-col>
                             </Row>
                         </ListItem>
                         <ListItem>
                             <Row type="flex" style="width:100%;">
                                 <i-col span="8">
-                                    <p>总计：</p> 
+                                    <p style="font-size:18px;color:green;">
+                                        <strong>总计：</strong>
+                                    </p> 
                                 </i-col>
                                 <i-col span="16">
-                                    <p style="text-align: right;">¥{{totalPrice}}</p> 
+                                    <p style="text-align: right;color:green;font-size:18px;">
+                                        <strong>¥{{totalPrice}}</strong>
+                                    </p> 
                                 </i-col>
                             </Row>
                         </ListItem>
@@ -243,7 +296,7 @@ export default {
             isTakeOut:false,
             packingCharges:0,
             deliveryFee:0,
-            estimatedTime:(new Date()).getTime() - 60 * 30 * 1000,
+            estimatedTime:"",
         }
     },
     mounted(){
