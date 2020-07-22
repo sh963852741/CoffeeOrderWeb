@@ -59,9 +59,9 @@
                 </Tabs>
             </Card>
         </div>
-        <Row type="flex" style="margin-top: 24px" :gutter="24">
+        <Row type="flex" style="margin-top: 24px" :gutter="24"  v-if="meal">
             <i-col span="6" v-for="index in 4" :key="index">
-                <Card>
+                <Card v-if="meal[index]">
                     <div class="good">
                         <Tag class="tag" color="orange">店长推荐</Tag>
                         <img
@@ -82,7 +82,7 @@
         </Row>
         <Row type="flex" justify="space-between" style="margin-top: 24px; margin-bottom: 24px" :gutter="24">
             <i-col span="6" v-for="index in 4" :key="index">
-                <Card>
+                <Card v-if="meal[index+4]">
                     <div class="good">
                         <Tag class="tag" color="green">降价促销</Tag>
                        <img
