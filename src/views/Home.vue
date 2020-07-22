@@ -3,13 +3,13 @@
         <div>
             <Carousel loop autoplay :autoplay-speed="3500" :radius-dot="true" arrow="hover" style="margin-top: 40px">
                 <CarouselItem>
-                    <div class="carousel-pic">1</div>
+                     <img src="@/assets/Carousel1.jpg"  style="width:100%" />
                 </CarouselItem>
                 <CarouselItem>
-                    <div class="carousel-pic">1</div>
+                    <img src="@/assets/Carousel2.jpg"  style="width:100%" />
                 </CarouselItem>
                 <CarouselItem>
-                    <div class="carousel-pic">1</div>
+                    <img src="@/assets/Carousel3.jpg"  style="width:100%" />
                 </CarouselItem>
             </Carousel>
             <Card class="login-box" dis-hover :padding="24" style="margin-right:20px">
