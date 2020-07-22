@@ -26,7 +26,7 @@
                     </FormItem >
                     <FormItem label="角色">
                          <i-select v-model="userInfo.role" multiple>
-                            <i-option v-for="(item,index) in role" v-bind:key="index" :value="item">{{item}}</i-option>
+                            <i-option v-for="(item, index) in role" v-bind:key="index" :value="item.roleId">{{item.roleName}}</i-option>
                          </i-select>
                     </FormItem >
                     <FormItem >
@@ -113,7 +113,7 @@ export default {
         getRolelist(){
             axios.post("/CoffeeOrderService/api/usermanage/getRoleList", {})
             .then(response => {
-                this.role=response.data.roles;
+                this.role = response.data.roleObj;
             })
             .catch(error=>{
                 if (error.response) {
