@@ -150,6 +150,13 @@ const routes = [
         name: 'addressList',
         meta: {layout: "account"},
         component: () => import(/* webpackChunkName: "role" */ '@/views/UserMenu/AddressList.vue')
-    }
+    },
+    //餐点分析页
+    {
+      path: '/menumanager/menuanalyze',
+      name: 'MenuAnalyze',
+      meta: {layout: "admin"},
+      component: () => import(/* webpackChunkName: "menu" */ '@/views/MenuManager/MenuAnalyze.vue')
+    },
 ]
 export default routes;

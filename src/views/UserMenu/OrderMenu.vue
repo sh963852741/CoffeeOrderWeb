@@ -110,12 +110,16 @@ export default {
         getAllmeal() {
             if (this.menuId.id) {
                 axios
-                    .post("/CoffeeOrderService/api/menu/getMealByMenuId", {
+                    .post("/CoffeeOrderService/api/menu/getMealBySort", {
                         menuId: this.menuId.id
                     })
                     .then(response => {
                         if (response.data.success) {
-                            this.meal = response.data.data;
+                            let temp=[];
+                            for(let info in response.data.data){
+                                temp=temp.concat(response.data.data[info]);
+                            }
+                            this.meal=temp;
                             for (var i = 0; i < this.meal.length; i++) {
                                 this.meal[i].shopCount = 1;
                             }
@@ -129,10 +133,15 @@ export default {
                     });
             } else {
                 axios
-                    .post("/CoffeeOrderService/api/menu/getAllMeal", {})
+                    .post("/CoffeeOrderService/api/menu/getMealBySort", {})
                     .then(response => {
                         if (response.data.success) {
-                            this.meal = response.data.data;
+                            let temp=[];
+                            for(let info in response.data.data){
+                                temp=temp.concat(response.data.data[info]);
+                                console.log(temp)
+                            }
+                            this.meal=temp;
                             for (var i = 0; i < this.meal.length; i++) {
                                 this.meal[i].shopCount = 1;
                             }

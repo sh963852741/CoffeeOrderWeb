@@ -223,44 +223,49 @@ export default {
         },
         getmealtype() {
             if (this.menuId) {
-                axios.post("/CoffeeOrderService/api/menu/getMealByKind", { mealId: this.menuId })
-                .then(response => {
-                    if (response.data.success) {
-                        this.mealType = [];
-                        for (let val of response.data.data) {
-                            this.mealType.push({
-                                value: val,
-                                label: val
-                            });
+                axios
+                    .post("/CoffeeOrderService/api/menu/getMealByKind", {
+                        mealId: this.menuId
+                    })
+                    .then(response => {
+                        if (response.data.success) {
+                            this.mealType = [];
+                            for (let val of response.data.data) {
+                                this.mealType.push({
+                                    value: val,
+                                    label: val
+                                });
+                            }
+                            this.mealListHeader[3].filters = this.mealType;
                         }
-                        this.mealListHeader[3].filters = this.mealType;
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             } else {
-                axios.post("/CoffeeOrderService/api/menu/getMealByKind", {})
-                .then(response => {
-                    if (response.data.success) {
-                        this.mealType = [];
-                        for (let val of response.data.data) {
-                            this.mealType.push({
-                                value: val,
-                                label: val
-                            });
+                axios
+                    .post("/CoffeeOrderService/api/menu/getMealByKind", {})
+                    .then(response => {
+                        if (response.data.success) {
+                            this.mealType = [];
+                            for (let val of response.data.data) {
+                                this.mealType.push({
+                                    value: val,
+                                    label: val
+                                });
+                            }
+                            this.mealListHeader[3].filters = this.mealType;
                         }
-                        this.mealListHeader[3].filters = this.mealType;
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             }
         },
         getMenuDetail() {
             if (this.menuId) {
-                axios.post("/CoffeeOrderService/api/menu/getMealByMenuId", {
+                axios
+                    .post("/CoffeeOrderService/api/menu/getMealByMenuId", {
                         menuId: this.menuId
                     })
                     .then(response => {
@@ -331,15 +336,24 @@ export default {
                         })
                         .then(response => {
                             if (response.data.success) {
-                                let loadingCloser = this.$Message.loading(
-                                    "菜品新建成功，正在上传图片"
-                                );
-                                this.getMenuDetail();
-                                this.getmealtype();
-                                this.upload(
-                                    response.data.mealId,
-                                    loadingCloser
-                                );
+                                if (this.file.name != null) {
+                                    let loadingCloser = this.$Message.loading(
+                                        "菜品新建成功，正在上传图片"
+                                    );
+                                    this.getMenuDetail();
+                                    this.getmealtype();
+                                    this.upload(
+                                        response.data.mealId,
+                                        loadingCloser
+                                    );
+                                } else {
+                                    this.getMenuDetail();
+                                    this.getmealtype();
+                                    this.$Message.success("新建成功")
+                                }
+                            }
+                            else{
+                                this.$Message.error("新建失败")
                             }
                         })
                         .catch(error => {
@@ -374,7 +388,9 @@ export default {
         },
         upload(mealId, loadingCloser) {
             // eslint-disable-next-line
-            debugger;
+            if (this.file.name == null) {
+                return;
+            }
             let formData = new FormData();
             formData.append("file", this.file);
             formData.append("mealId", mealId);

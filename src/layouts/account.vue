@@ -112,29 +112,19 @@
                         <img src="@/assets/coffee-logo.png" width="60px" height="40px" alt="coffee-logo"/> 
                         <span>全能咖啡厅</span>
                     </Row>
-                    <div class="layout-nav">
+                                      <div class="layout-nav">
                         <MenuItem name="Home" :to="{name:'Home'}">
                             <Icon type="md-home" />首&nbsp;页
                         </MenuItem>
                         <MenuItem name="OrderMenu" :to="{name:'OrderMenu'}">
-                                <Icon type="ios-paper"/>浏览菜单
+                            <Icon type="ios-paper"/>浏览菜单
                         </MenuItem>
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="md-person"/>我的账户
-                            </template>
-                            <MenuItem name="ShoppingCart" :to="{name: 'ShoppingCart'}">购物车</MenuItem >
-                            <MenuItem name="center" :to="{name:'OrderList'}">个人中心</MenuItem >
-                        </Submenu>
-                        <Submenu name="4" :disabled="true">
-                            <template slot="title">
-                                <Icon type="md-help-circle" />帮&nbsp;助&nbsp;
-                            </template>
-                            <MenuItem name="4-1">网站条款</MenuItem >
-                            <MenuItem name="4-2">常见问题</MenuItem >
-                            <MenuItem name="4-3">订餐须知</MenuItem >
-                            <MenuItem name="4-4">餐饮公示</MenuItem >
-                        </Submenu>
+                        <MenuItem name="center" @click.native="toAccount">
+                            <Icon type="md-person"/>我的账户
+                        </MenuItem >
+                        <MenuItem name="ShoppingCart" @click.native="toCart">
+                            <Icon type="ios-cart"/>购物车
+                        </MenuItem >
                     </div>
                 </Menu>
             </Header>
@@ -142,9 +132,13 @@
                 <Layout :style="{minHeight:'380px',margin:'50px 0',background: '#fff'}">
                     <Sider hide-trigger :style="{background: '#fff',padding:'20px 0px 0px 0px'}" >
                         <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" >
-                        <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
-                        <MenuItem name="3" :to="{name:'addressList'}"><Icon type="ios-book" />地址簿</MenuItem>
-                        <MenuItem name="4" :to="{name: 'UserMenuCenter'}"><Icon type="ios-person" />账户信息</MenuItem>
+                        <MenuGroup title="订单管理">
+                            <MenuItem name="2" :to="{name:'OrderList'}"><Icon type="ios-recording" />订单记录</MenuItem>
+                        </MenuGroup>
+                        <MenuGroup title="用户信息">
+                            <MenuItem name="3" :to="{name:'addressList'}"><Icon type="ios-book" />地址簿</MenuItem>
+                            <MenuItem name="4" :to="{name: 'UserMenuCenter'}"><Icon type="ios-person" />账户信息</MenuItem>
+                        </MenuGroup>
                         </Menu>  
                     </Sider>
                     <slot></slot>
@@ -160,6 +154,16 @@
 
 <script>
 export default {
+    methods:{
+        toCart(){
+            const {href} =this.$router.resolve({name: 'ShoppingCart'});
+            window.open(href, '_blank');
+        },
+        toAccount(){
+            const {href} =this.$router.resolve({name: 'OrderList'});
+            window.open(href, '_blank');
+        }
+    }
   
 }
 </script>

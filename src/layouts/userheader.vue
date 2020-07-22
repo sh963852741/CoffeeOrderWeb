@@ -12,24 +12,14 @@
                             <Icon type="md-home" />首&nbsp;页
                         </MenuItem>
                         <MenuItem name="OrderMenu" :to="{name:'OrderMenu'}">
-                                <Icon type="ios-paper"/>浏览菜单
+                            <Icon type="ios-paper"/>浏览菜单
                         </MenuItem>
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="md-person"/>我的账户
-                            </template>
-                            <MenuItem name="ShoppingCart" @click.native="toCart">购物车</MenuItem >
-                            <MenuItem name="center" @click.native="toAccount">个人中心</MenuItem >
-                        </Submenu>
-                        <Submenu name="4" :disabled="true">
-                            <template slot="title">
-                                <Icon type="md-help-circle" />帮&nbsp;助&nbsp;
-                            </template>
-                            <MenuItem name="4-1">网站条款</MenuItem >
-                            <MenuItem name="4-2">常见问题</MenuItem >
-                            <MenuItem name="4-3">订餐须知</MenuItem >
-                            <MenuItem name="4-4">餐饮公示</MenuItem >
-                        </Submenu>
+                        <MenuItem name="center" @click.native="toAccount">
+                            <Icon type="md-person"/>我的账户
+                        </MenuItem >
+                        <MenuItem name="ShoppingCart" @click.native="toCart">
+                            <Icon type="ios-cart"/>购物车
+                        </MenuItem >
                     </div>
                 </Menu>
             </Header>
