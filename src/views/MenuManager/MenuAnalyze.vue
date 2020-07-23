@@ -94,6 +94,19 @@
         <Divider />
         <Card>
             <p slot="title" style="height:100%">
+                <Tag color="gold">
+                    <Icon type="ios-restaurant"/>
+                </Tag>
+                本月各类餐点统计
+            </p>
+            <Row>
+                <i-table border :columns="typeListHeader" :data="data.typeList">
+                </i-table>
+            </Row>
+        </Card>
+        <Divider />
+        <Card>
+            <p slot="title" style="height:100%">
                 <Tag color="blue">
                     <Icon type="ios-stats"/>
                 </Tag>
@@ -143,6 +156,16 @@ const echarts = require("echarts");
                     {
                         title: "购买总量",
                         key: "totalAmount"
+                    }
+                ],
+                typeListHeader:[
+                    {
+                        title:"餐点类型",
+                        key: "type"
+                    },
+                    {
+                        title:"购买数量",
+                        key: "amount"
                     }
                 ],
                 totalOrders: 0,

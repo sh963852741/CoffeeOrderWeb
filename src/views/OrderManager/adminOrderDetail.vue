@@ -7,7 +7,7 @@
                     </Button>
                 </i-col>
                 <i-col>
-                    <Input search enter-button placeholder="搜索餐点"/>
+                    <Input search enter-button placeholder="搜索餐点" @on-search="searchMeal"/>
                 </i-col>
             </Row>
             <Divider />
@@ -37,6 +37,7 @@ export default {
             mealModel: {},
             orderId: "",
             mealListContent: [],
+            data:[],
             mealListHeader:[
                 {
                     title: "餐点名称",
@@ -74,6 +75,7 @@ export default {
                     this.mealListContent.forEach(v=>{
                         v.totalPrice = v.price*v.amount;
                     })
+                    this.data = this.mealListContent;
                 })
                 .catch(error=>{
                     if (error.response) {
@@ -85,7 +87,12 @@ export default {
                         this.$Message.error("无法发送请求");
                     }
                 });
-        }
+        },
+        searchMeal(condition) {
+            this.mealListContent = this.data.filter(
+                e => e.mealName.indexOf(condition) !== -1
+            );
+        },
     }
 }
 </script>
