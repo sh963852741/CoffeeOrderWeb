@@ -13,7 +13,7 @@
                             <i-input v-model="pwdModel.userName" placeholder="请输入您的用户名"></i-input>
                         </FormItem>
                         <FormItem prop="mobile" label="手机号">
-                            <i-input v-model="pwdModel.telephone" placeholder="请输入您的手机号"></i-input>
+                            <i-input v-model="pwdModel.mobile" placeholder="请输入您的手机号"></i-input>
                         </FormItem>
                         <FormItem prop="verify" label="验证码">
                             <Row type="flex" justify="space-between">
@@ -76,7 +76,7 @@ export default {
                     this.codeTip = this.count-- + 's后重发';
                 }
             }, 1000);
-            axios.post("/CoffeeOrderService/api/usermanage/getVerificationCode", {userName: this.pwdModel.userName, telephone: this.pwdModel.telephone})
+            axios.post("/CoffeeOrderService/api/usermanage/getVerificationCode", {userName: this.pwdModel.userName, telephone: this.pwdModel.mobile})
             .then(response => {
                 if(response.data.success){
                     this.$Message.info("验证码已发送，请注意查收");

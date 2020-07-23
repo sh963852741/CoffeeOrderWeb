@@ -139,7 +139,6 @@ export default {
                             let temp=[];
                             for(let info in response.data.data){
                                 temp=temp.concat(response.data.data[info]);
-                                console.log(temp)
                             }
                             this.meal=temp;
                             for (var i = 0; i < this.meal.length; i++) {
@@ -183,7 +182,6 @@ export default {
             }
         },
         addShopCard(id, amount, mprice) {
-            console.log(amount)
             axios
                 .post("/CoffeeOrderService/api/shoppingcart/addShoppingCart", {
                     mealId: id,
